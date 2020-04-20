@@ -1,0 +1,36 @@
+{
+    "name": "ondata-taskforse.it",
+    "version": "0.1.0",
+    "description": "Nel dubbio... task forse!",
+    "homepage": "https://taskforse.it",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ondata/taskforse.it.git"
+    },
+    "private": true,
+    "scripts": {
+        "dev": "next",
+        "build": "next build && next export -o dist",
+        "start": "next start",
+        "serve": "serve dist/",
+        "deploy": "git subtree push --prefix dist origin gh-pages"
+    },
+    "keywords": [],
+    "author": "Alessio Cimarelli <alessio.cimarelli@ondata.it> (https://www.linkedin.com/in/alessiocimarelli/)",
+    "contributors": [
+        "Jacopo Solmi <jacopo.solmi@gmail.com> (https://www.linkedin.com/in/jacoposolmi/)"
+    ],
+    "license": "MIT",
+    "dependencies": {
+        "@material-ui/core": "^4.9.11",
+        "@material-ui/icons": "^4.9.1",
+        "clsx": "^1.1.0",
+        "next": "^9.3.5",
+        "prop-types": "^15.7.2",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1"
+    },
+    "devDependencies": {
+        "serve": "^11.3.0"
+    }
+}
