@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static/development/pages/index.js"],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static/development/pages/task-forses/[Id].js"],{
 
 /***/ "./node_modules/@babel/runtime/helpers/arrayWithHoles.js":
 /*!***************************************************************!*\
@@ -62994,21 +62994,21 @@ var assign=Object.assign.bind(Object);function g(){return assign;}Object.defineP
 
 /***/ }),
 
-/***/ "./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=%2Fhome%2Fjenkin%2Fprogetti%2Fondata%2Ftaskforse.it%2Fsrc%2Fpages%2Findex.js!./":
-/*!*****************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=%2Fhome%2Fjenkin%2Fprogetti%2Fondata%2Ftaskforse.it%2Fsrc%2Fpages%2Findex.js ***!
-  \*****************************************************************************************************************************************************************************************/
+/***/ "./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Ftask-forses%2F%5BId%5D&absolutePagePath=%2Fhome%2Fjenkin%2Fprogetti%2Fondata%2Ftaskforse.it%2Fsrc%2Fpages%2Ftask-forses%2F%5BId%5D.js!./":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Ftask-forses%2F%5BId%5D&absolutePagePath=%2Fhome%2Fjenkin%2Fprogetti%2Fondata%2Ftaskforse.it%2Fsrc%2Fpages%2Ftask-forses%2F%5BId%5D.js ***!
+  \********************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-    (window.__NEXT_P=window.__NEXT_P||[]).push(["/", function() {
-      var mod = __webpack_require__(/*! ./src/pages/index.js */ "./src/pages/index.js")
+    (window.__NEXT_P=window.__NEXT_P||[]).push(["/task-forses/[Id]", function() {
+      var mod = __webpack_require__(/*! ./src/pages/task-forses/[Id].js */ "./src/pages/task-forses/[Id].js")
       if(true) {
-        module.hot.accept(/*! ./src/pages/index.js */ "./src/pages/index.js", function() {
-          if(!next.router.components["/"]) return
-          var updatedPage = __webpack_require__(/*! ./src/pages/index.js */ "./src/pages/index.js")
-          next.router.update("/", updatedPage)
+        module.hot.accept(/*! ./src/pages/task-forses/[Id].js */ "./src/pages/task-forses/[Id].js", function() {
+          if(!next.router.components["/task-forses/[Id]"]) return
+          var updatedPage = __webpack_require__(/*! ./src/pages/task-forses/[Id].js */ "./src/pages/task-forses/[Id].js")
+          next.router.update("/task-forses/[Id]", updatedPage)
         })
       }
       return mod
@@ -71422,10 +71422,10 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./src/pages/index.js":
-/*!****************************!*\
-  !*** ./src/pages/index.js ***!
-  \****************************/
+/***/ "./src/pages/task-forses/[Id].js":
+/*!***************************************!*\
+  !*** ./src/pages/task-forses/[Id].js ***!
+  \***************************************/
 /*! exports provided: __N_SSG, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -71440,7 +71440,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/esm/index.js");
-var _jsxFileName = "/home/jenkin/progetti/ondata/taskforse.it/src/pages/index.js";
+var _jsxFileName = "/home/jenkin/progetti/ondata/taskforse.it/src/pages/task-forses/[Id].js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
@@ -71450,13 +71450,15 @@ var __N_SSG = true;
 function Index(_ref) {
   var _this = this;
 
-  var data = _ref.data;
+  var taskForse = _ref.taskForse,
+      members = _ref.members,
+      resources = _ref.resources;
   return __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Container"], {
     maxWidth: "xs",
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 24,
+      lineNumber: 28,
       columnNumber: 9
     }
   }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Box"], {
@@ -71464,21 +71466,10 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 25,
+      lineNumber: 29,
       columnNumber: 13
     }
   }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Typography"], {
-    variant: "body1",
-    style: {
-      textAlign: "center"
-    },
-    __self: this,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 26,
-      columnNumber: 17
-    }
-  }, "nel dubbio ..."), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Typography"], {
     variant: "h1",
     style: {
       fontWeight: "bold",
@@ -71487,73 +71478,128 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 29,
+      lineNumber: 30,
       columnNumber: 17
     }
-  }, "Task", __jsx("br", {
+  }, "".concat(taskForse["Nome"]))), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Box"], {
+    my: 4,
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 30,
-      columnNumber: 25
+      lineNumber: 34,
+      columnNumber: 13
     }
-  }), "Forse"), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Typography"], {
-    variant: "body1",
+  }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Typography"], {
+    variant: "h2",
     style: {
-      textAlign: "right"
+      fontWeight: "bold",
+      textAlign: "center"
     },
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 32,
+      lineNumber: 35,
       columnNumber: 17
     }
-  }, "by @ondatait")), __jsx("ul", {
+  }, "Membri"), __jsx("ul", {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 36,
-      columnNumber: 13
+      lineNumber: 38,
+      columnNumber: 17
     }
-  }, Object(lodash__WEBPACK_IMPORTED_MODULE_2__["map"])(data, function (d) {
+  }, Object(lodash__WEBPACK_IMPORTED_MODULE_2__["map"])(members, function (d) {
     return __jsx("li", {
       key: d["Id"],
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 39,
-        columnNumber: 21
+        lineNumber: 41,
+        columnNumber: 29
       }
     }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
-      href: "/task-forses/[Id]",
-      as: "/task-forses/".concat(d["Id"]),
+      href: "/members/[Id]",
+      as: "/members/".concat(d["Id"]),
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 40,
-        columnNumber: 25
+        lineNumber: 42,
+        columnNumber: 33
       }
     }, __jsx("a", {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 40,
+        lineNumber: 42,
         columnNumber: 87
       }
-    }, d["Nome"])));
-  })));
+    }, "".concat(d["Nome"], " ").concat(d["Cognome"]))));
+  }))), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Box"], {
+    my: 4,
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 48,
+      columnNumber: 13
+    }
+  }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Typography"], {
+    variant: "h2",
+    style: {
+      fontWeight: "bold",
+      textAlign: "center"
+    },
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 49,
+      columnNumber: 17
+    }
+  }, "Risorse"), __jsx("ul", {
+    __self: this,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 52,
+      columnNumber: 17
+    }
+  }, Object(lodash__WEBPACK_IMPORTED_MODULE_2__["map"])(resources, function (d) {
+    return __jsx("li", {
+      key: d["Id"],
+      __self: _this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 55,
+        columnNumber: 29
+      }
+    }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
+      href: "/resources/[Id]",
+      as: "/resources/".concat(d["Id"]),
+      __self: _this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 56,
+        columnNumber: 33
+      }
+    }, __jsx("a", {
+      __self: _this,
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 56,
+        columnNumber: 91
+      }
+    }, d["Titolo"])));
+  }))));
 }
 
 /***/ }),
 
-/***/ 1:
-/*!*********************************************************************************************************************************************!*\
-  !*** multi next-client-pages-loader?page=%2F&absolutePagePath=%2Fhome%2Fjenkin%2Fprogetti%2Fondata%2Ftaskforse.it%2Fsrc%2Fpages%2Findex.js ***!
-  \*********************************************************************************************************************************************/
+/***/ 2:
+/*!************************************************************************************************************************************************************************************!*\
+  !*** multi next-client-pages-loader?page=%2Ftask-forses%2F%5BId%5D&absolutePagePath=%2Fhome%2Fjenkin%2Fprogetti%2Fondata%2Ftaskforse.it%2Fsrc%2Fpages%2Ftask-forses%2F%5BId%5D.js ***!
+  \************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2F&absolutePagePath=%2Fhome%2Fjenkin%2Fprogetti%2Fondata%2Ftaskforse.it%2Fsrc%2Fpages%2Findex.js! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=%2Fhome%2Fjenkin%2Fprogetti%2Fondata%2Ftaskforse.it%2Fsrc%2Fpages%2Findex.js!./");
+module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2Ftask-forses%2F%5BId%5D&absolutePagePath=%2Fhome%2Fjenkin%2Fprogetti%2Fondata%2Ftaskforse.it%2Fsrc%2Fpages%2Ftask-forses%2F%5BId%5D.js! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Ftask-forses%2F%5BId%5D&absolutePagePath=%2Fhome%2Fjenkin%2Fprogetti%2Fondata%2Ftaskforse.it%2Fsrc%2Fpages%2Ftask-forses%2F%5BId%5D.js!./");
 
 
 /***/ }),
@@ -71569,5 +71615,5 @@ module.exports = dll_2adc2403d89adc16ead0;
 
 /***/ })
 
-},[[1,"static/runtime/webpack.js"]]]);
-//# sourceMappingURL=index.js.map
+},[[2,"static/runtime/webpack.js"]]]);
+//# sourceMappingURL=[Id].js.map

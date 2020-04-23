@@ -1,6 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 
+import Link from 'next/link'
+
 import {
     map,
 } from 'lodash'
@@ -34,7 +36,9 @@ export default function Index({ data }) {
             <ul>
             {
                 map(data, d => (
-                    <li key={d["Id"]}>{d["Nome"]}</li>
+                    <li key={d["Id"]}>
+                        <Link href="/task-forses/[Id]" as={`/task-forses/${d["Id"]}`}><a>{d["Nome"]}</a></Link>
+                    </li>
                 ))
             }
             </ul>
