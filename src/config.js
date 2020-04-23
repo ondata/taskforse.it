@@ -1,7 +1,10 @@
 import {
     map,
     filter,
-    chunk,
+    groupBy,
+    values,
+    range,
+    find,
     zipObject,
 } from 'lodash'
 
@@ -25,15 +28,23 @@ export function normalizeGSheetJSON(response) {
         e => +e["gs$cell"]["$t"] || e["gs$cell"]["$t"] || null
     )
 
-    const dataValues = chunk(
-        map(
-            filter(
-                response.data.feed.entry, 
-                e => +e["gs$cell"].row > 1
-            ),
-            e => +e["gs$cell"]["$t"] || e["gs$cell"]["$t"] || null
+    const dataValues = map(
+        values(
+            groupBy(
+                filter(
+                    response.data.feed.entry, 
+                    e => +e["gs$cell"].row > 1
+                ),
+                e => e["gs$cell"].row
+            )
         ),
-        dataKeys.length
+        row => map(
+            range(dataKeys.length),
+            col => {
+                const e = find(row, c => +c["gs$cell"].col === col+1)
+                return e ? (+e["gs$cell"]["$t"] || e["gs$cell"]["$t"]) : null
+            }
+        )
     )
 
     return map(
