@@ -1,20 +1,16 @@
 import React from 'react'
-import axios from 'axios'
 
 import Link from 'next/link'
 
 import {
     map,
-    find,
-    filter,
 } from 'lodash'
 
 import {
-    getGSheetUrl,
-    normalizeGSheetJSON,
-    GSHEET_SHEET_TASKFORSES,
-    GSHEET_SHEET_MEMBERS,
-    GSHEET_SHEET_RESOURCES,
+    getTaskForse,
+    getTaskForses,
+    getMembersByTaskForse,
+    getResourcesByTaskForse,
 } from '../../config'
 
 import {
@@ -64,27 +60,11 @@ export default function Index({ taskForse, members, resources }) {
 }
 
 export async function getStaticProps({ params }) {
-
-    const taskForse = find(
-        normalizeGSheetJSON(await axios.get(getGSheetUrl(GSHEET_SHEET_TASKFORSES))),
-        e => e["Id"] === params["Id"]
-    )
-
-    const members = filter(
-        normalizeGSheetJSON(await axios.get(getGSheetUrl(GSHEET_SHEET_MEMBERS))),
-        e => e["Task forse"] === params["Id"]
-    )
-
-    const resources = filter(
-        normalizeGSheetJSON(await axios.get(getGSheetUrl(GSHEET_SHEET_RESOURCES))),
-        e => e["Task forse"] === params["Id"]
-    )
-
     return {
         props: {
-            taskForse,
-            members,
-            resources,
+            taskForse: await getTaskForse(params["Id"]),
+            members: await getMembersByTaskForse(params["Id"]),
+            resources: await getResourcesByTaskForse(params["Id"]),
         },
     }
 }
@@ -92,7 +72,7 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
     return {
         paths: map(
-            normalizeGSheetJSON(await axios.get(getGSheetUrl(GSHEET_SHEET_TASKFORSES))),
+            await getTaskForses(),
             e => ({ params: { Id: e["Id"] } })
         ),
         fallback: false,

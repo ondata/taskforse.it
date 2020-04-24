@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios'
 
 import Link from 'next/link'
 
@@ -8,9 +7,7 @@ import {
 } from 'lodash'
 
 import {
-    getGSheetUrl,
-    normalizeGSheetJSON,
-    GSHEET_SHEET_TASKFORSES,
+    getTaskForses,
 } from '../config'
 
 import {
@@ -49,7 +46,7 @@ export default function Index({ data }) {
 export async function getStaticProps(context) {
     return {
         props: {
-            data: normalizeGSheetJSON(await axios.get(getGSheetUrl(GSHEET_SHEET_TASKFORSES))),
+            data: await getTaskForses(),
         },
     }
 }

@@ -71456,7 +71456,7 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 24,
+      lineNumber: 21,
       columnNumber: 9
     }
   }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Box"], {
@@ -71464,7 +71464,7 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 25,
+      lineNumber: 22,
       columnNumber: 13
     }
   }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Typography"], {
@@ -71475,7 +71475,7 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 26,
+      lineNumber: 23,
       columnNumber: 17
     }
   }, "nel dubbio ..."), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Typography"], {
@@ -71487,14 +71487,14 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 29,
+      lineNumber: 26,
       columnNumber: 17
     }
   }, "Task", __jsx("br", {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 30,
+      lineNumber: 27,
       columnNumber: 25
     }
   }), "Forse"), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Typography"], {
@@ -71505,14 +71505,14 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 32,
+      lineNumber: 29,
       columnNumber: 17
     }
   }, "by @ondatait")), __jsx("ul", {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 36,
+      lineNumber: 33,
       columnNumber: 13
     }
   }, Object(lodash__WEBPACK_IMPORTED_MODULE_2__["map"])(data, function (d) {
@@ -71521,7 +71521,7 @@ function Index(_ref) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 39,
+        lineNumber: 36,
         columnNumber: 21
       }
     }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
@@ -71530,14 +71530,14 @@ function Index(_ref) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 40,
+        lineNumber: 37,
         columnNumber: 25
       }
     }, __jsx("a", {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 40,
+        lineNumber: 37,
         columnNumber: 87
       }
     }, d["Nome"])));

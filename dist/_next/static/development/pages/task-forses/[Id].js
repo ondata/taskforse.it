@@ -71458,7 +71458,7 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 28,
+      lineNumber: 24,
       columnNumber: 9
     }
   }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Box"], {
@@ -71466,7 +71466,7 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 29,
+      lineNumber: 25,
       columnNumber: 13
     }
   }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Typography"], {
@@ -71478,7 +71478,7 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 30,
+      lineNumber: 26,
       columnNumber: 17
     }
   }, "".concat(taskForse["Nome"]))), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Box"], {
@@ -71486,7 +71486,7 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 34,
+      lineNumber: 30,
       columnNumber: 13
     }
   }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Typography"], {
@@ -71498,14 +71498,14 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 35,
+      lineNumber: 31,
       columnNumber: 17
     }
   }, "Membri"), __jsx("ul", {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 38,
+      lineNumber: 34,
       columnNumber: 17
     }
   }, Object(lodash__WEBPACK_IMPORTED_MODULE_2__["map"])(members, function (d) {
@@ -71514,7 +71514,7 @@ function Index(_ref) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 41,
+        lineNumber: 37,
         columnNumber: 29
       }
     }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
@@ -71523,14 +71523,14 @@ function Index(_ref) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 42,
+        lineNumber: 38,
         columnNumber: 33
       }
     }, __jsx("a", {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 42,
+        lineNumber: 38,
         columnNumber: 87
       }
     }, "".concat(d["Nome"], " ").concat(d["Cognome"]))));
@@ -71539,7 +71539,7 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 48,
+      lineNumber: 44,
       columnNumber: 13
     }
   }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Typography"], {
@@ -71551,14 +71551,14 @@ function Index(_ref) {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 49,
+      lineNumber: 45,
       columnNumber: 17
     }
   }, "Risorse"), __jsx("ul", {
     __self: this,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 52,
+      lineNumber: 48,
       columnNumber: 17
     }
   }, Object(lodash__WEBPACK_IMPORTED_MODULE_2__["map"])(resources, function (d) {
@@ -71567,7 +71567,7 @@ function Index(_ref) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 55,
+        lineNumber: 51,
         columnNumber: 29
       }
     }, __jsx(next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
@@ -71576,14 +71576,14 @@ function Index(_ref) {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 56,
+        lineNumber: 52,
         columnNumber: 33
       }
     }, __jsx("a", {
       __self: _this,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 56,
+        lineNumber: 52,
         columnNumber: 91
       }
     }, d["Titolo"])));

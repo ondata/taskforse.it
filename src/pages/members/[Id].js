@@ -1,15 +1,12 @@
 import React from 'react'
-import axios from 'axios'
 
 import {
     map,
-    find
 } from 'lodash'
 
 import {
-    getGSheetUrl,
-    normalizeGSheetJSON,
-    GSHEET_SHEET_MEMBERS,
+    getMember,
+    getMembers,
 } from '../../config'
 
 import {
@@ -33,10 +30,7 @@ export default function Index({ data }) {
 export async function getStaticProps({ params }) {
     return {
         props: {
-            data: find(
-                normalizeGSheetJSON(await axios.get(getGSheetUrl(GSHEET_SHEET_MEMBERS))),
-                e => e["Id"] === params["Id"]
-            )
+            data: await getMember(params["Id"])
         },
     }
 }
@@ -44,7 +38,7 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
     return {
         paths: map(
-            normalizeGSheetJSON(await axios.get(getGSheetUrl(GSHEET_SHEET_MEMBERS))),
+            await getMembers(),
             e => ({ params: { Id: e["Id"] } })
         ),
         fallback: false,
