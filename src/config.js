@@ -18,6 +18,9 @@ const GSHEET_SHEET_TASKFORSES = 2
 const GSHEET_SHEET_MEMBERS = 3
 const GSHEET_SHEET_RESOURCES = 4
 
+export const CONTAINER_MAXWIDTH = "sm"
+export const PRIMARY_COLOR = "#fd1d59"
+
 export async function getMeta() {
     return normalizeGSheetJSON(await axios.get(getGSheetUrl(GSHEET_SHEET_META)))
 }

@@ -8,38 +8,37 @@ import {
 
 import {
     getTaskForses,
+    CONTAINER_MAXWIDTH,
 } from '../config'
 
 import {
     Container,
-    Typography,
-    Box,
 } from '@material-ui/core'
+
+import {
+    Header,
+} from '../components'
 
 export default function Index({ data }) {
     return (
-        <Container maxWidth="xs">
-            <Box my={4}>
-                <Typography variant="body1" style={{ textAlign: "center" }}>
-                    nel dubbio ...
-                </Typography>
-                <Typography variant="h1" style={{ fontWeight: "bold", textAlign: "center" }}>
-                    Task<br />Forse
-                </Typography>
-                <Typography variant="body1" style={{ textAlign: "right" }}>
-                    by @ondatait
-                </Typography>
-            </Box>
-            <ul>
-            {
-                map(data, d => (
-                    <li key={d["Id"]}>
-                        <Link href="/task-forses/[Id]" as={`/task-forses/${d["Id"]}`}><a>{d["Nome"]}</a></Link>
-                    </li>
-                ))
-            }
-            </ul>
-        </Container>
+        <>
+            <Header
+                suptitle="nel dubbio ..."
+                title={<>Task<br/>Forse</>}
+                subtitle="by @ondatait"
+            />
+            <Container maxWidth={CONTAINER_MAXWIDTH}>
+                <ul>
+                {
+                    map(data, d => (
+                        <li key={d["Id"]}>
+                            <Link href="/task-forses/[Id]" as={`/task-forses/${d["Id"]}`}><a>{d["Nome"]}</a></Link>
+                        </li>
+                    ))
+                }
+                </ul>
+            </Container>
+        </>
     )
 }
 

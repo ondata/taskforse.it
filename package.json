@@ -10,8 +10,9 @@
     "private": true,
     "scripts": {
         "dev": "next",
-        "build": "next build && next export -o dist",
-        "start": "next start",
+        "build": "next build",
+        "export": "next build && next export -o dist",
+        "start": "next build && next start",
         "serve": "serve dist/",
         "deploy": "git push && git subtree push --prefix dist origin gh-pages"
     },

@@ -1,1 +1,0 @@
-self.__SSG_MANIFEST=new Set(["\u002F","\u002Fmembers\u002F[Id]","\u002Ftask-forses\u002F[Id]","\u002Fresources\u002F[Id]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
