@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { setup } from 'axios-cache-adapter'
 
 import {
     map,
@@ -21,12 +21,19 @@ const GSHEET_SHEET_RESOURCES = 4
 export const CONTAINER_MAXWIDTH = "sm"
 export const PRIMARY_COLOR = "#fd1d59"
 
+const api = setup({
+    baseURL: `${GSHEET_PREFIX}/${GSHEET_ID}`,
+    cache: {
+        maxAge: 15 * 60 * 1000,
+    },
+})
+
 export async function getMeta() {
-    return normalizeGSheetJSON(await axios.get(getGSheetUrl(GSHEET_SHEET_META)))
+    return normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_META)))
 }
 
 export async function getTaskForses() {
-    return normalizeGSheetJSON(await axios.get(getGSheetUrl(GSHEET_SHEET_TASKFORSES)))
+    return normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_TASKFORSES)))
 }
 
 export async function getTaskForse(id) {
@@ -37,7 +44,7 @@ export async function getTaskForse(id) {
 }
 
 export async function getMembers() {
-    return normalizeGSheetJSON(await axios.get(getGSheetUrl(GSHEET_SHEET_MEMBERS)))
+    return normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_MEMBERS)))
 }
 
 export async function getMember(id) {
@@ -51,11 +58,11 @@ export async function getMembersByTaskForse(id) {
     return id ? filter(
         await getMembers(),
         e => e["Task forse"] === id
-    ): []
+    ) : []
 }
 
 export async function getResources() {
-    return normalizeGSheetJSON(await axios.get(getGSheetUrl(GSHEET_SHEET_RESOURCES)))
+    return normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_RESOURCES)))
 }
 
 export async function getResource(id) {
@@ -72,7 +79,7 @@ export async function getResourcesByTaskForse(id) {
     ) : []
 }
 
-const getGSheetUrl = sheet => `${GSHEET_PREFIX}/${GSHEET_ID}/${sheet}/${GSHEET_SUFFIX}`
+const getGSheetUrl = sheet => `/${sheet}/${GSHEET_SUFFIX}`
 
 function normalizeGSheetJSON(response) {
 
@@ -88,7 +95,7 @@ function normalizeGSheetJSON(response) {
         values(
             groupBy(
                 filter(
-                    response.data.feed.entry, 
+                    response.data.feed.entry,
                     e => +e["gs$cell"].row > 1
                 ),
                 e => e["gs$cell"].row
@@ -97,7 +104,7 @@ function normalizeGSheetJSON(response) {
         row => map(
             range(dataKeys.length),
             col => {
-                const e = find(row, c => +c["gs$cell"].col === col+1)
+                const e = find(row, c => +c["gs$cell"].col === col + 1)
                 return e ? (+e["gs$cell"]["$t"] || e["gs$cell"]["$t"]) : null
             }
         )

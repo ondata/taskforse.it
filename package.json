@@ -12,7 +12,7 @@
         "dev": "next",
         "build": "next build",
         "export": "next build && next export -o dist",
-        "start": "next build && next start",
+        "start": "next start",
         "serve": "serve dist/",
         "deploy": "git push && git subtree push --prefix dist origin gh-pages"
     },
@@ -25,7 +25,8 @@
     "dependencies": {
         "@material-ui/core": "^4.9.11",
         "@material-ui/icons": "^4.9.1",
-        "axios": "^0.19.2",
+        "axios": "^0.18.1",
+        "axios-cache-adapter": "^2.5.0",
         "clsx": "^1.1.0",
         "lodash-es": "^4.17.15",
         "next": "^9.3.5",
