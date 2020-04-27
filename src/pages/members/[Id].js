@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { useRouter } from 'next/router'
+
 import {
     map,
 } from 'lodash'
@@ -15,16 +17,32 @@ import {
     Box,
 } from '@material-ui/core'
 
-export default function Index({ data }) {
-    return (
-        <Container maxWidth="xs">
-            <Box my={4}>
-                <Typography variant="h1" style={{ fontWeight: "bold", textAlign: "center" }}>
-                    {`${data["Nome"]} ${data["Cognome"]}`}
-                </Typography>
-            </Box>
-        </Container>
-    )
+export default function Index({
+    data = {},
+}) {
+
+    const router = useRouter()
+
+    if (router.isFallback) {
+
+        return (
+            <Container maxWidth="xs">
+                <Typography>Loading...</Typography>
+            </Container>
+        )
+
+    } else {
+
+        return (
+            <Container maxWidth="xs">
+                <Box my={4}>
+                    <Typography variant="h1" style={{ fontWeight: "bold", textAlign: "center" }}>
+                        {`${data["Nome"] || "N/A"} ${data["Cognome"] || "N/A"}`}
+                    </Typography>
+                </Box>
+            </Container>
+        )
+    }
 }
 
 export async function getStaticProps({ params }) {
@@ -41,6 +59,6 @@ export async function getStaticPaths() {
             await getMembers(),
             e => ({ params: { Id: e["Id"] } })
         ),
-        fallback: false,
+        fallback: true,
     }
 }

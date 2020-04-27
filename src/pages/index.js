@@ -42,7 +42,7 @@ export default function Index({ data }) {
     )
 }
 
-export async function getStaticProps(context) {
+export async function getServerSideProps() {
     return {
         props: {
             data: await getTaskForses(),

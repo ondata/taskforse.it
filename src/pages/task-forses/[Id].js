@@ -1,9 +1,11 @@
 import React from 'react'
 
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import {
     map,
+    isEmpty,
 } from 'lodash'
 
 import {
@@ -19,44 +21,75 @@ import {
     Box,
 } from '@material-ui/core'
 
-export default function Index({ taskForse, members, resources }) {
-    return (
-        <Container maxWidth="xs">
-            <Box my={4}>
-                <Typography variant="h1" style={{ fontWeight: "bold", textAlign: "center" }}>
-                    {`${taskForse["Nome"]}`}
-                </Typography>
-            </Box>
-            <Box my={4}>
-                <Typography variant="h2" style={{ fontWeight: "bold", textAlign: "center" }}>
-                    Membri
-                </Typography>
-                <ul>
+export default function Index({
+    taskForse = {},
+    members = [],
+    resources = [],
+}) {
+
+    const router = useRouter()
+
+    if (router.isFallback) {
+
+        return (
+            <Container maxWidth="xs">
+                <Typography>Loading...</Typography>
+            </Container>
+        )
+
+    } else {
+
+        return (
+            <Container maxWidth="xs">
+                <Box my={4}>
+                    <Typography variant="h1" style={{ fontWeight: "bold", textAlign: "center" }}>
+                        {`${taskForse["Nome"] || "N/A"}`}
+                    </Typography>
+                </Box>
+                <Box my={4}>
+                    <Typography variant="h2" style={{ fontWeight: "bold", textAlign: "center" }}>
+                        Membri
+                    </Typography>
                     {
-                        map(members, d => (
-                            <li key={d["Id"]}>
-                                <Link href="/members/[Id]" as={`/members/${d["Id"]}`}><a>{`${d["Nome"]} ${d["Cognome"]}`}</a></Link>
-                            </li>
-                        ))
+                        isEmpty(members)
+                        ?
+                        <Typography>N/A</Typography>
+                        :
+                        <ul>
+                        {   
+                            map(members, d => (
+                                <li key={d["Id"]}>
+                                    <Link href="/members/[Id]" as={`/members/${d["Id"]}`}><a>{`${d["Nome"]} ${d["Cognome"]}`}</a></Link>
+                                </li>
+                            ))
+                        }
+                        </ul>
                     }
-                </ul>
-            </Box>
-            <Box my={4}>
-                <Typography variant="h2" style={{ fontWeight: "bold", textAlign: "center" }}>
-                    Risorse
-                </Typography>
-                <ul>
+                </Box>
+                <Box my={4}>
+                    <Typography variant="h2" style={{ fontWeight: "bold", textAlign: "center" }}>
+                        Risorse
+                    </Typography>
                     {
-                        map(resources, d => (
-                            <li key={d["Id"]}>
-                                <Link href="/resources/[Id]" as={`/resources/${d["Id"]}`}><a>{d["Titolo"]}</a></Link>
-                            </li>
-                        ))
+                        isEmpty(resources)
+                        ?
+                        <Typography>N/A</Typography>
+                        :
+                        <ul>
+                        {
+                            map(resources, d => (
+                                <li key={d["Id"]}>
+                                    <Link href="/resources/[Id]" as={`/resources/${d["Id"]}`}><a>{d["Titolo"]}</a></Link>
+                                </li>
+                            ))
+                        }
+                        </ul>
                     }
-                </ul>
-            </Box>
-        </Container>
-    )
+                </Box>
+            </Container>
+        )
+
+    }
 }
 
 export async function getStaticProps({ params }) {
@@ -75,6 +108,6 @@ export async function getStaticPaths() {
             await getTaskForses(),
             e => ({ params: { Id: e["Id"] } })
         ),
-        fallback: false,
+        fallback: true,
     }
 }
