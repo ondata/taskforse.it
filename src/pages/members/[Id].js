@@ -57,7 +57,7 @@ export async function getStaticPaths() {
     return {
         paths: map(
             await getMembers(),
-            e => ({ params: { Id: e["Id"] } })
+            e => ({ params: { Id: `${String(e["Id"]).toLowerCase()}` } })
         ),
         fallback: true,
     }

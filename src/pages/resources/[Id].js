@@ -58,7 +58,7 @@ export async function getStaticPaths() {
     return {
         paths: map(
             await getResources(),
-            e => ({ params: { Id: e["Id"] } })
+            e => ({ params: { Id: `${e["Task forse"]}-${String(e["Id"]).toLowerCase()}` } })
         ),
         fallback: true,
     }

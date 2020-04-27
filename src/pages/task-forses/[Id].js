@@ -16,6 +16,8 @@ import {
     getMembersByTaskForse,
     getMinutesByTaskForse,
     getResourcesByTaskForse,
+    yyyy,
+    ddmmyyyy,
 } from '../../config'
 
 import {
@@ -79,7 +81,7 @@ export default function Index({
                                     if (!isEmpty(d)) {
                                         return (
                                             <li key={d["Id"]}>
-                                                <Link href="/members/[Id]" as={`/members/${d["Id"]}`}>
+                                                <Link href="/members/[Id]" as={`/members/${String(d["Id"]).toLowerCase()}`}>
                                                     <a>{`${d["Nome"]} ${d["Cognome"]}`}</a>
                                                 </Link>
                                             </li>
@@ -125,9 +127,9 @@ export default function Index({
                                 (d,i) => {
                                     if (!isEmpty(d)) {
                                         return (
-                                            <li key={d["Id"]}>
-                                                <Link href="/minutes/[Id]" as={`/minutes/${d["Id"]}`}>
-                                                    <a>{`N. ${data["Numero"]}/${yyyy(data["Data di pubblicazione"])} del ${yyyymmdd(data["Data di pubblicazione"])}`}</a>
+                                            <li key={`${d["Task forse"]}-${String(d["Id"]).toLowerCase()}`}>
+                                                <Link href="/minutes/[Id]" as={`/minutes/${d["Task forse"]}-${String(d["Id"]).toLowerCase()}`}>
+                                                    <a>{`${d["Numero"]}/${yyyy(d["Data di pubblicazione"])} del ${ddmmyyyy(d["Data di pubblicazione"])}`}</a>
                                                 </Link>
                                             </li>
                                         )
@@ -151,13 +153,13 @@ export default function Index({
                     {
                         isEmpty(resources)
                         ?
-                        <Typography>Nessuna risorsa disponibile.</Typography>
+                        <Typography>Nessuna risorsa aggiuntiva disponibile.</Typography>
                         :
                         <ul>
                         {
                             map(resources, d => (
-                                <li key={d["Id"]}>
-                                    <Link href="/resources/[Id]" as={`/resources/${d["Id"]}`}><a>{d["Titolo"]}</a></Link>
+                                <li key={`${d["Task forse"]}-${String(d["Id"]).toLowerCase()}`}>
+                                    <Link href="/resources/[Id]" as={`/resources/${d["Task forse"]}-${String(d["Id"]).toLowerCase()}`}><a>{d["Titolo"]}</a></Link>
                                 </li>
                             ))
                         }
@@ -185,7 +187,7 @@ export async function getStaticPaths() {
     return {
         paths: map(
             await getTaskForses(),
-            e => ({ params: { Id: e["Id"] } })
+            e => ({ params: { Id: String(e["Id"]).toLowerCase() } })
         ),
         fallback: true,
     }

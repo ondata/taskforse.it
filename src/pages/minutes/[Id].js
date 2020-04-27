@@ -10,7 +10,7 @@ import {
     getMinute,
     getMinutes,
     yyyy,
-    yyyymmdd,
+    ddmmyyyy,
 } from '../../config'
 
 import {
@@ -39,7 +39,7 @@ export default function Index({
             <Container maxWidth="xs">
                 <Box my={4}>
                     <Typography variant="h1" style={{ fontWeight: "bold", textAlign: "center" }}>
-                        {`Verbale n. ${data["Numero"]}/${yyyy(data["Data di pubblicazione"])} del ${yyyymmdd(data["Data di pubblicazione"])}`}
+                        {`Verbale n. ${data["Numero"]}/${yyyy(data["Data di pubblicazione"])} del ${ddmmyyyy(data["Data di pubblicazione"])}`}
                     </Typography>
                 </Box>
             </Container>
@@ -60,7 +60,7 @@ export async function getStaticPaths() {
     return {
         paths: map(
             await getMinutes(),
-            e => ({ params: { Id: e["Id"] } })
+            e => ({ params: { Id: `${e["Task forse"]}-${String(e["Id"]).toLowerCase()}` } })
         ),
         fallback: true,
     }

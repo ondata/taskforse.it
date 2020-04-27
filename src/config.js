@@ -8,6 +8,7 @@ import {
     range,
     find,
     zipObject,
+    padStart,
 } from 'lodash'
 
 const GSHEET_PREFIX = "https://spreadsheets.google.com/feeds/cells"
@@ -40,7 +41,7 @@ export async function getTaskForses() {
 export async function getTaskForse(id) {
     return id ? find(
         await getTaskForses(),
-        e => e["Id"] === id
+        e => String(e["Id"]).toLowerCase() === String(id).toLowerCase()
     ) || {} : {}
 }
 
@@ -51,14 +52,14 @@ export async function getMembers() {
 export async function getMember(id) {
     return id ? find(
         await getMembers(),
-        e => e["Id"] === id
+        e => String(e["Id"]).toLowerCase() === String(id).toLowerCase()
     ) || {} : {}
 }
 
 export async function getMembersByTaskForse(id) {
     return id ? filter(
         await getMembers(),
-        e => e["Task forse"] === id
+        e => String(e["Task forse"]).toLowerCase() === String(id).toLowerCase()
     ) : []
 }
 
@@ -69,14 +70,14 @@ export async function getMinutes() {
 export async function getMinute(id) {
     return id ? find(
         await getMinutes(),
-        e => e["Id"] === id
+        e => `${e["Task forse"]}-${String(e["Id"]).toLowerCase()}` === String(id).toLowerCase()
     ) || {} : {}
 }
 
 export async function getMinutesByTaskForse(id) {
     return id ? filter(
         await getMinutes(),
-        e => e["Task forse"] === id
+        e => String(e["Task forse"]).toLowerCase() === String(id).toLowerCase()
     ) : []
 }
 
@@ -87,14 +88,14 @@ export async function getResources() {
 export async function getResource(id) {
     return id ? find(
         await getResources(),
-        e => e["Id"] === id
+        e => `${e["Task forse"]}-${String(e["Id"]).toLowerCase()}` === String(id).toLowerCase()
     ) || {} : {}
 }
 
 export async function getResourcesByTaskForse(id) {
     return id ? filter(
         await getResources(),
-        e => e["Task forse"] === id
+        e => String(e["Task forse"]).toLowerCase() === String(id).toLowerCase()
     ) : []
 }
 
@@ -139,8 +140,10 @@ function normalizeGSheetJSON(response) {
 
 }
 
-export const yyyy = dt => dt.getFullYear()
-export const mm = dt => dt.getMonth()+1
-export const dd = dt => dt.getDate()
+export const yyyy = dt => padStart((new Date(dt)).getFullYear(),4,0)
+export const mm = dt => padStart((new Date(dt)).getMonth()+1,2,0)
+export const dd = dt => padStart((new Date(dt)).getDate(),2,0)
 
 export const yyyymmdd = dt => `${yyyy(dt)}/${mm(dt)}/${dd(dt)}`
+export const ddmmyyyy = dt => `${dd(dt)}/${mm(dt)}/${yyyy(dt)}`
+export const mmddyyyy = dt => `${mm(dt)}/${dd(dt)}/${yyyy(dt)}`
