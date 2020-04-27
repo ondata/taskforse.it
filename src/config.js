@@ -16,7 +16,8 @@ const GSHEET_ID = "15LmCiYKg2cWzovAiqquhp_lYsaBSuGNau7suUkQddl8"
 const GSHEET_SHEET_META = 1
 const GSHEET_SHEET_TASKFORSES = 2
 const GSHEET_SHEET_MEMBERS = 3
-const GSHEET_SHEET_RESOURCES = 4
+const GSHEET_SHEET_MINUTES = 4
+const GSHEET_SHEET_RESOURCES = 5
 
 export const CONTAINER_MAXWIDTH = "sm"
 export const PRIMARY_COLOR = "#fd1d59"
@@ -57,6 +58,24 @@ export async function getMember(id) {
 export async function getMembersByTaskForse(id) {
     return id ? filter(
         await getMembers(),
+        e => e["Task forse"] === id
+    ) : []
+}
+
+export async function getMinutes() {
+    return normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_MINUTES)))
+}
+
+export async function getMinute(id) {
+    return id ? find(
+        await getMinutes(),
+        e => e["Id"] === id
+    ) || {} : {}
+}
+
+export async function getMinutesByTaskForse(id) {
+    return id ? filter(
+        await getMinutes(),
         e => e["Task forse"] === id
     ) : []
 }
@@ -119,3 +138,9 @@ function normalizeGSheetJSON(response) {
     )
 
 }
+
+export const yyyy = dt => dt.getFullYear()
+export const mm = dt => dt.getMonth()+1
+export const dd = dt => dt.getDate()
+
+export const yyyymmdd = dt => `${yyyy(dt)}/${mm(dt)}/${dd(dt)}`

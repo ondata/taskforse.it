@@ -6,12 +6,15 @@ import Link from 'next/link'
 import {
     map,
     isEmpty,
+    concat,
+    range,
 } from 'lodash'
 
 import {
     getTaskForse,
     getTaskForses,
     getMembersByTaskForse,
+    getMinutesByTaskForse,
     getResourcesByTaskForse,
 } from '../../config'
 
@@ -24,6 +27,7 @@ import {
 export default function Index({
     taskForse = {},
     members = [],
+    minutes = [],
     resources = [],
 }) {
 
@@ -51,17 +55,91 @@ export default function Index({
                         Membri
                     </Typography>
                     {
-                        isEmpty(members)
+                        isEmpty(members) && !taskForse["Numero membri"]
                         ?
-                        <Typography>N/A</Typography>
+                        <Typography>Nessun membro disponibile.</Typography>
                         :
                         <ul>
-                        {   
-                            map(members, d => (
-                                <li key={d["Id"]}>
-                                    <Link href="/members/[Id]" as={`/members/${d["Id"]}`}><a>{`${d["Nome"]} ${d["Cognome"]}`}</a></Link>
-                                </li>
-                            ))
+                        {
+                            map(
+                                concat(
+                                    members,
+                                    map(
+                                        range(
+                                            taskForse["Numero membri"]
+                                            ?
+                                            taskForse["Numero membri"] - members.length
+                                            :
+                                            0
+                                        ),
+                                        () => undefined
+                                    )
+                                ),
+                                (d,i) => {
+                                    if (!isEmpty(d)) {
+                                        return (
+                                            <li key={d["Id"]}>
+                                                <Link href="/members/[Id]" as={`/members/${d["Id"]}`}>
+                                                    <a>{`${d["Nome"]} ${d["Cognome"]}`}</a>
+                                                </Link>
+                                            </li>
+                                        )
+                                    } else {
+                                        return (
+                                            <li key={i}>
+                                                "N/A"
+                                            </li>
+                                        )
+                                    }
+                                }
+                            )
+                        }
+                        </ul>
+                    }
+                </Box>
+                <Box my={4}>
+                    <Typography variant="h2" style={{ fontWeight: "bold", textAlign: "center" }}>
+                        Verbali
+                    </Typography>
+                    {
+                        isEmpty(minutes) && !taskForse["Numero verbali"]
+                        ?
+                        <Typography>Nessun verbale disponibile.</Typography>
+                        :
+                        <ul>
+                        {
+                            map(
+                                concat(
+                                    minutes,
+                                    map(
+                                        range(
+                                            taskForse["Numero verbali"]
+                                            ?
+                                            taskForse["Numero verbali"] - minutes.length
+                                            :
+                                            0
+                                        ),
+                                        () => undefined
+                                    )
+                                ),
+                                (d,i) => {
+                                    if (!isEmpty(d)) {
+                                        return (
+                                            <li key={d["Id"]}>
+                                                <Link href="/minutes/[Id]" as={`/minutes/${d["Id"]}`}>
+                                                    <a>{`N. ${data["Numero"]}/${yyyy(data["Data di pubblicazione"])} del ${yyyymmdd(data["Data di pubblicazione"])}`}</a>
+                                                </Link>
+                                            </li>
+                                        )
+                                    } else {
+                                        return (
+                                            <li key={i}>
+                                                "N/A"
+                                            </li>
+                                        )
+                                    }
+                                }
+                            )
                         }
                         </ul>
                     }
@@ -73,7 +151,7 @@ export default function Index({
                     {
                         isEmpty(resources)
                         ?
-                        <Typography>N/A</Typography>
+                        <Typography>Nessuna risorsa disponibile.</Typography>
                         :
                         <ul>
                         {
@@ -97,6 +175,7 @@ export async function getStaticProps({ params }) {
         props: {
             taskForse: await getTaskForse(params["Id"]),
             members: await getMembersByTaskForse(params["Id"]),
+            minutes: await getMinutesByTaskForse(params["Id"]),
             resources: await getResourcesByTaskForse(params["Id"]),
         },
     }
