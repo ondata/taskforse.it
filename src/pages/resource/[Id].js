@@ -37,7 +37,7 @@ export default function Index({
         return (
             <Container maxWidth="xs">
                 <Box my={4}>
-                    <Typography variant="h1" style={{ fontWeight: "bold", textAlign: "center" }}>
+                    <Typography variant="h1">
                         {`${data["Titolo"] || "N/A"}`}
                     </Typography>
                 </Box>

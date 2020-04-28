@@ -39,7 +39,7 @@ export default function Index({
         return (
             <Container maxWidth="xs">
                 <Box my={4}>
-                    <Typography variant="h1" style={{ fontWeight: "bold", textAlign: "center" }}>
+                    <Typography variant="h1">
                         {`Verbale n. ${data["Numero"]}/${yyyy(data["Data di pubblicazione"])} del ${ddmmyyyy(data["Data di pubblicazione"])}`}
                     </Typography>
                 </Box>

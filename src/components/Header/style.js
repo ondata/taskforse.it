@@ -1,7 +1,7 @@
 export default theme => ({
     root: {
-        backgroundColor: "#fd1d59",
-        color: "white",
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.common.white,
         position: "relative",
         paddingTop: theme.spacing(2),
         marginBottom: theme.spacing(8),
@@ -14,12 +14,20 @@ export default theme => ({
             content: "''",
             width: 0,
             height: 0,
-            borderTop: `solid ${theme.spacing(8)}px #fd1d59`,
+            borderTop: `solid ${theme.spacing(8)}px ${theme.palette.primary.main}`,
             borderLeft: "solid 50vw transparent",
             borderRight: "solid 50vw transparent",
         },
     },
     title: {
-        fontWeight: "bold",
+        fontFamily: `"Montserrat", sans-serif`,
+        fontWeight: 900,
+        fontSize: `6.11rem`,
+        textTransform: `uppercase`,
     },
+    nav: {
+        fontFamily: `"PT Serif", serif`,
+        fontWeight: 400,
+        fontSize: `1.33rem`,
+    }
 })

@@ -1,0 +1,13 @@
+main {
+    padding-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+hr.MuiDivider-root {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+a {
+    text-decoration: none !important;
+}

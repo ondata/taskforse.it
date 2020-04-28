@@ -20,9 +20,6 @@ const GSHEET_SHEET_MEMBERS = 3
 const GSHEET_SHEET_MINUTES = 4
 const GSHEET_SHEET_RESOURCES = 5
 
-export const CONTAINER_MAXWIDTH = "sm"
-export const PRIMARY_COLOR = "#fd1d59"
-
 const api = setup({
     baseURL: `${GSHEET_PREFIX}/${GSHEET_ID}`,
     cache: {

@@ -19,9 +19,14 @@ export default class MyDocument extends Document {
                         content={theme.palette.primary.main}
                     />
 
-                    <link
+                    {/*<link
                         rel="stylesheet"
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+                    />*/}
+
+                    <link
+                        rel="stylesheet"
+                        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;900&family=PT+Serif:ital@0;1&display=swap"
                     />
 
                 </Head>
