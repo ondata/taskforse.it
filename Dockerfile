@@ -10,9 +10,7 @@ RUN npm install
 # Copying source files
 COPY src public ./
 
-# Building app
-RUN npm run build
-
+# Expose default port
 EXPOSE 3000
 
 # Running the app
