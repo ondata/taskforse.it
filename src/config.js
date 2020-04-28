@@ -30,6 +30,8 @@ const api = setup({
     },
 })
 
+export const normalizeId = id => String(id).toLowerCase()
+
 export async function getMeta() {
     return normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_META)))
 }
@@ -41,9 +43,12 @@ export async function getTaskForses() {
 export async function getTaskForse(id) {
     return id ? find(
         await getTaskForses(),
-        e => String(e["Id"]).toLowerCase() === String(id).toLowerCase()
+        e => getTaskForseId(e) === normalizeId(id)
     ) || {} : {}
 }
+
+export const getTaskForseId = taskForse => normalizeId(taskForse["Id"])
+export const getTaskForseUri = taskForse => `/api/task-forse/${getTaskForseId(taskForse)}`
 
 export async function getMembers() {
     return normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_MEMBERS)))
@@ -52,14 +57,17 @@ export async function getMembers() {
 export async function getMember(id) {
     return id ? find(
         await getMembers(),
-        e => String(e["Id"]).toLowerCase() === String(id).toLowerCase()
+        e => getMemberId(e) === normalizeId(id)
     ) || {} : {}
 }
+
+export const getMemberId = member => normalizeId(member["Id"])
+export const getMemberUri = member => `/api/member/${getMemberId(member)}`
 
 export async function getMembersByTaskForse(id) {
     return id ? filter(
         await getMembers(),
-        e => String(e["Task forse"]).toLowerCase() === String(id).toLowerCase()
+        e => normalizeId(e["Task forse"]) === normalizeId(id)
     ) : []
 }
 
@@ -70,14 +78,17 @@ export async function getMinutes() {
 export async function getMinute(id) {
     return id ? find(
         await getMinutes(),
-        e => `${e["Task forse"]}-${String(e["Id"]).toLowerCase()}` === String(id).toLowerCase()
+        e => getMinuteId(e) === normalizeId(id)
     ) || {} : {}
 }
+
+export const getMinuteId = minute => normalizeId(`${minute["Task forse"]}-${minute["Id"]}`)
+export const getMinuteUri = minute => `/api/minute/${getMinuteId(minute)}`
 
 export async function getMinutesByTaskForse(id) {
     return id ? filter(
         await getMinutes(),
-        e => String(e["Task forse"]).toLowerCase() === String(id).toLowerCase()
+        e => normalizeId(e["Task forse"]) === normalizeId(id)
     ) : []
 }
 
@@ -88,14 +99,16 @@ export async function getResources() {
 export async function getResource(id) {
     return id ? find(
         await getResources(),
-        e => `${e["Task forse"]}-${String(e["Id"]).toLowerCase()}` === String(id).toLowerCase()
+        e => getResourceId(e) === normalizeId(id)
     ) || {} : {}
 }
+export const getResourceId = resource => normalizeId(`${resource["Task forse"]}-${resource["Id"]}`)
+export const getResourceUri = resource => `/api/resource/${getResourceId(resource)}`
 
 export async function getResourcesByTaskForse(id) {
     return id ? filter(
         await getResources(),
-        e => String(e["Task forse"]).toLowerCase() === String(id).toLowerCase()
+        e => normalizeId(e["Task forse"]) === normalizeId(id)
     ) : []
 }
 
