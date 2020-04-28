@@ -1,5 +1,5 @@
 import { isEmpty, map } from 'lodash'
-import { getResources, getResourceUri } from '../../../config'
+import { getResources, getResourceApiUri } from '../../../config'
 
 export default async (req, res) => {
     const resources = await getResources()
@@ -9,7 +9,7 @@ export default async (req, res) => {
         return res.status(200).json(
             map(
                 resources,
-                resource => ({ ...resource, _url: getResourceUri(resource) })
+                resource => ({ ...resource, _url: getResourceApiUri(resource) })
             )
         )
     }

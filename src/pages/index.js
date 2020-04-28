@@ -8,6 +8,8 @@ import {
 
 import {
     getTaskForses,
+    getTaskForseId,
+    getTaskForseUri,
     CONTAINER_MAXWIDTH,
 } from '../config'
 
@@ -31,8 +33,8 @@ export default function Index({ data }) {
                 <ul>
                 {
                     map(data, d => (
-                        <li key={d["Id"]}>
-                            <Link href="/task-forses/[Id]" as={`/task-forses/${d["Id"]}`}><a>{d["Nome"]}</a></Link>
+                        <li key={getTaskForseId(d)}>
+                            <Link href="/task-forse/[Id]" as={getTaskForseUri(d)}><a>{d["Nome"]}</a></Link>
                         </li>
                     ))
                 }

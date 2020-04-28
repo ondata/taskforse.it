@@ -12,10 +12,17 @@ import {
 
 import {
     getTaskForse,
+    getTaskForseId,
     getTaskForses,
     getMembersByTaskForse,
+    getMemberId,
+    getMemberUri,
     getMinutesByTaskForse,
+    getMinuteId,
+    getMinuteUri,
     getResourcesByTaskForse,
+    getResourceId,
+    getResourceUri,
     yyyy,
     ddmmyyyy,
 } from '../../config'
@@ -80,8 +87,8 @@ export default function Index({
                                 (d,i) => {
                                     if (!isEmpty(d)) {
                                         return (
-                                            <li key={d["Id"]}>
-                                                <Link href="/members/[Id]" as={`/members/${String(d["Id"]).toLowerCase()}`}>
+                                            <li key={getMemberId(d)}>
+                                                <Link href="/member/[Id]" as={getMemberUri(d)}>
                                                     <a>{`${d["Nome"]} ${d["Cognome"]}`}</a>
                                                 </Link>
                                             </li>
@@ -127,8 +134,8 @@ export default function Index({
                                 (d,i) => {
                                     if (!isEmpty(d)) {
                                         return (
-                                            <li key={`${d["Task forse"]}-${String(d["Id"]).toLowerCase()}`}>
-                                                <Link href="/minutes/[Id]" as={`/minutes/${d["Task forse"]}-${String(d["Id"]).toLowerCase()}`}>
+                                            <li key={getMinuteId(id)}>
+                                                <Link href="/minute/[Id]" as={getMinuteUri(d)}>
                                                     <a>{`${d["Numero"]}/${yyyy(d["Data di pubblicazione"])} del ${ddmmyyyy(d["Data di pubblicazione"])}`}</a>
                                                 </Link>
                                             </li>
@@ -158,8 +165,8 @@ export default function Index({
                         <ul>
                         {
                             map(resources, d => (
-                                <li key={`${d["Task forse"]}-${String(d["Id"]).toLowerCase()}`}>
-                                    <Link href="/resources/[Id]" as={`/resources/${d["Task forse"]}-${String(d["Id"]).toLowerCase()}`}><a>{d["Titolo"]}</a></Link>
+                                <li key={getResourceId(d)}>
+                                    <Link href="/resource/[Id]" as={getResourceUri(d)}><a>{d["Titolo"]}</a></Link>
                                 </li>
                             ))
                         }
@@ -187,7 +194,7 @@ export async function getStaticPaths() {
     return {
         paths: map(
             await getTaskForses(),
-            e => ({ params: { Id: String(e["Id"]).toLowerCase() } })
+            taskForse => ({ params: { Id: getTaskForseId(taskForse) } })
         ),
         fallback: true,
     }

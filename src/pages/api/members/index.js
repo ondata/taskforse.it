@@ -1,5 +1,5 @@
 import { isEmpty, map } from 'lodash'
-import { getMembers, getMemberUri } from '../../../config'
+import { getMembers, getMemberApiUri } from '../../../config'
 
 export default async (req, res) => {
     const members = await getMembers()
@@ -9,7 +9,7 @@ export default async (req, res) => {
         return res.status(200).json(
             map(
                 members,
-                member => ({ ...member, _url: getMemberUri(member) })
+                member => ({ ...member, _url: getMemberApiUri(member) })
             )
         )
     }

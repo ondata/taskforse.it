@@ -7,8 +7,9 @@ import {
 } from 'lodash'
 
 import {
-    getResource,
-    getResources,
+    getMember,
+    getMemberId,
+    getMembers,
 } from '../../config'
 
 import {
@@ -37,19 +38,18 @@ export default function Index({
             <Container maxWidth="xs">
                 <Box my={4}>
                     <Typography variant="h1" style={{ fontWeight: "bold", textAlign: "center" }}>
-                        {`${data["Titolo"] || "N/A"}`}
+                        {`${data["Nome"] || "N/A"} ${data["Cognome"] || "N/A"}`}
                     </Typography>
                 </Box>
             </Container>
         )
-
     }
 }
 
 export async function getStaticProps({ params }) {
     return {
         props: {
-            data: await getResource(params["Id"])
+            data: await getMember(params["Id"])
         },
     }
 }
@@ -57,8 +57,8 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
     return {
         paths: map(
-            await getResources(),
-            e => ({ params: { Id: `${e["Task forse"]}-${String(e["Id"]).toLowerCase()}` } })
+            await getMembers(),
+            member => ({ params: { Id: getMemberId(member) } })
         ),
         fallback: true,
     }

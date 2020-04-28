@@ -1,5 +1,5 @@
 import { isEmpty, map } from 'lodash'
-import { getTaskForses, getTaskForseUri } from '../../../config'
+import { getTaskForses, getTaskForseApiUri } from '../../../config'
 
 export default async (req, res) => {
     const taskForses = await getTaskForses()
@@ -9,7 +9,7 @@ export default async (req, res) => {
         return res.status(200).json(
             map(
                 taskForses,
-                taskForse => ({ ...taskForse, _url: getTaskForseUri(taskForse) })
+                taskForse => ({ ...taskForse, _url: getTaskForseApiUri(taskForse) })
             )
         )
     }

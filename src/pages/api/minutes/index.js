@@ -1,5 +1,5 @@
 import { isEmpty, map } from 'lodash'
-import { getMinutes, getMinuteUri } from '../../../config'
+import { getMinutes, getMinuteApiUri } from '../../../config'
 
 export default async (req, res) => {
     const minutes = await getMinutes()
@@ -9,7 +9,7 @@ export default async (req, res) => {
         return res.status(200).json(
             map(
                 minutes,
-                minute => ({ ...minute, _url: getMinuteUri(minute) })
+                minute => ({ ...minute, _url: getMinuteApiUri(minute) })
             )
         )
     }

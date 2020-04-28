@@ -2,13 +2,13 @@ import { isEmpty, map } from 'lodash'
 
 import {
     getTaskForse,
-    getTaskForseUri,
+    getTaskForseApiUri,
     getMembersByTaskForse,
-    getMemberUri,
+    getMemberApiUri,
     getMinutesByTaskForse,
-    getMinuteUri,
+    getMinuteApiUri,
     getResourcesByTaskForse,
-    getResourceUri,
+    getResourceApiUri,
 } from '../../../config'
 
 export default async ({ query }, res) => {
@@ -17,7 +17,7 @@ export default async ({ query }, res) => {
         if (isEmpty(taskForse)) {
             return res.status(404).json({})
         } else {
-            return res.status(200).json({ ...taskForse, _url: getTaskForseUri(taskForse) })
+            return res.status(200).json({ ...taskForse, _url: getTaskForseApiUri(taskForse) })
         }
     } else {
         switch (query["Id"][1]) {
@@ -25,21 +25,21 @@ export default async ({ query }, res) => {
                 return res.status(200).json(
                     map(
                         await getMembersByTaskForse(query["Id"][0]),
-                        member => ({ ...member, _url: getMemberUri(member) })
+                        member => ({ ...member, _url: getMemberApiUri(member) })
                     )
                 )
             case "minutes":
                 return res.status(200).json(
                     map(
                         await getMinutesByTaskForse(query["Id"][0]),
-                        minute => ({ ...minute, _url: getMinuteUri(minute) })
+                        minute => ({ ...minute, _url: getMinuteApiUri(minute) })
                     )
                 )
             case "resources":
                 return res.status(200).json(
                     map(
                         await getResourcesByTaskForse(query["Id"][0]),
-                        resource => ({ ...resource, _url: getResourceUri(resource) })
+                        resource => ({ ...resource, _url: getResourceApiUri(resource) })
                     )
                 )
             default:

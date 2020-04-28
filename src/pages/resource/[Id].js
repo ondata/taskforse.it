@@ -7,10 +7,9 @@ import {
 } from 'lodash'
 
 import {
-    getMinute,
-    getMinutes,
-    yyyy,
-    ddmmyyyy,
+    getResource,
+    getResourceId,
+    getResources,
 } from '../../config'
 
 import {
@@ -39,7 +38,7 @@ export default function Index({
             <Container maxWidth="xs">
                 <Box my={4}>
                     <Typography variant="h1" style={{ fontWeight: "bold", textAlign: "center" }}>
-                        {`Verbale n. ${data["Numero"]}/${yyyy(data["Data di pubblicazione"])} del ${ddmmyyyy(data["Data di pubblicazione"])}`}
+                        {`${data["Titolo"] || "N/A"}`}
                     </Typography>
                 </Box>
             </Container>
@@ -51,7 +50,7 @@ export default function Index({
 export async function getStaticProps({ params }) {
     return {
         props: {
-            data: await getMinute(params["Id"])
+            data: await getResource(params["Id"])
         },
     }
 }
@@ -59,8 +58,8 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
     return {
         paths: map(
-            await getMinutes(),
-            e => ({ params: { Id: `${e["Task forse"]}-${String(e["Id"]).toLowerCase()}` } })
+            await getResources(),
+            resource => ({ params: { Id: getResourceId(resource) } })
         ),
         fallback: true,
     }

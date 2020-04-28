@@ -7,8 +7,11 @@ import {
 } from 'lodash'
 
 import {
-    getMember,
-    getMembers,
+    getMinute,
+    getMinuteId,
+    getMinutes,
+    yyyy,
+    ddmmyyyy,
 } from '../../config'
 
 import {
@@ -37,18 +40,19 @@ export default function Index({
             <Container maxWidth="xs">
                 <Box my={4}>
                     <Typography variant="h1" style={{ fontWeight: "bold", textAlign: "center" }}>
-                        {`${data["Nome"] || "N/A"} ${data["Cognome"] || "N/A"}`}
+                        {`Verbale n. ${data["Numero"]}/${yyyy(data["Data di pubblicazione"])} del ${ddmmyyyy(data["Data di pubblicazione"])}`}
                     </Typography>
                 </Box>
             </Container>
         )
+
     }
 }
 
 export async function getStaticProps({ params }) {
     return {
         props: {
-            data: await getMember(params["Id"])
+            data: await getMinute(params["Id"])
         },
     }
 }
@@ -56,8 +60,8 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
     return {
         paths: map(
-            await getMembers(),
-            e => ({ params: { Id: `${String(e["Id"]).toLowerCase()}` } })
+            await getMinutes(),
+            minute => ({ params: { Id: getMinuteId(minute) } })
         ),
         fallback: true,
     }

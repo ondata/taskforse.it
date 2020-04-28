@@ -48,7 +48,8 @@ export async function getTaskForse(id) {
 }
 
 export const getTaskForseId = taskForse => normalizeId(taskForse["Id"])
-export const getTaskForseUri = taskForse => `/api/task-forse/${getTaskForseId(taskForse)}`
+export const getTaskForseUri = taskForse => `/task-forse/${getTaskForseId(taskForse)}`
+export const getTaskForseApiUri = taskForse => `/api${getTaskForseUri(taskForse)}`
 
 export async function getMembers() {
     return normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_MEMBERS)))
@@ -62,7 +63,8 @@ export async function getMember(id) {
 }
 
 export const getMemberId = member => normalizeId(member["Id"])
-export const getMemberUri = member => `/api/member/${getMemberId(member)}`
+export const getMemberUri = member => `/member/${getMemberId(member)}`
+export const getMemberApiUri = member => `/api${getMemberUri(member)}`
 
 export async function getMembersByTaskForse(id) {
     return id ? filter(
@@ -83,7 +85,8 @@ export async function getMinute(id) {
 }
 
 export const getMinuteId = minute => normalizeId(`${minute["Task forse"]}-${minute["Id"]}`)
-export const getMinuteUri = minute => `/api/minute/${getMinuteId(minute)}`
+export const getMinuteUri = minute => `/minute/${getMinuteId(minute)}`
+export const getMinuteApiUri = minute => `/api${getMinuteUri(minute)}`
 
 export async function getMinutesByTaskForse(id) {
     return id ? filter(
@@ -103,7 +106,8 @@ export async function getResource(id) {
     ) || {} : {}
 }
 export const getResourceId = resource => normalizeId(`${resource["Task forse"]}-${resource["Id"]}`)
-export const getResourceUri = resource => `/api/resource/${getResourceId(resource)}`
+export const getResourceUri = resource => `/resource/${getResourceId(resource)}`
+export const getResourceApiUri = resource => `/api${getResourceUri(resource)}`
 
 export async function getResourcesByTaskForse(id) {
     return id ? filter(
