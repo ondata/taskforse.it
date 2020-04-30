@@ -11,14 +11,13 @@ const useStyles = makeStyles(style)
 
 export default ({
     primary = "",
-    secondary = "",
     icon = "",
 }) => {
     const classes = useStyles()
     return (
         <ListItem button>
             { !!icon && <ListItemIcon className={classes.icon}>{icon}</ListItemIcon> }
-            <ListItemText primary={primary} secondary={secondary}></ListItemText>
+            <ListItemText primary={primary}></ListItemText>
         </ListItem>
     )
 }

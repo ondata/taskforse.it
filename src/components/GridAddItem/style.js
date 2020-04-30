@@ -1,12 +1,17 @@
 export default theme => ({
-    root: {
+    root: topsecret => ({
         display: 'flex',
         backgroundColor: theme.palette.grey[100],
         cursor: `pointer`,
         position: `relative`,
-        border: `${theme.spacing(1)}px dashed ${theme.palette.grey[400]}`,
+        borderWidth: theme.spacing(1),
+        borderStyle: `dashed`,
+        borderColor: topsecret ? "transparent" : theme.palette.grey[400],
+        '&>*': {
+            opacity: 0.1,
+        },
         '&::after': {
-            content: `"+"`,
+            content: topsecret ? `""` : `"+"`,
             position: "absolute",
             display: "block",
             width: "100%",
@@ -14,13 +19,28 @@ export default theme => ({
             color: theme.palette.grey[400],
             fontSize: "6rem",
             fontWeight: "bold",
-        }
-    },
+        },
+        '&:hover': {
+            borderColor: theme.palette.grey[400],
+            '&::after': {
+                content: `"+"`,
+            },
+        },
+    }),
     details: {
         display: 'flex',
         flexDirection: 'column',
     },
     content: {
         flex: '1 0 auto',
+    },
+    cover: {
+        width: 151,
+    },
+    topsecret: {
+        backgroundColor: theme.palette.grey[900],
+        color: theme.palette.grey[900],
+        paddingLeft: theme.spacing(.5),
+        paddingRight: theme.spacing(.5),
     },
 })

@@ -20,6 +20,12 @@ const GSHEET_SHEET_MEMBERS = 3
 const GSHEET_SHEET_MINUTES = 4
 const GSHEET_SHEET_RESOURCES = 5
 
+export const GFORM_URL_TASKFORSE = "https://docs.google.com/forms/d/e/1FAIpQLScDhV6oWfWaBhKiyALhFNq85W8O2_BI2I9ujUsXH2H8tM6Gwg/viewform"
+export const GFORM_URL_MEMBER = "https://docs.google.com/forms/d/e/1FAIpQLSeZ8hkfUPPYEIHacQPjh-t0dGtp4aAkNoT7PNx1ZFcvsr1wCA/viewform"
+export const GFORM_URL_MINUTE = "https://docs.google.com/forms/d/e/1FAIpQLSegY4ktGyitg9VVn-K3UP-enzNxvThqz6cxjpUA6NWAqzMcLQ/viewform"
+export const GFORM_URL_RESOURCE = "https://docs.google.com/forms/d/e/1FAIpQLSegY4ktGyitg9VVn-K3UP-enzNxvThqz6cxjpUA6NWAqzMcLQ/viewform"
+export const GFORM_URL_ISSUE = "https://docs.google.com/forms/d/e/1FAIpQLSfLU1vs2k0sm3zPlLpvSpn_txb0oYHftbaDCUGS0UXm6BbyeA/viewform"
+
 const api = setup({
     baseURL: `${GSHEET_PREFIX}/${GSHEET_ID}`,
     cache: {

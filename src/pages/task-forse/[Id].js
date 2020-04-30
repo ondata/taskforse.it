@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
@@ -26,7 +24,10 @@ import {
     getResourceUri,
     yyyy,
     ddmmyyyy,
-    mmddyyyy,
+
+    GFORM_URL_MEMBER,
+    GFORM_URL_MINUTE,
+    GFORM_URL_RESOURCE,
 } from '../../config'
 
 import {
@@ -34,17 +35,19 @@ import {
     Typography,
     List,
     Grid,
+    Divider,
+    useMediaQuery,
 } from '@material-ui/core'
 
-import {
-    InsertDriveFile,
-} from '@material-ui/icons'
+import { useTheme } from '@material-ui/core/styles'
 
 import {
     Header,
     Footer,
     GridItem,
     IconListItem,
+    IconListAddItem,
+    TextListItem,
     GridAddItem,
 } from '../../components'
 
@@ -56,6 +59,8 @@ export default function Index({
 }) {
 
     const router = useRouter()
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
     if (router.isFallback) {
 
@@ -118,10 +123,10 @@ export default function Index({
                                                 map(
                                                     range(
                                                         taskForse["Numero membri"]
-                                                            ?
-                                                            taskForse["Numero membri"] - members.length
-                                                            :
-                                                            0
+                                                        ?
+                                                        taskForse["Numero membri"] - members.length
+                                                        :
+                                                        0
                                                     ),
                                                     () => undefined
                                                 )
@@ -144,8 +149,8 @@ export default function Index({
                                                 } else {
                                                     return (
                                                         <Grid item xs={12} sm={6} md={3} key={i}>
-                                                            <a target="_blank" href="#">
-                                                                <GridAddItem />
+                                                            <a target="_blank" href={GFORM_URL_MEMBER}>
+                                                                <GridAddItem topsecret />
                                                             </a>
                                                         </Grid>
                                                     )
@@ -153,6 +158,11 @@ export default function Index({
                                             }
                                         )
                                     }
+                                    <Grid item xs={12} sm={6} md={3}>
+                                        <a target="_blank" href={GFORM_URL_MEMBER}>
+                                            <GridAddItem />
+                                        </a>
+                                    </Grid>
                                 </Grid>
                         }
 
@@ -160,7 +170,7 @@ export default function Index({
 
                     <Container maxWidth="sm">
 
-                        <Grid container spacing={2}>
+                        <Grid container spacing={matches ? 1 : 8}>
 
                             <Grid item xs={12} sm={6}>
                                 
@@ -184,60 +194,83 @@ export default function Index({
                                                     map(
                                                         range(
                                                             taskForse["Numero verbali"]
-                                                                ?
-                                                                taskForse["Numero verbali"] - minutes.length
-                                                                :
-                                                                0
+                                                            ?
+                                                            taskForse["Numero verbali"] - minutes.length
+                                                            :
+                                                            0
                                                         ),
                                                         () => undefined
                                                     )
                                                 ),
-                                                (d, i) => {
-                                                    if (!isEmpty(d)) {
+                                                (minute, i) => {
+                                                    if (!isEmpty(minute)) {
                                                         return (
-                                                            <Link href="/minute/[Id]" as={getMinuteUri(d)} key={getMinuteId(d)}>
-                                                                <a>
+                                                            //<Link href="/minute/[Id]" as={getMinuteUri(minute)} key={getMinuteId(minute)}>
+                                                                //<a>
+                                                                <a key={getMinuteId(minute)} target="_blank" href={minute["URL"] || "#"}>
                                                                     <TextListItem
-                                                                        keyText={mmddyyyy(d["Data di pubblicazione"])}
-                                                                        valueText={`${d["Numero"]}/${yyyy(d["Data di pubblicazione"])}`}
+                                                                        keyText={ddmmyyyy(minute["Data di pubblicazione"])}
+                                                                        valueText={`${minute["Numero"]}/${yyyy(minute["Data di pubblicazione"])}`}
+                                                                        color="secondary"
+                                                                        variant="subtitle1"
                                                                     />
+                                                                    <Divider variant="middle" />
                                                                 </a>
-                                                            </Link>
+                                                            //</Link>
                                                         )
                                                     } else {
                                                         return (
-                                                            <li key={i}>
-                                                                "N/A"
-                                                            </li>
+                                                            <a key={i} target="_blank" href={GFORM_URL_MINUTE}>
+                                                                <TextListItem
+                                                                    color="secondary"
+                                                                    variant="subtitle1"
+                                                                    topsecret
+                                                                />
+                                                                <Divider variant="middle" />
+                                                            </a>
                                                         )
                                                     }
                                                 }
                                             )
                                         }
+                                        <a target="_blank" href={GFORM_URL_MINUTE}>
+                                            <TextListItem
+                                                color="secondary"
+                                                variant="subtitle1"
+                                                topsecret
+                                            />
+                                        </a>
                                     </List>
                                 }
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <Typography variant="h2">
                                     Risorse
-                            </Typography>
+                                </Typography>
                                 {
                                     isEmpty(resources)
                                     ?
                                     <Typography>Nessuna risorsa aggiuntiva disponibile.</Typography>
                                     :
-                                    <List>
+                                    <List dense disablePadding>
+                                        <a target="_blank" href={GFORM_URL_RESOURCE}>
+                                            <IconListAddItem primary="+ Segnala una risorsa" />
+                                            <Divider variant="middle" />
+                                        </a>
                                         {
-                                            map(resources, d => (
-                                                <a target="_blank" href={d["Pagina web"]} key={getResourceId(d)}>
+                                            map(resources, resource => (
+                                                <a target="_blank" href={resource["Pagina web"]} key={getResourceId(resource)}>
                                                     <IconListItem
-                                                        icon={<InsertDriveFile />}
-                                                        primary={d["Titolo"]}
-                                                        secondary={d["Categoria"]}
+                                                        primary={resource["Titolo"]}
+                                                        secondary={resource["Categoria"]}
                                                     />
+                                                    <Divider variant="middle" />
                                                 </a>
                                             ))
                                         }
+                                        <a target="_blank" href={GFORM_URL_RESOURCE}>
+                                            <IconListAddItem primary="+ Segnala una risorsa" />
+                                        </a>
                                     </List>
                                 }
                             </Grid>

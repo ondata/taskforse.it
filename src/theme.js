@@ -29,6 +29,7 @@ export default createMuiTheme({
             fontFamily: `"Montserrat", sans-serif`,
             fontWeight: 700,
             fontSize: `1.33rem`,
+            marginTop: `3rem`,
         },
         subtitle1: { // subtitle
             fontFamily: `"PT Serif", serif`,

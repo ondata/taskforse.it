@@ -1,19 +1,17 @@
-import React from 'react'
-
 import Link from 'next/link'
 
 import {
     map,
     filter,
+    sumBy,
 } from 'lodash'
 
 import {
     getTaskForses,
-    getMembers,
-    getMinutes,
-    getResources,
     getTaskForseId,
     getTaskForseUri,
+
+    GFORM_URL_TASKFORSE,
 } from '../config'
 
 import {
@@ -25,27 +23,27 @@ import {
 
 import {
     ArrowForward,
+    Add,
 } from '@material-ui/icons'
 
 import {
     Header,
     Footer,
     IconListItem,
+    IconListAddItem,
     TextListItem,
 } from '../components'
 
 export default function Index({
     taskForses,
-    nOfMembers,
-    nOfMinutes,
-    nOfResources,
 }) {
+
     return (
         <>
             <Header
                 suptitle="nel dubbio ..."
                 title={<>Task<br/>Forse</>}
-                subtitle="by @ondatait"
+                subtitle={<>by @<a target="_blank" href="https://twitter.com/ondatait">ondatait</a></>}
             />
             <main>
                 <Container maxWidth="sm">
@@ -65,30 +63,53 @@ export default function Index({
                             }
                         />
                         <TextListItem
-                            keyText="Componenti nominati"
-                            valueText={nOfMembers}
+                            keyText="Membri conosciuti"
+                            valueText={`${sumBy(taskForses, "Numero membri conosciuti")} / ${sumBy(taskForses, "Numero membri")}`}
+                        />
+                        <TextListItem
+                            keyText="&nbsp;-&nbsp;Donne"
+                            valueText={sumBy(taskForses, tf => +tf["Numero donne"] || 0)}
+                        />
+                        <TextListItem
+                            keyText="&nbsp;-&nbsp;Uomini"
+                            valueText={sumBy(taskForses, tf => +tf["Numero uomini"] || 0)}
                         />
                         <TextListItem
                             keyText="Risorse pubbliche"
-                            valueText={nOfMinutes+nOfResources}
+                            valueText={
+                                sumBy(
+                                    taskForses,
+                                    tf => +tf["Numero verbali pubblicati"] || 0
+                                )
+                                +
+                                sumBy(
+                                    taskForses,
+                                    tf => +tf["Numero risorse disponibili"] || 0
+                                )
+                            }
                         />
                     </List>
 
                     <Divider />
 
                     <Typography gutterBottom>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ornare eu nunc in euismod. Pellentesque finibus elit ac urna venenatis egestas. In fermentum, orci quis suscipit efficitur, augue turpis porta ex, eu mattis lacus neque at tellus. Nunc eget molestie eros, eget sodales nulla. Phasellus vel odio vel libero tincidunt vehicula. Phasellus condimentum posuere accumsan. In hac habitasse platea dictumst. Proin sagittis sapien ut libero hendrerit mattis. Vivamus nulla orci, consectetur et elit vel, varius pulvinar enim. Quisque vestibulum venenatis magna ac placerat. Curabitur lobortis maximus ante, non laoreet enim facilisis vitae. Ut pulvinar turpis eget neque hendrerit, et mollis eros vestibulum. Nullam id elementum massa.
+                        Da quando in Italia è stato dichiarato lo stato di emergenza nazionale il 30 gennaio 2020 sono state istituite numerose task force e una serie di comitati, gruppi di lavoro, tavoli tecnici a livello nazionale e locale.
                     </Typography>
                     <Typography gutterBottom>
-                        Sed nec quam ut ex ultrices luctus. Sed ut volutpat ligula, eu semper orci. Donec semper sem sed efficitur consequat. Morbi tempor ultrices congue. Etiam tincidunt, nisi in tincidunt blandit, ante ligula congue ligula, in porttitor elit augue at sem. Ut dapibus eu dui nec semper. Pellentesque scelerisque nulla turpis, eu pharetra odio luctus eget. Sed ac rhoncus enim, vitae feugiat quam. Nunc commodo, mi a dictum hendrerit, dui metus lobortis dolor, vitae cursus purus turpis eu elit.
+                        Le informazioni su chi fa parte di questi gruppi, su che obiettivi si pongono e su quali risultati producono sono ancora incerte e disperse in molte pagine web difficilmente ricercabili.
                     </Typography>
                     <Typography gutterBottom>
-                        Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.
+                        Con il progetto Task Forse proviamo a raccogliere e organizzare in un unico luogo tutte queste informazioni per metterle a disposizione di tutti. Dai una mano anche tu!
                     </Typography>
 
                     <Typography variant="h2">
-                        Tutte le task force
+                        Tutte le task forse
                     </Typography>
+
+                </Container>
+
+                <Container maxWidth="md">
+
                     <List>
                         {
                             map(taskForses, d => (
@@ -99,11 +120,19 @@ export default function Index({
                                             secondary={d["Descrizione"]}
                                             icon={<ArrowForward />}
                                         />
+                                        <Divider variant="inset" />
                                     </span>
                                 </Link>
                             ))
                         }
+                        <a target="_blank" href={GFORM_URL_TASKFORSE}>
+                            <IconListAddItem
+                                primary="Segnala una task force"
+                                icon={<Add />}
+                            />
+                        </a>
                     </List>
+                    
                 </Container>
             </main>
             <Footer />
@@ -115,9 +144,6 @@ export async function getServerSideProps() {
     return {
         props: {
             taskForses: await getTaskForses(),
-            nOfMembers: (await getMembers()).length,
-            nOfMinutes: (await getMinutes()).length,
-            nOfResources: (await getResources()).length,
         },
     }
 }
