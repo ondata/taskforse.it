@@ -11,7 +11,7 @@ import {
     padStart,
 } from 'lodash'
 
-const GSHEET_PREFIX = "https://spreadsheets.google.com/feeds/cells"
+const GSHEET_PREFIX = `${process.env.CACHE_URL || "https://spreadsheets.google.com"}/feeds/cells`
 const GSHEET_SUFFIX = "public/full?alt=json"
 const GSHEET_ID = "15LmCiYKg2cWzovAiqquhp_lYsaBSuGNau7suUkQddl8"
 const GSHEET_SHEET_META = 1
@@ -19,6 +19,8 @@ const GSHEET_SHEET_TASKFORSES = 2
 const GSHEET_SHEET_MEMBERS = 3
 const GSHEET_SHEET_MINUTES = 4
 const GSHEET_SHEET_RESOURCES = 5
+
+const getGSheetUrl = sheet => `/${sheet}/${GSHEET_SUFFIX}`
 
 export const GFORM_URL_TASKFORSE = "https://docs.google.com/forms/d/e/1FAIpQLScDhV6oWfWaBhKiyALhFNq85W8O2_BI2I9ujUsXH2H8tM6Gwg/viewform"
 export const GFORM_URL_MEMBER = "https://docs.google.com/forms/d/e/1FAIpQLSeZ8hkfUPPYEIHacQPjh-t0dGtp4aAkNoT7PNx1ZFcvsr1wCA/viewform"
@@ -118,8 +120,6 @@ export async function getResourcesByTaskForse(id) {
         e => normalizeId(e["Task forse"]) === normalizeId(id)
     ) : []
 }
-
-const getGSheetUrl = sheet => `/${sheet}/${GSHEET_SUFFIX}`
 
 function normalizeGSheetJSON(response) {
 

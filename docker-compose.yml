@@ -4,5 +4,10 @@ services:
     app:
         build: .
         image: taskforseapp:dev
+        environment:
+            - CACHE_URL=${CACHE_URL:-http://cache}
         ports:
             - ${PROD_PORT:-8080}:3000
+    cache:
+        build: cache/
+        image: taskforsecache:dev
