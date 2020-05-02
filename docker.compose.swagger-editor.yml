@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+    
+    oas-editor:
+        image: swaggerapi/swagger-editor
+        environment:
+            - URL=/api/taskforse.json
+        ports:
+            - 8081:8080
+        volumes:
+            - ./oas:/usr/share/nginx/html/api
