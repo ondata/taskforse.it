@@ -24,7 +24,10 @@ export default () => {
                     All data are released under a <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/deed.it">Creative Commons Attribution License</a> on <a target="_blank" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQt1uRYAC3L4TDAw8N2wME5u9F1pcAWmoSo53-0dtlIIMACenEVB9P1nRNANwoAmLlBvf2ymZsZFd-_/pub?output=tsv">Google Sheet</a>
                 </Typography>
                 <Typography className={classes.footer}>
-                    This website is developed and maintained with &hearts; by <a target="_blank" href="https://github.com/jenkin">jenkin</a> using <a target="_blank" href="https://nextjs.org/">NextJS</a>
+                    This website is developed and maintained with &hearts; by <a target="_blank" href="https://github.com/jenkin">jenkin</a> using <a target="_blank" href="https://nextjs.org/">NextJS</a> and <a target="_blank" href="https://material-ui.com/">Material-UI</a>
+                </Typography>
+                <Typography className={classes.footer}>
+                    Design by <a target="_blank" href="https://www.linkedin.com/in/jacoposolmi/">japi</a>
                 </Typography>
                 <Typography className={classes.footer}>
                     Source code is available under a <a target="_blank" href="https://opensource.org/licenses/MIT">MIT License</a> on <a target="_blank" href="https://github.com/ondata/taskforse.it">Github</a>

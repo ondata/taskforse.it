@@ -5,6 +5,7 @@ import IconListAddItem from './IconListAddItem'
 import TextListItem from './TextListItem'
 import GridItem from './GridItem'
 import GridAddItem from './GridAddItem'
+import CountBadge from './CountBadge'
 
 export {
     Header,
@@ -14,4 +15,5 @@ export {
     TextListItem,
     GridItem,
     GridAddItem,
+    CountBadge,
 }

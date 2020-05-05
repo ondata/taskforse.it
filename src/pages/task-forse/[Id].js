@@ -8,9 +8,9 @@ import axios from 'axios'
 import {
     map,
     isEmpty,
-    concat,
     range,
     orderBy,
+    max,
 } from 'lodash'
 
 import {
@@ -30,8 +30,14 @@ import {
     ddmmyyyy,
 
     GFORM_URL_MEMBER,
+    GFORM_FIELDS_MEMBER,
     GFORM_URL_MINUTE,
+    GFROM_FIELDS_MINUTE,
     GFORM_URL_RESOURCE,
+    GFROM_FIELDS_RESOURCE,
+    getGFormUrl,
+
+    AVATARS,
 } from '../../config'
 
 import {
@@ -46,6 +52,12 @@ import {
 import { useTheme } from '@material-ui/core/styles'
 
 import {
+    Group,
+    Description,
+    InsertLink,
+} from '@material-ui/icons'
+
+import {
     Header,
     Footer,
     GridItem,
@@ -53,6 +65,7 @@ import {
     IconListAddItem,
     TextListItem,
     GridAddItem,
+    CountBadge,
 } from '../../components'
 
 export default function Index({
@@ -106,24 +119,15 @@ export default function Index({
                 <main>
                     <Container maxWidth="sm">
 
-                        <Typography variant="h1" gutterBottom>
-                            {`${taskForse["Nome"] || "N/A"}`}
-                        </Typography>
+                        <Typography variant="h1" gutterBottom>{`${taskForse["Nome"] || "N/A"}`}</Typography>
+                        <Typography gutterBottom>{taskForse["Descrizione"]}</Typography>
 
-                        <Typography gutterBottom>
-                            {taskForse["Descrizione"]}
-                        </Typography>
-
-                        <Typography variant="h2" gutterBottom>
-                            Mission
-                        </Typography>
-
-                        <Typography gutterBottom>
-                            {taskForse["Mission"]}
-                        </Typography>
+                        <Typography variant="h2" gutterBottom>Mission</Typography>
+                        <Typography gutterBottom>{taskForse["Mission"]}</Typography>
 
                         <Typography variant="h2" gutterBottom>
                             Membri
+                            { !isEmpty(members) && <CountBadge count={members.length} color="secondary"><Group /></CountBadge> }
                         </Typography>
 
                     </Container>
@@ -132,62 +136,76 @@ export default function Index({
 
                         {
                             isEmpty(members) && !taskForse["Numero membri"]
-                                ?
-                                <Typography>Nessun membro conosciuto.</Typography>
-                                :
-                                <Grid container spacing={2}>
-                                    {
-                                        map(
-                                            concat(
-                                                orderBy(
-                                                    members,
-                                                    ["Ruolo","Cognome"],
-                                                    ["desc","asc"]
-                                                ),
-                                                map(
-                                                    range(
-                                                        taskForse["Numero membri"]
-                                                        ?
-                                                        taskForse["Numero membri"] - members.length
-                                                        :
-                                                        0
-                                                    ),
-                                                    () => undefined
-                                                )
-                                            ),
-                                            (d, i) => {
-                                                if (!isEmpty(d)) {
-                                                    return (
-                                                        <Grid item xs={12} sm={6} md={3} key={getMemberId(d)}>
-                                                            <Link href="/member/[Id]" as={getMemberUri(d)}>
-                                                                <span>
-                                                                    <GridItem
-                                                                        title={`${d["Nome"]} ${d["Cognome"]}`}
-                                                                        subtitle={d["Ruolo"]}
-                                                                        image={d["Foto"] || (d["Genere"].toLowerCase() === 'm' ? "/unknown-man.png" : "/unknown-woman.png")}
-                                                                    />
-                                                                </span>
-                                                            </Link>
-                                                        </Grid>
-                                                    )
-                                                } else {
-                                                    return (
-                                                        <Grid item xs={12} sm={6} md={3} key={i}>
-                                                            <a target="_blank" href={GFORM_URL_MEMBER}>
-                                                                <GridAddItem topsecret />
-                                                            </a>
-                                                        </Grid>
-                                                    )
-                                                }
-                                            }
+                            ?
+                            <Typography>Nessun membro conosciuto.</Typography>
+                            :
+                            <Grid container spacing={2}>
+
+                                { // Known members
+                                    map(
+                                        orderBy(
+                                            members,
+                                            ["Ruolo","Cognome"],
+                                            ["desc","asc"]
+                                        ),
+                                        member => (
+                                            <Grid item xs={12} sm={6} md={3} key={getMemberId(member)}>
+                                                <Link href="/member/[Id]" as={getMemberUri(member)}>
+                                                    <span>
+                                                        <GridItem
+                                                            title={`${member["Nome"]} ${member["Cognome"]}`}
+                                                            subtitle={member["Ruolo"]}
+                                                            image={member["Foto"] || AVATARS[member["Genere"].toLowerCase()]}
+                                                        />
+                                                    </span>
+                                                </Link>
+                                            </Grid>
                                         )
-                                    }
+                                    )
+                                }
+
+                                { // Unknown members
+                                    map(
+                                        range(max([0, taskForse["Numero membri"] - members.length])),
+                                        i => (
+                                            <Grid item xs={12} sm={6} md={3} key={i}>
+                                                <a
+                                                    target="_blank"
+                                                    href={
+                                                        getGFormUrl(
+                                                            GFORM_URL_MEMBER,
+                                                            { "Task forse": taskForse["Id"] },
+                                                            GFORM_FIELDS_MEMBER
+                                                        )
+                                                    }
+                                                >
+                                                    <GridAddItem topsecret />
+                                                </a>
+                                            </Grid>
+                                        )
+                                    )
+                                }
+
+                                { // New members
+                                    !taskForse["Numero membri"]
+                                    &&
                                     <Grid item xs={12} sm={6} md={3}>
-                                        <a target="_blank" href={GFORM_URL_MEMBER}>
+                                        <a
+                                            target="_blank"
+                                            href={
+                                                getGFormUrl(
+                                                    GFORM_URL_MEMBER,
+                                                    { "Task forse": taskForse["Id"] },
+                                                    GFORM_FIELDS_MEMBER
+                                                )
+                                            }
+                                        >
                                             <GridAddItem />
                                         </a>
                                     </Grid>
-                                </Grid>
+                                }
+
+                            </Grid>
                         }
 
                     </Container>
@@ -200,103 +218,136 @@ export default function Index({
                                 
                                 <Typography variant="h2" gutterBottom>
                                     Verbali
+                                    { !isEmpty(minutes) && <CountBadge count={minutes.length} color="secondary"><Description /></CountBadge> }
                                 </Typography>
+
                                 {
-                                    isEmpty(minutes) && !taskForse["Numero verbali"]
-                                    ?
+                                    isEmpty(minutes)
+                                    &&
                                     <Typography>Nessun verbale disponibile.</Typography>
-                                    :
-                                    <List>
-                                        {
-                                            map(
-                                                concat(
-                                                    orderBy(
-                                                        minutes,
-                                                        "Data di pubblicazione",
-                                                        "desc"
-                                                    ),
-                                                    map(
-                                                        range(
-                                                            taskForse["Numero verbali"]
-                                                            ?
-                                                            taskForse["Numero verbali"] - minutes.length
-                                                            :
-                                                            0
-                                                        ),
-                                                        () => undefined
-                                                    )
-                                                ),
-                                                (minute, i) => {
-                                                    if (!isEmpty(minute)) {
-                                                        return (
-                                                            //<Link href="/minute/[Id]" as={getMinuteUri(minute)} key={getMinuteId(minute)}>
-                                                                //<a>
-                                                                <a key={getMinuteId(minute)} target="_blank" href={minute["URL"] || "#"}>
-                                                                    <TextListItem
-                                                                        keyText={ddmmyyyy(minute["Data di pubblicazione"])}
-                                                                        valueText={`${minute["Numero"]}/${yyyy(minute["Data di pubblicazione"])}`}
-                                                                        color="secondary"
-                                                                        variant="subtitle1"
-                                                                    />
-                                                                    <Divider variant="middle" />
-                                                                </a>
-                                                            //</Link>
-                                                        )
-                                                    } else {
-                                                        return (
-                                                            <a key={i} target="_blank" href={GFORM_URL_MINUTE}>
-                                                                <TextListItem
-                                                                    color="secondary"
-                                                                    variant="subtitle1"
-                                                                    topsecret
-                                                                />
-                                                                <Divider variant="middle" />
-                                                            </a>
+                                }
+
+                                <List>
+                                    
+                                    { // Known minutes
+                                        map(
+                                            orderBy(
+                                                minutes,
+                                                "Data di pubblicazione",
+                                                "desc"
+                                            ),
+                                            minute => (
+                                                //<Link href="/minute/[Id]" as={getMinuteUri(minute)} key={getMinuteId(minute)}>
+                                                    //<a>
+                                                    <a key={getMinuteId(minute)} target="_blank" href={minute["URL"] || "#"}>
+                                                        <TextListItem
+                                                            keyText={ddmmyyyy(minute["Data di pubblicazione"])}
+                                                            valueText={`${minute["Numero"]}/${yyyy(minute["Data di pubblicazione"])}`}
+                                                            color="secondary"
+                                                            variant="subtitle1"
+                                                        />
+                                                        <Divider variant="middle" />
+                                                    </a>
+                                                //</Link>
+                                            )
+                                        )
+                                    }
+
+                                    { // Unknown minutes
+                                        map(
+                                            range(max([0,taskForse["Numero verbali"] - minutes.length])),
+                                            i => (
+                                                <a
+                                                    key={i}
+                                                    target="_blank"
+                                                    href={
+                                                        getGFormUrl(
+                                                            GFORM_URL_MINUTE,
+                                                            { "Task forse": taskForse["Id"] },
+                                                            GFROM_FIELDS_MINUTE
                                                         )
                                                     }
-                                                }
+                                                >
+                                                    <TextListItem
+                                                        color="secondary"
+                                                        variant="subtitle1"
+                                                        topsecret
+                                                    />
+                                                    <Divider variant="middle" />
+                                                </a>
                                             )
-                                        }
-                                        <a target="_blank" href={GFORM_URL_MINUTE}>
+                                        )
+                                    }
+
+                                    { // New minutes
+                                        !taskForse["Numero verbali"]
+                                        &&
+                                        <a
+                                            target="_blank"
+                                            href={
+                                                getGFormUrl(
+                                                    GFORM_URL_MINUTE,
+                                                    { "Task forse": taskForse["Id"] },
+                                                    GFROM_FIELDS_MINUTE
+                                                )
+                                            }
+                                        >
                                             <TextListItem
                                                 color="secondary"
                                                 variant="subtitle1"
                                                 topsecret
                                             />
                                         </a>
-                                    </List>
-                                }
+                                    }
+
+                                </List>
+
                             </Grid>
+
                             <Grid item xs={12} sm={6}>
+                                
                                 <Typography variant="h2">
                                     Risorse
+                                    { !isEmpty(resources) && <CountBadge count={resources.length} color="secondary"><InsertLink /></CountBadge> }
                                 </Typography>
+
                                 {
                                     isEmpty(resources)
                                     ?
                                     <Typography>Nessuna risorsa aggiuntiva disponibile.</Typography>
                                     :
                                     <List dense disablePadding>
-                                        <a target="_blank" href={GFORM_URL_RESOURCE}>
-                                            <IconListAddItem primary="+ Segnala una risorsa" />
-                                            <Divider variant="middle" />
-                                        </a>
                                         {
-                                            map(resources, resource => (
-                                                <a target="_blank" href={resource["Pagina web"]} key={getResourceId(resource)}>
-                                                    <IconListItem
-                                                        primary={resource["Titolo"]}
-                                                        secondary={resource["Categoria"]}
-                                                    />
-                                                    <Divider variant="middle" />
-                                                </a>
-                                            ))
+                                            map(
+                                                resources,
+                                                resource => (
+                                                    <a target="_blank" href={resource["Pagina web"]} key={getResourceId(resource)}>
+                                                        <IconListItem
+                                                            primary={resource["Titolo"]}
+                                                            secondary={resource["Categoria"]}
+                                                        />
+                                                        <Divider variant="middle" />
+                                                    </a>
+                                                )
+                                            )
                                         }
-                                        <a target="_blank" href={GFORM_URL_RESOURCE}>
+
+                                        <a
+                                            target="_blank"
+                                            href={
+                                                getGFormUrl(
+                                                    GFORM_URL_RESOURCE,
+                                                    { "Task forse": taskForse["Id"] },
+                                                    GFROM_FIELDS_RESOURCE
+                                                )
+                                            }
+                                        >
                                             <IconListAddItem primary="+ Segnala una risorsa" />
                                         </a>
+
                                     </List>
                                 }
+
                             </Grid>
 
                         </Grid>
