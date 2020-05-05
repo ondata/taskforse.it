@@ -1,5 +1,9 @@
+import { useState, useEffect } from 'react'
+
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+
+import axios from 'axios'
 
 import {
     map,
@@ -53,14 +57,34 @@ import {
 
 export default function Index({
     taskForse = {},
-    members = [],
-    minutes = [],
-    resources = [],
+    staticMembers = [],
+    staticMinutes = [],
+    staticResources = [],
 }) {
 
     const router = useRouter()
-    const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.down('sm'));
+    const theme = useTheme()
+    const matches = useMediaQuery(theme.breakpoints.down('sm'))
+
+    const [members, setMembers] = useState(staticMembers)
+    const [minutes, setMinutes] = useState(staticMinutes)
+    const [resources, setResources] = useState(staticResources)
+
+    useEffect(() => {
+
+        axios
+            .get(`/api/task-forse/${taskForse["Id"]}/members`)
+            .then(response => setMembers(response.data))
+
+        axios
+            .get(`/api/task-forse/${taskForse["Id"]}/minutes`)
+            .then(response => setMinutes(response.data))
+        
+        axios
+            .get(`/api/task-forse/${taskForse["Id"]}/resources`)
+            .then(response => setResources(response.data))
+
+    }, [taskForse])
 
     if (router.isFallback) {
 

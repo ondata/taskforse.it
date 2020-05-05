@@ -1,4 +1,4 @@
-import { setup } from 'axios-cache-adapter'
+import axios from 'axios'
 
 import {
     map,
@@ -11,7 +11,7 @@ import {
     padStart,
 } from 'lodash'
 
-const GSHEET_PREFIX = `${process.env.CACHE_URL || "https://spreadsheets.google.com"}/feeds/cells`
+const GSHEET_PREFIX = `${process.env.PROXY_URL || "https://spreadsheets.google.com"}/feeds/cells`
 const GSHEET_SUFFIX = "public/full?alt=json"
 const GSHEET_ID = "15LmCiYKg2cWzovAiqquhp_lYsaBSuGNau7suUkQddl8"
 const GSHEET_SHEET_META = 1
@@ -22,17 +22,16 @@ const GSHEET_SHEET_RESOURCES = 5
 
 const getGSheetUrl = sheet => `/${sheet}/${GSHEET_SUFFIX}`
 
-export const GFORM_URL_TASKFORSE = "https://docs.google.com/forms/d/e/1FAIpQLScDhV6oWfWaBhKiyALhFNq85W8O2_BI2I9ujUsXH2H8tM6Gwg/viewform"
-export const GFORM_URL_MEMBER = "https://docs.google.com/forms/d/e/1FAIpQLSeZ8hkfUPPYEIHacQPjh-t0dGtp4aAkNoT7PNx1ZFcvsr1wCA/viewform"
-export const GFORM_URL_MINUTE = "https://docs.google.com/forms/d/e/1FAIpQLSegY4ktGyitg9VVn-K3UP-enzNxvThqz6cxjpUA6NWAqzMcLQ/viewform"
-export const GFORM_URL_RESOURCE = "https://docs.google.com/forms/d/e/1FAIpQLSegY4ktGyitg9VVn-K3UP-enzNxvThqz6cxjpUA6NWAqzMcLQ/viewform"
-export const GFORM_URL_ISSUE = "https://docs.google.com/forms/d/e/1FAIpQLSfLU1vs2k0sm3zPlLpvSpn_txb0oYHftbaDCUGS0UXm6BbyeA/viewform"
+const GFORM_PREFIX = "https://docs.google.com/forms/d/e"
+const GFORM_SUFFIX = "viewform"
+export const GFORM_URL_TASKFORSE = `${GFORM_PREFIX}/1FAIpQLScDhV6oWfWaBhKiyALhFNq85W8O2_BI2I9ujUsXH2H8tM6Gwg/${GFORM_SUFFIX}`
+export const GFORM_URL_MEMBER = `${GFORM_PREFIX}/1FAIpQLSeZ8hkfUPPYEIHacQPjh-t0dGtp4aAkNoT7PNx1ZFcvsr1wCA/${GFORM_SUFFIX}`
+export const GFORM_URL_MINUTE = `${GFORM_PREFIX}/1FAIpQLSegY4ktGyitg9VVn-K3UP-enzNxvThqz6cxjpUA6NWAqzMcLQ/${GFORM_SUFFIX}`
+export const GFORM_URL_RESOURCE = `${GFORM_PREFIX}/1FAIpQLSegY4ktGyitg9VVn-K3UP-enzNxvThqz6cxjpUA6NWAqzMcLQ/${GFORM_SUFFIX}`
+export const GFORM_URL_ISSUE = `${GFORM_PREFIX}/1FAIpQLSfLU1vs2k0sm3zPlLpvSpn_txb0oYHftbaDCUGS0UXm6BbyeA/${GFORM_SUFFIX}`
 
-const api = setup({
+const api = axios.create({
     baseURL: `${GSHEET_PREFIX}/${GSHEET_ID}`,
-    cache: {
-        maxAge: 15 * 60 * 1000,
-    },
 })
 
 export const normalizeId = id => String(id).toLowerCase()

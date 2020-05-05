@@ -25,8 +25,7 @@
     "dependencies": {
         "@material-ui/core": "^4.9.11",
         "@material-ui/icons": "^4.9.1",
-        "axios": "^0.18.1",
-        "axios-cache-adapter": "^2.5.0",
+        "axios": "^0.19",
         "clsx": "^1.1.0",
         "lodash-es": "^4.17.15",
         "next": "^9.3.5",

@@ -6,7 +6,7 @@ services:
         build: .
         image: taskforseapp:dev
         environment:
-            - CACHE_URL=${CACHE_URL:-http://proxy/db}
+            - PROXY_URL=${PROXY_URL:-http://proxy/db}
 
     proxy:
         build: proxy/

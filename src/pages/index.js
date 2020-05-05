@@ -1,4 +1,8 @@
+import { useState, useEffect } from 'react'
+
 import Link from 'next/link'
+
+import axios from 'axios'
 
 import {
     map,
@@ -35,8 +39,16 @@ import {
 } from '../components'
 
 export default function Index({
-    taskForses,
+    staticTaskForses = [],
 }) {
+
+    const [taskForses, setTaskForses] = useState(staticTaskForses)
+
+    useEffect(() => {
+        axios
+            .get(`/api/task-forses`)
+            .then(response => setTaskForses(response.data))
+    }, [])
 
     return (
         <>
@@ -140,7 +152,7 @@ export default function Index({
     )
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
     return {
         props: {
             taskForses: await getTaskForses(),
