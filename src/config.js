@@ -26,7 +26,7 @@ const getGSheetUrl = sheet => `/${sheet}/${GSHEET_SUFFIX}`
 const GFORM_PREFIX = "https://docs.google.com/forms/d/e"
 const GFORM_SUFFIX = "viewform"
 export const GFORM_URL_TASKFORSE = `${GFORM_PREFIX}/1FAIpQLScDhV6oWfWaBhKiyALhFNq85W8O2_BI2I9ujUsXH2H8tM6Gwg/${GFORM_SUFFIX}`
-export const GFORM_FIELDS_TASKFORSE = { "Id":"", "Nome":"1362059608", "Sito web":"1088344564", "Data di istituzione":"", "Data inizio lavori":"", "Data fine lavori":"", "Istituzione di riferimento":"243852443", "Descrizione":"1284557778" }
+export const GFORM_FIELDS_TASKFORSE = { "Id":"834271559", "Nome":"1362059608", "Sito web":"1088344564", "Data di istituzione":"", "Data inizio lavori":"", "Data fine lavori":"", "Istituzione di riferimento":"243852443", "Descrizione":"1284557778" }
 export const GFORM_URL_MEMBER = `${GFORM_PREFIX}/1FAIpQLSeZ8hkfUPPYEIHacQPjh-t0dGtp4aAkNoT7PNx1ZFcvsr1wCA/${GFORM_SUFFIX}`
 export const GFORM_FIELDS_MEMBER = { "Task forse":"1362059608", "Nome":"731821199", "Cognome":"959101228", "Genere":"1661250724", "Foto":"744634925", "Istituto di affiliazione":"572162091", "Anno di nascita":"413223009", "Luogo di nascita":"601210153", "Professione":"1971278820", "Ruolo":"2043565287" }
 export const GFORM_URL_MINUTE = `${GFORM_PREFIX}/1FAIpQLSegY4ktGyitg9VVn-K3UP-enzNxvThqz6cxjpUA6NWAqzMcLQ/${GFORM_SUFFIX}`
@@ -35,7 +35,7 @@ export const GFORM_URL_RESOURCE = `${GFORM_PREFIX}/1FAIpQLSegY4ktGyitg9VVn-K3UP-
 export const GFROM_FIELDS_RESOURCE = { "Task forse":"1362059608" }
 export const GFORM_URL_ISSUE = `${GFORM_PREFIX}/1FAIpQLSfLU1vs2k0sm3zPlLpvSpn_txb0oYHftbaDCUGS0UXm6BbyeA/${GFORM_SUFFIX}`
 
-export const getGFormUrl = (form, params, fields) => `${form}?${join(map(params, (v,k) => `${encodeURIComponent(`entry.${fields[k]}`)}=${encodeURIComponent(v)}`),"&")}`
+export const getGFormUrl = (form, params, fields) => `${form}?${join(map(params, (v,k) => `${encodeURIComponent(`entry.${fields[k]}`)}=${encodeURIComponent(v||"")}`),"&")}`
 
 export const AVATARS = { "f": "/unknown-woman.png", "m": "/unknown-man.png" }
 

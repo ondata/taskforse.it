@@ -1,17 +1,20 @@
 export default theme => ({
     root: {
-        display: 'flex',
+        display: `flex`,
         backgroundColor: theme.palette.grey[100],
         cursor: `pointer`,
     },
     details: {
-        display: 'flex',
-        flexDirection: 'column',
+        display: `flex`,
+        flexDirection: `column`,
     },
     content: {
-        flex: '1 0 auto',
+        flex: `1 0 auto`,
+        whiteSpace: `nowrap`,
     },
     cover: {
-        width: 151,
+        width: `33%`,
+        flexShrink: 0,
+        flexGrow: 0,
     },
 })

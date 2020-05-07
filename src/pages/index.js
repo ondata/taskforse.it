@@ -16,6 +16,7 @@ import {
     getTaskForseUri,
 
     GFORM_URL_TASKFORSE,
+    getGFormUrl,
 } from '../config'
 
 import {
@@ -23,6 +24,7 @@ import {
     Typography,
     List,
     Divider,
+    Button,
 } from '@material-ui/core'
 
 import {
@@ -114,8 +116,27 @@ export default function Index({
                         Con il progetto Task Forse proviamo a raccogliere e organizzare in un unico luogo tutte queste informazioni per metterle a disposizione di tutti. Dai una mano anche tu!
                     </Typography>
 
-                    <Typography variant="h2">
-                        Tutte le task forse
+                    <Typography>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            disableElevation
+                            startIcon={<Add />}
+                            fullWidth
+                            target="_blank"
+                            href={getGFormUrl(GFORM_URL_TASKFORSE)}
+                        >
+                            Segnala una nuova task force
+                        </Button>
+                    </Typography>
+
+                    <Typography variant="h2" gutterBottom>
+                        Tutte le task force
+                    </Typography>
+
+                    <Typography gutterBottom>
+                        Al momento sappiamo che {taskForses.length} task force sono attive con lo specifico mandato di gestire l'emergenza COVID-19.
+                        {` `}Se hai informazioni su task force non presenti in questo elenco, <a target="_blank" href={getGFormUrl(GFORM_URL_TASKFORSE)}>mandaci tutti i dettagli</a>.
                     </Typography>
 
                 </Container>

@@ -29,6 +29,8 @@ import {
     yyyy,
     ddmmyyyy,
 
+    GFORM_URL_TASKFORSE,
+    GFORM_FIELDS_TASKFORSE,
     GFORM_URL_MEMBER,
     GFORM_FIELDS_MEMBER,
     GFORM_URL_MINUTE,
@@ -47,6 +49,7 @@ import {
     Grid,
     Divider,
     useMediaQuery,
+    Button,
 } from '@material-ui/core'
 
 import { useTheme } from '@material-ui/core/styles'
@@ -55,6 +58,7 @@ import {
     Group,
     Description,
     InsertLink,
+    Edit,
 } from '@material-ui/icons'
 
 import {
@@ -122,12 +126,40 @@ export default function Index({
                         <Typography variant="h1" gutterBottom>{`${taskForse["Nome"] || "N/A"}`}</Typography>
                         <Typography gutterBottom>{taskForse["Descrizione"]}</Typography>
 
+                        <Typography>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                disableElevation
+                                startIcon={<Edit />}
+                                fullWidth
+                                target="_blank"
+                                href={
+                                    getGFormUrl(
+                                        GFORM_URL_TASKFORSE,
+                                        taskForse,
+                                        GFORM_FIELDS_TASKFORSE
+                                    )
+                                }
+                            >
+                                Suggerisci una modifica
+                            </Button>
+                        </Typography>
+
                         <Typography variant="h2" gutterBottom>Mission</Typography>
                         <Typography gutterBottom>{taskForse["Mission"]}</Typography>
 
                         <Typography variant="h2" gutterBottom>
                             Membri
                             { !isEmpty(members) && <CountBadge count={members.length} color="secondary"><Group /></CountBadge> }
+                        </Typography>
+                        <Typography gutterBottom>
+                            { !!taskForse["Numero membri"] && isEmpty(members) && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${members.length > 1 ? "i" : "e"}, ma non ne conosciamo ancora nessuno.` }
+                            { !!taskForse["Numero membri"] && members.length >= taskForse["Numero membri"] && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${members.length > 1 ? "i" : "e"}, li trovi elencati tutti qui.` }
+                            { !!taskForse["Numero membri"] && members.length < taskForse["Numero membri"] && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${members.length > 1 ? "i" : "e"}, ma ne conosciamo ancora solo ${members.length}.` }
+                            { !taskForse["Numero membri"] && isEmpty(members) && `Nessun membro conosciuto.` }
+                            { !taskForse["Numero membri"] && !isEmpty(members) && `Questa task force è composta da ${members.length} membr${members.length > 1 ? "i" : "e"}.` }
+                            {` `}Se hai informazioni su membri della task force non presenti in questo elenco, <a target="_blank" href={getGFormUrl(GFORM_URL_MEMBER, { "Task forse": taskForse["Id"] }, GFORM_FIELDS_MEMBER)}>mandaci tutti i dettagli</a>.
                         </Typography>
 
                     </Container>
@@ -150,15 +182,15 @@ export default function Index({
                                         ),
                                         member => (
                                             <Grid item xs={12} sm={6} md={3} key={getMemberId(member)}>
-                                                <Link href="/member/[Id]" as={getMemberUri(member)}>
-                                                    <span>
+                                                {/*<Link href="/member/[Id]" as={getMemberUri(member)}>*/}
+                                                    {/*<span>*/}
                                                         <GridItem
-                                                            title={`${member["Nome"]} ${member["Cognome"]}`}
+                                                            title={<>{member["Nome"]}<br/>{member["Cognome"]}</>}
                                                             subtitle={member["Ruolo"]}
                                                             image={member["Foto"] || AVATARS[member["Genere"].toLowerCase()]}
                                                         />
-                                                    </span>
-                                                </Link>
+                                                    {/*</span>*/}
+                                                {/*</Link>*/}
                                             </Grid>
                                         )
                                     )
@@ -220,12 +252,14 @@ export default function Index({
                                     Verbali
                                     { !isEmpty(minutes) && <CountBadge count={minutes.length} color="secondary"><Description /></CountBadge> }
                                 </Typography>
-
-                                {
-                                    isEmpty(minutes)
-                                    &&
-                                    <Typography>Nessun verbale disponibile.</Typography>
-                                }
+                                <Typography gutterBottom>
+                                    { !!taskForse["Numero verbali"] && isEmpty(minutes) && `Questa task force risulta aver prodotto e pubblicato ${taskForse["Numero verbali"]} verbal${minutes.length > 1 ? "i" : "e"}, ma non ne conosciamo ancora nessuno.` }
+                                    { !!taskForse["Numero verbali"] && minutes.length >= taskForse["Numero verbali"] && `Questa task force risulta aver prodotto e pubblicato ${taskForse["Numero verbali"]} verbal${minutes.length > 1 ? "i" : "e"}, li trovi elencati tutti qui.` }
+                                    { !!taskForse["Numero verbali"] && minutes.length < taskForse["Numero verbali"] && `Questa task force risulta aver prodotto e pubblicato ${taskForse["Numero verbali"]} verbal${minutes.length > 1 ? "i" : "e"}, ma ne conosciamo ancora solo ${minutes.length}.` }
+                                    { !taskForse["Numero verbali"] && isEmpty(minutes) && `Nessun verbale disponibile.` }
+                                    { !taskForse["Numero verbali"] && !isEmpty(minutes) && `Questa task force ha prodotto e pubblicato ${minutes.length} verbal${minutes.length > 1 ? "i" : "e"}.` }
+                                    {` `}Se hai informazioni su verbali prodotti e pubblicati dalla task force non presenti in questo elenco, <a target="_blank" href={getGFormUrl(GFORM_URL_MINUTE, { "Task forse": taskForse["Id"] }, GFROM_FIELDS_MINUTE)}>mandaci tutti i dettagli</a>.
+                                </Typography>
 
                                 <List>
                                     
@@ -238,7 +272,6 @@ export default function Index({
                                             ),
                                             minute => (
                                                 //<Link href="/minute/[Id]" as={getMinuteUri(minute)} key={getMinuteId(minute)}>
-                                                    //<a>
                                                     <a key={getMinuteId(minute)} target="_blank" href={minute["URL"] || "#"}>
                                                         <TextListItem
                                                             keyText={ddmmyyyy(minute["Data di pubblicazione"])}
@@ -311,42 +344,42 @@ export default function Index({
                                     { !isEmpty(resources) && <CountBadge count={resources.length} color="secondary"><InsertLink /></CountBadge> }
                                 </Typography>
 
-                                {
-                                    isEmpty(resources)
-                                    ?
-                                    <Typography>Nessuna risorsa aggiuntiva disponibile.</Typography>
-                                    :
-                                    <List dense disablePadding>
-                                        {
-                                            map(
-                                                resources,
-                                                resource => (
-                                                    <a target="_blank" href={resource["Pagina web"]} key={getResourceId(resource)}>
-                                                        <IconListItem
-                                                            primary={resource["Titolo"]}
-                                                            secondary={resource["Categoria"]}
-                                                        />
-                                                        <Divider variant="middle" />
-                                                    </a>
-                                                )
+                                <Typography gutterBottom>
+                                    { !isEmpty(resources) && `A questa task force ${resources.length > 1 ? "sono" : "è"} associat${resources.length > 1 ? "e" : "a"} ${resources.length} risors${resources.length > 1 ? "e" : "a"} aggiuntiv${resources.length > 1 ? "e" : "a"}.` }
+                                    { isEmpty(resources) && `Nessuna risorsa aggiuntiva disponibile.` }
+                                    {` `}Se hai informazioni su ulteriori risorse relative alla task force non presenti in questo elenco, <a target="_blank" href={getGFormUrl(GFORM_URL_RESOURCE, { "Task forse": taskForse["Id"] }, GFROM_FIELDS_RESOURCE)}>mandaci tutti i dettagli</a>.
+                                </Typography>
+
+                                <List dense disablePadding>
+                                    {
+                                        map(
+                                            resources,
+                                            resource => (
+                                                <a target="_blank" href={resource["Pagina web"]} key={getResourceId(resource)}>
+                                                    <IconListItem
+                                                        primary={resource["Titolo"]}
+                                                        secondary={resource["Categoria"]}
+                                                    />
+                                                    <Divider variant="middle" />
+                                                </a>
+                                            )
+                                        )
+                                    }
+
+                                    <a
+                                        target="_blank"
+                                        href={
+                                            getGFormUrl(
+                                                GFORM_URL_RESOURCE,
+                                                { "Task forse": taskForse["Id"] },
+                                                GFROM_FIELDS_RESOURCE
                                             )
                                         }
+                                    >
+                                        <IconListAddItem primary="+ Segnala una risorsa" />
+                                    </a>
 
-                                        <a
-                                            target="_blank"
-                                            href={
-                                                getGFormUrl(
-                                                    GFORM_URL_RESOURCE,
-                                                    { "Task forse": taskForse["Id"] },
-                                                    GFROM_FIELDS_RESOURCE
-                                                )
-                                            }
-                                        >
-                                            <IconListAddItem primary="+ Segnala una risorsa" />
-                                        </a>
-
-                                    </List>
-                                }
+                                </List>
 
                             </Grid>
 
