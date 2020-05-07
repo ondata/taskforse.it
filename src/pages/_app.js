@@ -4,7 +4,7 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import theme from '../theme'
 
-import './index.css'
+import '../styles/app.css'
 
 export default function MyApp(props) {
 
