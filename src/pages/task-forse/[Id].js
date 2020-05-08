@@ -183,13 +183,13 @@ export default function Index({
                                         member => (
                                             <Grid item xs={12} sm={6} md={3} key={getMemberId(member)}>
                                                 {/*<Link href="/member/[Id]" as={getMemberUri(member)}>*/}
-                                                    {/*<span>*/}
+                                                    {/*<a>*/}
                                                         <GridItem
                                                             title={<>{member["Nome"]}<br/>{member["Cognome"]}</>}
                                                             subtitle={member["Ruolo"]}
                                                             image={member["Foto"] || AVATARS[member["Genere"].toLowerCase()]}
                                                         />
-                                                    {/*</span>*/}
+                                                    {/*</a>*/}
                                                 {/*</Link>*/}
                                             </Grid>
                                         )

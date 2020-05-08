@@ -2,7 +2,6 @@ export default theme => ({
     root: {
         display: `flex`,
         backgroundColor: theme.palette.grey[100],
-        cursor: `pointer`,
     },
     details: {
         display: `flex`,
