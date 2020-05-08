@@ -10,6 +10,8 @@ import {
     zipObject,
     padStart,
     join,
+    includes,
+    split,
 } from 'lodash'
 
 const GSHEET_PREFIX = `${process.env.PROXY_URL || "https://spreadsheets.google.com"}/feeds/cells`
@@ -26,7 +28,7 @@ const getGSheetUrl = sheet => `/${sheet}/${GSHEET_SUFFIX}`
 const GFORM_PREFIX = "https://docs.google.com/forms/d/e"
 const GFORM_SUFFIX = "viewform"
 export const GFORM_URL_TASKFORSE = `${GFORM_PREFIX}/1FAIpQLScDhV6oWfWaBhKiyALhFNq85W8O2_BI2I9ujUsXH2H8tM6Gwg/${GFORM_SUFFIX}`
-export const GFORM_FIELDS_TASKFORSE = { "Id":"834271559", "Nome":"1362059608", "Sito web":"1088344564", "Data di istituzione":"", "Data inizio lavori":"", "Data fine lavori":"", "Istituzione di riferimento":"243852443", "Descrizione":"1284557778" }
+export const GFORM_FIELDS_TASKFORSE = { "Id":"834271559", "Nome":"1362059608", "Sito web":"1088344564", "Data di istituzione":"367732443", "Data inizio lavori":"600188309", "Data fine lavori":"1026929266", "Istituzione di riferimento":"243852443", "Descrizione":"1284557778" }
 export const GFORM_URL_MEMBER = `${GFORM_PREFIX}/1FAIpQLSeZ8hkfUPPYEIHacQPjh-t0dGtp4aAkNoT7PNx1ZFcvsr1wCA/${GFORM_SUFFIX}`
 export const GFORM_FIELDS_MEMBER = { "Task forse":"1362059608", "Nome":"731821199", "Cognome":"959101228", "Genere":"1661250724", "Foto":"744634925", "Istituto di affiliazione":"572162091", "Anno di nascita":"413223009", "Luogo di nascita":"601210153", "Professione":"1971278820", "Ruolo":"2043565287" }
 export const GFORM_URL_MINUTE = `${GFORM_PREFIX}/1FAIpQLSegY4ktGyitg9VVn-K3UP-enzNxvThqz6cxjpUA6NWAqzMcLQ/${GFORM_SUFFIX}`
@@ -56,7 +58,14 @@ export async function getTaskForses() {
 export async function getTaskForse(id) {
     return id ? find(
         await getTaskForses(),
-        e => getTaskForseId(e) === normalizeId(id)
+        taskForse => getTaskForseId(taskForse) === normalizeId(id)
+    ) || {} : {}
+}
+
+export function getTaskForseSync(id, taskForses) {
+    return id ? find(
+        taskForses,
+        taskForse => getTaskForseId(taskForse) === normalizeId(id)
     ) || {} : {}
 }
 
@@ -71,7 +80,7 @@ export async function getMembers() {
 export async function getMember(id) {
     return id ? find(
         await getMembers(),
-        e => getMemberId(e) === normalizeId(id)
+        member => getMemberId(member) === normalizeId(id)
     ) || {} : {}
 }
 
@@ -82,7 +91,14 @@ export const getMemberApiUri = member => `/api${getMemberUri(member)}`
 export async function getMembersByTaskForse(id) {
     return id ? filter(
         await getMembers(),
-        e => normalizeId(e["Task forse"]) === normalizeId(id)
+        member => includes(map(split(member["Task forses"], ","), normalizeId), normalizeId(id))
+    ) : []
+}
+
+export function getMembersByTaskForseSync(id, members) {
+    return id ? filter(
+        members,
+        member => includes(map(split(member["Task forses"], ","), normalizeId), normalizeId(id))
     ) : []
 }
 
@@ -104,7 +120,14 @@ export const getMinuteApiUri = minute => `/api${getMinuteUri(minute)}`
 export async function getMinutesByTaskForse(id) {
     return id ? filter(
         await getMinutes(),
-        e => normalizeId(e["Task forse"]) === normalizeId(id)
+        minute => normalizeId(minute["Task forse"]) === normalizeId(id)
+    ) : []
+}
+
+export function getMinutesByTaskForseSync(id, minutes) {
+    return id ? filter(
+        minutes,
+        minute => normalizeId(minute["Task forse"]) === normalizeId(id)
     ) : []
 }
 
@@ -125,7 +148,14 @@ export const getResourceApiUri = resource => `/api${getResourceUri(resource)}`
 export async function getResourcesByTaskForse(id) {
     return id ? filter(
         await getResources(),
-        e => normalizeId(e["Task forse"]) === normalizeId(id)
+        resource => normalizeId(resource["Task forse"]) === normalizeId(id)
+    ) : []
+}
+
+export function getResourcesByTaskForseSync(id, resources) {
+    return id ? filter(
+        resources,
+        resource => normalizeId(resource["Task forse"]) === normalizeId(id)
     ) : []
 }
 
