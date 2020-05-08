@@ -9,6 +9,7 @@ import {
     getMemberApiUri,
     getTaskForses,
     getTaskForseSync,
+    GSHEET_MULTIFIELDS_SEPARATOR,
 } from '../../../config'
 
 export default async (req, res) => {
@@ -23,7 +24,7 @@ export default async (req, res) => {
                 member => ({
                     ...member,
                     "Task forses": map(
-                        split(member["Task forses"], ","),
+                        split(member["Task forses"], GSHEET_MULTIFIELDS_SEPARATOR),
                         id => getTaskForseSync(id, taskForses)
                     ),
                     _url: getMemberApiUri(member)

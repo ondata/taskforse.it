@@ -15,13 +15,14 @@ import {
 } from 'lodash'
 
 const GSHEET_PREFIX = `${process.env.PROXY_URL || "https://spreadsheets.google.com"}/feeds/cells`
-const GSHEET_SUFFIX = "public/full?alt=json"
-const GSHEET_ID = "15LmCiYKg2cWzovAiqquhp_lYsaBSuGNau7suUkQddl8"
-const GSHEET_SHEET_META = 1
-const GSHEET_SHEET_TASKFORSES = 2
-const GSHEET_SHEET_MEMBERS = 3
-const GSHEET_SHEET_MINUTES = 4
-const GSHEET_SHEET_RESOURCES = 5
+const GSHEET_SUFFIX = `public/full?alt=json`
+const GSHEET_ID = `15LmCiYKg2cWzovAiqquhp_lYsaBSuGNau7suUkQddl8`
+export const GSHEET_SHEET_META = 1
+export const GSHEET_SHEET_TASKFORSES = 2
+export const GSHEET_SHEET_MEMBERS = 3
+export const GSHEET_SHEET_MINUTES = 4
+export const GSHEET_SHEET_RESOURCES = 5
+export const GSHEET_MULTIFIELDS_SEPARATOR = `;`
 
 const getGSheetUrl = sheet => `/${sheet}/${GSHEET_SUFFIX}`
 
@@ -91,14 +92,32 @@ export const getMemberApiUri = member => `/api${getMemberUri(member)}`
 export async function getMembersByTaskForse(id) {
     return id ? filter(
         await getMembers(),
-        member => includes(map(split(member["Task forses"], ","), normalizeId), normalizeId(id))
+        member => includes(
+            map(
+                split(
+                    member["Task forses"],
+                    GSHEET_MULTIFIELDS_SEPARATOR
+                ),
+                normalizeId
+            ),
+            normalizeId(id)
+        )
     ) : []
 }
 
 export function getMembersByTaskForseSync(id, members) {
     return id ? filter(
         members,
-        member => includes(map(split(member["Task forses"], ","), normalizeId), normalizeId(id))
+        member => includes(
+            map(
+                split(
+                    member["Task forses"],
+                    GSHEET_MULTIFIELDS_SEPARATOR
+                ),
+                normalizeId
+            ),
+            normalizeId(id)
+        )
     ) : []
 }
 
