@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 import {
     map,
@@ -17,7 +18,7 @@ import {
 } from '@material-ui/core'
 
 export default function Index({
-    data = {},
+    member = {},
 }) {
 
     const router = useRouter()
@@ -33,13 +34,23 @@ export default function Index({
     } else {
 
         return (
-            <Container maxWidth="xs">
-                <Box my={4}>
-                    <Typography variant="h1">
-                        {`${data["Nome"] || "N/A"} ${data["Cognome"] || "N/A"}`}
-                    </Typography>
-                </Box>
-            </Container>
+            <>
+                <NextSeo
+                    title={`${member["Nome"]} ${member["Cognome"]}`}
+                    //description={taskForse["Descrizione"]}
+                    openGraph={{
+                        title: `${member["Nome"]} ${member["Cognome"]} | Task Forse by @ondatait`,
+                        //description: taskForse["Descrizione"],
+                    }}
+                />
+                <Container maxWidth="xs">
+                    <Box my={4}>
+                        <Typography variant="h1">
+                            {`${member["Nome"] || "N/A"} ${member["Cognome"] || "N/A"}`}
+                        </Typography>
+                    </Box>
+                </Container>
+            </>
         )
     }
 }
@@ -47,7 +58,7 @@ export default function Index({
 export async function getStaticProps({ params }) {
     return {
         props: {
-            data: await getMember(params["Id"])
+            member: await getMember(params["Id"])
         },
     }
 }

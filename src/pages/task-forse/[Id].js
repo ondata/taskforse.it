@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { NextSeo } from 'next-seo'
 
 import axios from 'axios'
 
@@ -115,6 +116,14 @@ export default function Index({
 
         return (
             <>
+                <NextSeo
+                    title={taskForse["Nome"]}
+                    description={taskForse["Descrizione"]}
+                    openGraph={{
+                        title: `${taskForse["Nome"]} | Task Forse by @ondatait`,
+                        description: taskForse["Descrizione"],
+                    }}
+                />
                 <Header
                     title="Home"
                     href="/"
