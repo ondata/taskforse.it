@@ -22,7 +22,7 @@ export default theme => ({
     title: {
         fontFamily: `"Montserrat", sans-serif`,
         fontWeight: 900,
-        fontSize: `6.11rem`,
+        fontSize: `5.11rem`,
         textTransform: `uppercase`,
     },
     nav: {

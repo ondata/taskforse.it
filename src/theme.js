@@ -49,5 +49,12 @@ export default createMuiTheme({
                 marginBottom: `1rem`,
             },
         },
+        MuiListItemText: {
+            root: {
+                "& > .MuiListItemText-primary": {
+                    fontWeight: `700`,
+                }
+            },
+        },
     },
 })

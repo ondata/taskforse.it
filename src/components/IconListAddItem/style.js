@@ -2,8 +2,8 @@ export default theme => ({
     icon: {
         minWidth: `auto`,
         marginRight: theme.spacing(3),
-        border: `2px solid ${theme.palette.secondary.main}`,
-        color: theme.palette.secondary.main,
+        border: `2px solid ${theme.palette.primary.main}`,
+        color: theme.palette.primary.main,
         borderRadius: theme.spacing(.5),
     }
 })
