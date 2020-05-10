@@ -73,10 +73,10 @@ export default function Index({
 
                     <Grid container spacing={4} style={{marginBottom:"1rem",marginTop:"1rem"}}>
                         <Grid item xs={6}>
-                            <Counter count={taskForses.length} title="Task force istituite" />
+                            <Counter count={taskForses.length || "-"} title="Task force istituite" />
                         </Grid>
                         <Grid item xs={6}>
-                            <Counter count={sumBy(taskForses, "Numero membri conosciuti")} title="Membri delle task force" />
+                            <Counter count={sumBy(taskForses, "Numero membri conosciuti") || "-"} title="Membri delle task force" />
                         </Grid>
                     </Grid>
 

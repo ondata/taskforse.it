@@ -12,6 +12,7 @@ import {
     range,
     orderBy,
     max,
+    filter,
 } from 'lodash'
 
 import {
@@ -71,6 +72,8 @@ import {
     TextListItem,
     GridAddItem,
     CountBadge,
+    Counter,
+    BarListItem,
 } from '../../components'
 
 export default function Index({
@@ -133,7 +136,21 @@ export default function Index({
                     <Container maxWidth="sm">
 
                         <Typography variant="h1" gutterBottom>{`${taskForse["Nome"] || "N/A"}`}</Typography>
-                        <Typography gutterBottom>{taskForse["Descrizione"]}</Typography>
+                        <Typography gutterBottom align="center">{taskForse["Descrizione"]}</Typography>
+
+                        <Grid container justify="center">
+                            <Grid item xs={6}>
+                                <Counter count={members.length || "-"} title="Membri della task force" />
+                                <List>
+                                    <BarListItem
+                                        items={[
+                                            { label: "Donne", value: filter(members, member => member["Genere"] === "F").length, color: "primary" },
+                                            { label: "Uomini", value: filter(members, member => member["Genere"] === "M").length, color: "secondary" },
+                                        ]}
+                                    />
+                                </List>
+                            </Grid>
+                        </Grid>
 
                         <Typography>
                             <Button
@@ -151,7 +168,7 @@ export default function Index({
                                     )
                                 }
                             >
-                                Suggerisci una modifica
+                                Proponi una modifica
                             </Button>
                         </Typography>
 
@@ -159,7 +176,7 @@ export default function Index({
                         <Typography gutterBottom>{taskForse["Mission"]}</Typography>
 
                         <Typography variant="h2" gutterBottom>
-                            Membri
+                            Membri della task force
                             { !isEmpty(members) && <CountBadge count={members.length} color="secondary"><Group /></CountBadge> }
                         </Typography>
                         <Typography gutterBottom>

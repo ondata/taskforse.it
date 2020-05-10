@@ -1,4 +1,7 @@
 export default theme => ({
+    root: {
+        paddingTop: 0,
+    },
     item: {
         "&:first-child > .MuiBox-root": {
             borderBottomLeftRadius: theme.shape.borderRadius,
@@ -7,6 +10,14 @@ export default theme => ({
         "&:last-child > .MuiBox-root": {
             borderBottomRightRadius: theme.shape.borderRadius,
             borderTopRightRadius: theme.shape.borderRadius,
+        },
+        "&:first-child > .MuiTypography-root": {
+            textAlign: `left`,
+            paddingLeft: theme.shape.borderRadius/2,
+        },
+        "&:last-child > .MuiTypography-root": {
+            textAlign: `right`,
+            paddingRight: theme.shape.borderRadius/2,
         },
     },
     bar: {
@@ -20,11 +31,9 @@ export default theme => ({
         backgroundColor: theme.palette.secondary.main,
     },
     label: {
-        marginLeft: theme.shape.borderRadius/2,
         fontFamily: `"Montserrat", sans-serif`,
         fontWeight: 500,
         fontSize: `1rem`,
-        display: `flex`,
-        alignItems: `center`,
+        whiteSpace: `nowrap`,
     },
 })
