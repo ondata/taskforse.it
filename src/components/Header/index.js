@@ -30,7 +30,7 @@ export default ({
                 !!href && !!as
                 ?
                 <Container maxWidth="sm">
-                    <Grid container alignItems="baseline">
+                    <Grid container alignItems="center">
                         <Grid item xs style={{textAlign:"right"}}>
                             <Link href={href} as={as}>
                                 <IconButton color="inherit">

@@ -29,5 +29,6 @@ export default theme => ({
         fontFamily: `"PT Serif", serif`,
         fontWeight: 400,
         fontSize: `1.33rem`,
+        padding: `12px`,
     }
 })
