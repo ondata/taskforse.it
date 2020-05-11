@@ -36,8 +36,8 @@ export default ({
                             items,
                             item => item.value
                         ),
-                        ({ value, label, color }) => (
-                            <Grid item style={{width:`${value/tot*100}%`}} className={classes.item}>
+                        ({ value, label, color }, index) => (
+                            <Grid item key={index} style={{width:`${value/tot*100}%`}} className={classes.item}>
                                 <Box className={clsx(classes.bar, classes[color])}></Box>
                                 <Typography variant="body2" className={classes.label}>
                                     {`${label} ${value}`}

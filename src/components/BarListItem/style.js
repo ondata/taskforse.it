@@ -23,6 +23,7 @@ export default theme => ({
     bar: {
         width: `100%`,
         height: `1rem`,
+        marginBottom: theme.spacing(.5),
     },
     primary: {
         backgroundColor: theme.palette.primary.main,

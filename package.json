@@ -32,7 +32,8 @@
         "next-seo": "^4.4.0",
         "prop-types": "^15.7.2",
         "react": "^16.13.1",
-        "react-dom": "^16.13.1"
+        "react-dom": "^16.13.1",
+        "swr": "^0.2.0"
     },
     "devDependencies": {
         "serve": "^11.3.0"

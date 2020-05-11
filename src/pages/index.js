@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
-
 import Link from 'next/link'
 
 import axios from 'axios'
+import useSwr from 'swr'
 
 import {
     map,
@@ -47,13 +46,7 @@ export default function Index({
     staticTaskForses = [],
 }) {
 
-    const [taskForses, setTaskForses] = useState(staticTaskForses)
-
-    useEffect(() => {
-        axios
-            .get(`/api/task-forses`)
-            .then(response => setTaskForses(response.data))
-    }, [])
+    const { data: { data: taskForses } = {} } = useSwr(`/api/task-forses`, axios.get)
 
     return (
         <>
@@ -68,25 +61,21 @@ export default function Index({
                 <Container maxWidth="sm">
 
                     <Typography gutterBottom>
-                        Da quando in Italia è stato dichiarato lo stato di emergenza nazionale il 30 gennaio 2020 sono state istituite numerose task force e una serie di comitati, gruppi di lavoro, tavoli tecnici a livello nazionale e locale.
+                        In seguito allo stato di emergenza nazionale da COVID-19, sono state istituite numerose <strong>task force</strong>, le cui informazioni sono disperse in più pagine web difficilmente ricercabili.
+                    </Typography>
+
+                    <Typography gutterBottom>
+                        Con il progetto <strong>Task Forse</strong> vogliamo raccoglierle e organizzarle in un unico luogo, per metterle a disposizione di tutti. <a target="_blank" href={getGFormUrl(GFORM_URL_TASKFORSE)}>Dai una mano anche tu!</a>
                     </Typography>
 
                     <Grid container spacing={4} style={{marginBottom:"1rem",marginTop:"1rem"}}>
                         <Grid item xs={6}>
-                            <Counter count={taskForses.length || "-"} title="Task force istituite" />
+                            <Counter count={sumBy(taskForses || staticTaskForses, "Numero membri conosciuti") || "-"} title="Membri delle task force" />
                         </Grid>
                         <Grid item xs={6}>
-                            <Counter count={sumBy(taskForses, "Numero membri conosciuti") || "-"} title="Membri delle task force" />
+                            <Counter count={(taskForses ? taskForses.length : staticTaskForses.length) || "-"} title="Task force istituite" />
                         </Grid>
                     </Grid>
-
-                    <Typography gutterBottom>
-                        Le informazioni su chi fa parte di questi gruppi, su che obiettivi si pongono e su quali risultati producono sono ancora incerte e disperse in molte pagine web difficilmente ricercabili.
-                    </Typography>
-                    
-                    <Typography gutterBottom>
-                        Con il progetto Task Forse proviamo a raccogliere e organizzare in un unico luogo tutte queste informazioni per metterle a disposizione di tutti. Dai una mano anche tu!
-                    </Typography>
 
                 </Container>
 
@@ -97,7 +86,7 @@ export default function Index({
                     </Typography>
 
                     <Typography gutterBottom>
-                        Al momento sappiamo che {taskForses.length} task force sono attive con lo specifico mandato di gestire l'emergenza COVID-19.
+                        Al momento sappiamo che {taskForses ? taskForses.length : staticTaskForses.length} task force sono attive con lo specifico mandato di gestire l'emergenza COVID-19.
                         {` `}Se hai informazioni su task force non presenti in questo elenco, <a target="_blank" href={getGFormUrl(GFORM_URL_TASKFORSE)}>mandaci tutti i dettagli</a>.
                     </Typography>
 
@@ -111,20 +100,24 @@ export default function Index({
                                 primary="Segnala una nuova task force"
                                 icon={<Add />}
                             />
+                            <Divider variant="inset" />
                         </a>
                         {
-                            map(taskForses, d => (
-                                <Link key={getTaskForseId(d)} href="/task-forse/[Id]" as={getTaskForseUri(d)}>
-                                    <span>
-                                        <IconListItem
-                                            primary={d["Nome"]}
-                                            secondary={d["Descrizione"]}
-                                            icon={<ArrowForward />}
-                                        />
-                                        <Divider variant="inset" />
-                                    </span>
-                                </Link>
-                            ))
+                            map(
+                                taskForses || staticTaskForses,
+                                (taskForse, index, arr) => (
+                                    <Link key={getTaskForseId(taskForse)} href="/task-forse/[Id]" as={getTaskForseUri(taskForse)}>
+                                        <span>
+                                            <IconListItem
+                                                primary={taskForse["Nome"]}
+                                                secondary={taskForse["Descrizione"]}
+                                                icon={<ArrowForward />}
+                                            />
+                                            { index < arr.length-1 && <Divider variant="inset" /> }
+                                        </span>
+                                    </Link>
+                                )
+                            )
                         }
                     </List>
                     
@@ -140,50 +133,49 @@ export default function Index({
 
                         <TextListItem
                             keyText="Task force istituite"
-                            valueText={taskForses.length}
-                        />
-
-                        <TextListItem
-                            keyText="Membri conosciuti"
-                            valueText={sumBy(taskForses, "Numero membri conosciuti")}
-                        />
-
-                        <BarListItem
-                            items={[
-                                { label: "Donne", value: sumBy(taskForses, tf => +tf["Numero donne"] || 0), color: "primary" },
-                                { label: "Uomini", value: sumBy(taskForses, tf => +tf["Numero uomini"] || 0), color: "secondary" },
-                            ]}
-                        />
-
-                        <TextListItem
-                            keyText="Task force attive"
-                            valueText={
-                                filter(
-                                    taskForses,
-                                    tf => !tf["Data fine lavori"] || (new Date(tf["Data fine lavori"])) > (new Date())
-                                ).length
-                            }
+                            valueText={taskForses ? taskForses.length : staticTaskForses.length}
                         />
 
                         <TextListItem
                             keyText="Risorse pubblicate"
                             valueText={
                                 sumBy(
-                                    taskForses,
+                                    taskForses || staticTaskForses,
                                     tf => +tf["Numero verbali pubblicati"] || 0
                                 )
                                 +
                                 sumBy(
-                                    taskForses,
+                                    taskForses || staticTaskForses,
                                     tf => +tf["Numero risorse disponibili"] || 0
                                 )
                             }
                         />
+
+                        <TextListItem
+                            keyText="Membri nominati"
+                            valueText={sumBy(taskForses || staticTaskForses, "Numero membri conosciuti")}
+                        />
+
+                        <BarListItem
+                            items={[
+                                { label: "Donne", value: sumBy(taskForses || staticTaskForses, tf => +tf["Numero donne"] || 0), color: "primary" },
+                                { label: "Uomini", value: sumBy(taskForses || staticTaskForses, tf => +tf["Numero uomini"] || 0), color: "secondary" },
+                            ]}
+                        />
+
+                        {/*<TextListItem
+                            keyText="Task force attive"
+                            valueText={
+                                filter(
+                                    taskForses || staticTaskForses,
+                                    tf => !tf["Data fine lavori"] || (new Date(tf["Data fine lavori"])) > (new Date())
+                                ).length
+                            }
+                        />*/}
+
                     </List>
 
-                    <Divider />
-
-                    <Typography>
+                    {/*<Typography>
                         <Button
                             variant="contained"
                             color="secondary"
@@ -195,7 +187,7 @@ export default function Index({
                         >
                             Segnala una nuova task force
                         </Button>
-                    </Typography>
+                    </Typography>*/}
 
                 </Container>
 
@@ -209,7 +201,7 @@ export default function Index({
 export async function getStaticProps() {
     return {
         props: {
-            taskForses: await getTaskForses(),
+            staticTaskForses: await getTaskForses(),
         },
     }
 }
