@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { NextSeo } from 'next-seo'
 
 import axios from 'axios'
+import useSwr from 'swr'
+import extractDomain from 'url-domain-name'
 
 import {
     map,
@@ -61,6 +63,9 @@ import {
     Description,
     InsertLink,
     Edit,
+    ArrowForward,
+    Add,
+    TouchApp,
 } from '@material-ui/icons'
 
 import {
@@ -87,25 +92,9 @@ export default function Index({
     const theme = useTheme()
     const matches = useMediaQuery(theme.breakpoints.down('sm'))
 
-    const [members, setMembers] = useState(staticMembers)
-    const [minutes, setMinutes] = useState(staticMinutes)
-    const [resources, setResources] = useState(staticResources)
-
-    useEffect(() => {
-
-        axios
-            .get(`/api/task-forse/${taskForse["Id"]}/members`)
-            .then(response => setMembers(response.data))
-
-        axios
-            .get(`/api/task-forse/${taskForse["Id"]}/minutes`)
-            .then(response => setMinutes(response.data))
-        
-        axios
-            .get(`/api/task-forse/${taskForse["Id"]}/resources`)
-            .then(response => setResources(response.data))
-
-    }, [taskForse])
+    const { data: { data: members = staticMembers } = {} } = useSwr(`/api/task-forse/${taskForse["Id"]}/members`, axios.get)
+    const { data: { data: minutes = staticMinutes } = {} } = useSwr(`/api/task-forse/${taskForse["Id"]}/minutes`, axios.get)
+    const { data: { data: resources = staticResources } = {} } = useSwr(`/api/task-forse/${taskForse["Id"]}/resources`, axios.get)
 
     if (router.isFallback) {
 
@@ -152,14 +141,64 @@ export default function Index({
                             </Grid>
                         </Grid>
 
-                        <Typography>
+                        <Typography variant="h2" gutterBottom>Mission</Typography>
+                        <Typography>{taskForse["Mission"]}</Typography>
+
+                        <List>
+
+                            <TextListItem
+                                keyText={<><TouchApp fontSize="small" color="secondary" />Sito web ufficiale</>}
+                                valueText={!!taskForse["Sito web"] && <a target="_blank" href={taskForse["Sito web"]}>{extractDomain.from(taskForse["Sito web"])}</a>}
+                            />
+
+                            <TextListItem
+                                keyText="Istituzione di riferimento"
+                                valueText={taskForse["Istituzione di riferimento"]}
+                            />
+
+                            <TextListItem
+                                keyText="Data di istituzione"
+                                valueText={ddmmyyyy(taskForse["Data di istituzione"] || taskForse["Data inizio lavori"])}
+                            />
+
+                            {
+                                !!taskForse["Data inizio lavori"] && taskForse["Data inizio lavori"] != (taskForse["Data di istituzione"] || taskForse["Data inizio lavori"])
+                                &&
+                                <TextListItem
+                                    keyText="Inizio dei lavori"
+                                    valueText={ddmmyyyy(taskForse["Data inizio lavori"])}
+                                />
+                            }
+
+                            {
+                                !!taskForse["Data fine lavori"]
+                                &&
+                                <TextListItem
+                                    keyText="Fine dei lavori"
+                                    valueText={ddmmyyyy(taskForse["Data fine lavori"])}
+                                />
+                            }
+
+                            <TextListItem
+                                keyText="Verbali pubblicati"
+                                valueText={taskForse["Numero verbali pubblicati"]}
+                            />
+
+                            <TextListItem
+                                keyText="Altre risorse pubbliche"
+                                valueText={taskForse["Numero risorse disponibili"]}
+                            />
+
+                        </List>
+
+                        <Typography align="center">
                             <Button
                                 variant="contained"
                                 color="secondary"
                                 disableElevation
                                 startIcon={<Edit />}
-                                fullWidth
                                 target="_blank"
+                                fullWidth
                                 href={
                                     getGFormUrl(
                                         GFORM_URL_TASKFORSE,
@@ -171,9 +210,6 @@ export default function Index({
                                 Proponi una modifica
                             </Button>
                         </Typography>
-
-                        <Typography variant="h2" gutterBottom>Mission</Typography>
-                        <Typography gutterBottom>{taskForse["Mission"]}</Typography>
 
                         <Typography variant="h2" gutterBottom>
                             Membri della task force
@@ -197,7 +233,22 @@ export default function Index({
                             ?
                             <Typography>Nessun membro conosciuto.</Typography>
                             :
-                            <Grid container spacing={2}>
+                            <Grid container spacing={1}>
+
+                                <Grid item xs={12} sm={6} md={3}>
+                                    <a
+                                        target="_blank"
+                                        href={
+                                            getGFormUrl(
+                                                GFORM_URL_MEMBER,
+                                                { "Task forse": taskForse["Id"] },
+                                                GFORM_FIELDS_MEMBER
+                                            )
+                                        }
+                                    >
+                                        <GridAddItem />
+                                    </a>
+                                </Grid>
 
                                 { // Known members
                                     map(
@@ -244,25 +295,6 @@ export default function Index({
                                     )
                                 }
 
-                                { // New members
-                                    !taskForse["Numero membri"]
-                                    &&
-                                    <Grid item xs={12} sm={6} md={3}>
-                                        <a
-                                            target="_blank"
-                                            href={
-                                                getGFormUrl(
-                                                    GFORM_URL_MEMBER,
-                                                    { "Task forse": taskForse["Id"] },
-                                                    GFORM_FIELDS_MEMBER
-                                                )
-                                            }
-                                        >
-                                            <GridAddItem />
-                                        </a>
-                                    </Grid>
-                                }
-
                             </Grid>
                         }
 
@@ -278,10 +310,11 @@ export default function Index({
                                     Verbali
                                     { !isEmpty(minutes) && <CountBadge count={minutes.length} color="secondary"><Description /></CountBadge> }
                                 </Typography>
+
                                 <Typography gutterBottom>
-                                    { !!taskForse["Numero verbali"] && isEmpty(minutes) && `Questa task force risulta aver prodotto e pubblicato ${taskForse["Numero verbali"]} verbal${minutes.length > 1 ? "i" : "e"}, ma non ne conosciamo ancora nessuno.` }
-                                    { !!taskForse["Numero verbali"] && minutes.length >= taskForse["Numero verbali"] && `Questa task force risulta aver prodotto e pubblicato ${taskForse["Numero verbali"]} verbal${minutes.length > 1 ? "i" : "e"}, li trovi elencati tutti qui.` }
-                                    { !!taskForse["Numero verbali"] && minutes.length < taskForse["Numero verbali"] && `Questa task force risulta aver prodotto e pubblicato ${taskForse["Numero verbali"]} verbal${minutes.length > 1 ? "i" : "e"}, ma ne conosciamo ancora solo ${minutes.length}.` }
+                                    { !!taskForse["Numero verbali"] && isEmpty(minutes) && `Questa task force risulta aver prodotto e pubblicato ${taskForse["Numero verbali"]} verbal${taskForse["Numero verbali"] > 1 ? "i" : "e"}, ma non ne conosciamo ancora nessuno.` }
+                                    { !!taskForse["Numero verbali"] && minutes.length >= taskForse["Numero verbali"] && `Questa task force risulta aver prodotto e pubblicato ${taskForse["Numero verbali"]} verbal${taskForse["Numero verbali"] > 1 ? "i" : "e"}, li trovi elencati tutti qui.` }
+                                    { !!taskForse["Numero verbali"] && !isEmpty(minutes) && minutes.length < taskForse["Numero verbali"] && `Questa task force risulta aver prodotto e pubblicato ${taskForse["Numero verbali"]} verbal${taskForse["Numero verbali"] > 1 ? "i" : "e"}, ma ne conosciamo ancora solo ${minutes.length}.` }
                                     { !taskForse["Numero verbali"] && isEmpty(minutes) && `Nessun verbale disponibile.` }
                                     { !taskForse["Numero verbali"] && !isEmpty(minutes) && `Questa task force ha prodotto e pubblicato ${minutes.length} verbal${minutes.length > 1 ? "i" : "e"}.` }
                                     {` `}Se hai informazioni su verbali prodotti e pubblicati dalla task force non presenti in questo elenco, <a target="_blank" href={getGFormUrl(GFORM_URL_MINUTE, { "Task forse": taskForse["Id"] }, GFROM_FIELDS_MINUTE)}>mandaci tutti i dettagli</a>.
@@ -289,6 +322,23 @@ export default function Index({
 
                                 <List>
                                     
+                                    <a
+                                        target="_blank"
+                                        href={
+                                            getGFormUrl(
+                                                GFORM_URL_MINUTE,
+                                                { "Task forse": taskForse["Id"] },
+                                                GFROM_FIELDS_MINUTE
+                                            )
+                                        }
+                                    >
+                                        <IconListAddItem
+                                            primary="Suggerisci un verbale"
+                                            icon={<Add />}
+                                        />
+                                        <Divider variant="inset" />
+                                    </a>
+
                                     { // Known minutes
                                         map(
                                             orderBy(
@@ -296,16 +346,15 @@ export default function Index({
                                                 "Data di pubblicazione",
                                                 "desc"
                                             ),
-                                            minute => (
+                                            (minute, index, arr) => (
                                                 //<Link href="/minute/[Id]" as={getMinuteUri(minute)} key={getMinuteId(minute)}>
                                                     <a key={getMinuteId(minute)} target="_blank" href={minute["URL"] || "#"}>
-                                                        <TextListItem
-                                                            keyText={ddmmyyyy(minute["Data di pubblicazione"])}
-                                                            valueText={`${minute["Numero"]}/${yyyy(minute["Data di pubblicazione"])}`}
-                                                            color="secondary"
-                                                            variant="subtitle1"
+                                                        <IconListItem
+                                                            primary={minute["Titolo"]}
+                                                            secondary={ddmmyyyy(minute["Data di pubblicazione"])}
+                                                            icon={<ArrowForward />}
                                                         />
-                                                        <Divider variant="middle" />
+                                                        <Divider variant="inset" />
                                                     </a>
                                                 //</Link>
                                             )
@@ -327,36 +376,13 @@ export default function Index({
                                                         )
                                                     }
                                                 >
-                                                    <TextListItem
-                                                        color="secondary"
-                                                        variant="subtitle1"
-                                                        topsecret
+                                                    <IconListItem
+                                                        icon={<Add />}
                                                     />
-                                                    <Divider variant="middle" />
+                                                    <Divider variant="inset" />
                                                 </a>
                                             )
                                         )
-                                    }
-
-                                    { // New minutes
-                                        !taskForse["Numero verbali"]
-                                        &&
-                                        <a
-                                            target="_blank"
-                                            href={
-                                                getGFormUrl(
-                                                    GFORM_URL_MINUTE,
-                                                    { "Task forse": taskForse["Id"] },
-                                                    GFROM_FIELDS_MINUTE
-                                                )
-                                            }
-                                        >
-                                            <TextListItem
-                                                color="secondary"
-                                                variant="subtitle1"
-                                                topsecret
-                                            />
-                                        </a>
                                     }
 
                                 </List>
@@ -365,7 +391,7 @@ export default function Index({
 
                             <Grid item xs={12} sm={6}>
                                 
-                                <Typography variant="h2">
+                                <Typography variant="h2" gutterBottom>
                                     Risorse
                                     { !isEmpty(resources) && <CountBadge count={resources.length} color="secondary"><InsertLink /></CountBadge> }
                                 </Typography>
@@ -377,20 +403,6 @@ export default function Index({
                                 </Typography>
 
                                 <List dense disablePadding>
-                                    {
-                                        map(
-                                            resources,
-                                            resource => (
-                                                <a target="_blank" href={resource["Pagina web"]} key={getResourceId(resource)}>
-                                                    <IconListItem
-                                                        primary={resource["Titolo"]}
-                                                        secondary={resource["Categoria"]}
-                                                    />
-                                                    <Divider variant="middle" />
-                                                </a>
-                                            )
-                                        )
-                                    }
 
                                     <a
                                         target="_blank"
@@ -402,8 +414,28 @@ export default function Index({
                                             )
                                         }
                                     >
-                                        <IconListAddItem primary="+ Segnala una risorsa" />
+                                        <IconListAddItem
+                                            primary="Suggerisci una risorsa"
+                                            icon={<Add />}
+                                        />
+                                        <Divider variant="inset" />
                                     </a>
+
+                                    {
+                                        map(
+                                            resources,
+                                            resource => (
+                                                <a target="_blank" href={resource["Pagina web"]} key={getResourceId(resource)}>
+                                                    <IconListItem
+                                                        primary={resource["Titolo"]}
+                                                        secondary={resource["Categoria"]}
+                                                        icon={<ArrowForward />}
+                                                    />
+                                                    <Divider variant="inset" />
+                                                </a>
+                                            )
+                                        )
+                                    }
 
                                 </List>
 

@@ -16,22 +16,19 @@ const useStyles = makeStyles(style)
 export default ({
     keyText = "",
     valueText = "",
-    color = "inherit",
-    variant = "body1",
-    topsecret = false,
 }) => {
-    const classes = useStyles(topsecret)
+    const classes = useStyles()
     return (
         <ListItem disableGutters className={classes.root}>
             <Grid container justify="space-between">
                 <Grid item>
-                    <Typography variant={variant} color={color} className={classes.keyText}>
-                        <span className={topsecret ? classes.topsecret : ""}>{topsecret ? "XX/XX/XXXX" : keyText}</span>
+                    <Typography variant="body1" color="inherit" className={classes.keyText}>
+                        <span className={!keyText ? classes.topsecret : ""}>{keyText || "??????????????"}</span>
                     </Typography>
                 </Grid>
                 <Grid item>
                     <Typography className={classes.valueText}>
-                        <span className={topsecret ? classes.topsecret : ""}>{topsecret ? "XX/XXXX" : valueText}</span> { topsecret && <AddBox size="small" /> }
+                        <span className={!valueText ? classes.topsecret : ""}>{valueText || "??????????????"}</span>
                     </Typography>
                 </Grid>
             </Grid>

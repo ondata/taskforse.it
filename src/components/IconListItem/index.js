@@ -18,7 +18,7 @@ export default ({
     return (
         <ListItem button>
             { !!icon && <ListItemIcon className={classes.icon}>{icon}</ListItemIcon> }
-            <ListItemText primary={primary} secondary={secondary}></ListItemText>
+            <ListItemText primary={primary || "??????????????"} secondary={secondary} className={!primary && !secondary ? classes.topsecret : ""}></ListItemText>
         </ListItem>
     )
 }

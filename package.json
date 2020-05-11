@@ -33,7 +33,8 @@
         "prop-types": "^15.7.2",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
-        "swr": "^0.2.0"
+        "swr": "^0.2.0",
+        "url-domain-name": "^1.0.3"
     },
     "devDependencies": {
         "serve": "^11.3.0"

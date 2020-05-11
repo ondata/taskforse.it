@@ -1,12 +1,18 @@
 export default theme => ({
     root: topsecret => ({
+        borderWidth: theme.spacing(1),
+        borderRadius: theme.shape.borderRadius,
+        borderStyle: `dashed`,
+        borderColor: topsecret ? "transparent" : theme.palette.grey[400],
+        '&:hover': {
+            borderColor: theme.palette.grey[400],
+        },
+    }),
+    card: topsecret => ({
         display: 'flex',
         backgroundColor: theme.palette.grey[100],
         cursor: `pointer`,
         position: `relative`,
-        borderWidth: theme.spacing(1),
-        borderStyle: `dashed`,
-        borderColor: topsecret ? "transparent" : theme.palette.grey[400],
         '&>*': {
             opacity: 0.1,
         },

@@ -1,9 +1,4 @@
 export default theme => ({
-    root: topsecret => ({
-        '&>*': {
-            opacity: topsecret ? 0.1 : 1,
-        },
-    }),
     keyText: {
         fontFamily: `"Montserrat", sans-serif`,
         fontWeight: 600,

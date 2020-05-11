@@ -1,5 +1,10 @@
 export default theme => ({
     root: {
+        borderWidth: theme.spacing(1),
+        borderStyle: `solid`,
+        borderColor: "transparent",
+    },
+    card: {
         display: `flex`,
         backgroundColor: theme.palette.grey[100],
     },

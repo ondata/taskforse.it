@@ -3,6 +3,7 @@ import {
     CardMedia,
     CardContent,
     Typography,
+    Box,
 } from '@material-ui/core'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -17,22 +18,24 @@ export default ({
 }) => {
     const classes = useStyles()
     return (
-        <Card className={classes.root} elevation={0} component="a">
-            <CardMedia
-                className={classes.cover}
-                image={image}
-                title={title}
-            />
-            <span className={classes.details}>
-                <CardContent className={classes.content}>
-                    <Typography component="h5" variant="h5">
-                        {title}
-                    </Typography>
-                    <Typography variant="subtitle1" color="secondary">
-                        {subtitle}
-                    </Typography>
-                </CardContent>
-            </span>
-        </Card>
+        <Box className={classes.root}>
+            <Card className={classes.card} elevation={0} component="a">
+                <CardMedia
+                    className={classes.cover}
+                    image={image}
+                    title={title}
+                />
+                <span className={classes.details}>
+                    <CardContent className={classes.content}>
+                        <Typography component="h5" variant="h5">
+                            {title}
+                        </Typography>
+                        <Typography variant="subtitle1" color="secondary">
+                            {subtitle}
+                        </Typography>
+                    </CardContent>
+                </span>
+            </Card>
+        </Box>
     )
 }
