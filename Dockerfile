@@ -4,7 +4,7 @@ FROM node:14-alpine
 WORKDIR /usr/src/app
 
 # Installing dependencies
-COPY package*.json ./
+COPY package*.json *config.js ./
 RUN npm install
 
 # Copying source files
