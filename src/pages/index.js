@@ -61,7 +61,7 @@ export default function Index({
                 <Container maxWidth="sm">
 
                     <Typography gutterBottom>
-                        In seguito allo stato di emergenza nazionale da COVID-19, sono state istituite numerose <strong>task force</strong>, le cui informazioni sono disperse in più pagine web difficilmente ricercabili.
+                        In seguito allo stato di emergenza nazionale da COVID-19, sono state istituite numerose <strong>task force</strong>, le cui informazioni sono disperse in molte pagine web e documenti pdf difficilmente reperibili.
                     </Typography>
 
                     <Typography gutterBottom>

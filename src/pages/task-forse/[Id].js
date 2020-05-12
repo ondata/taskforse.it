@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react'
-
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { NextSeo } from 'next-seo'
@@ -117,7 +115,7 @@ export default function Index({
                     }}
                 />
                 <Header
-                    title="Home"
+                    title="Task force"
                     href="/"
                     as="/"
                 />
@@ -129,7 +127,7 @@ export default function Index({
 
                         <Grid container justify="center">
                             <Grid item xs={6}>
-                                <Counter count={members.length || "-"} title="Membri della task force" />
+                                <Counter count={members.length || "-"} title={`Membr${members.length > 1 ? "i" : "o"} della task force`} />
                                 <List>
                                     <BarListItem
                                         items={[
@@ -142,7 +140,7 @@ export default function Index({
                         </Grid>
 
                         <Typography variant="h2" gutterBottom>Mission</Typography>
-                        <Typography>{taskForse["Mission"]}</Typography>
+                        <Typography>{taskForse["Mission"] || <span style={{backgroundColor:"black"}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In accumsan dolor molestie mattis vulputate. Donec auctor fringilla blandit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla in tincidunt odio. Proin a luctus nulla. Vivamus tincidunt est risus, quis facilisis lacus interdum id. Donec a semper dolor, auctor consectetur quam.</span>}</Typography>
 
                         <List>
 
@@ -216,11 +214,11 @@ export default function Index({
                             { !isEmpty(members) && <CountBadge count={members.length} color="secondary"><Group /></CountBadge> }
                         </Typography>
                         <Typography gutterBottom>
-                            { !!taskForse["Numero membri"] && isEmpty(members) && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${members.length > 1 ? "i" : "e"}, ma non ne conosciamo ancora nessuno.` }
-                            { !!taskForse["Numero membri"] && members.length >= taskForse["Numero membri"] && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${members.length > 1 ? "i" : "e"}, li trovi elencati tutti qui.` }
-                            { !!taskForse["Numero membri"] && members.length < taskForse["Numero membri"] && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${members.length > 1 ? "i" : "e"}, ma ne conosciamo ancora solo ${members.length}.` }
+                            { !!taskForse["Numero membri"] && isEmpty(members) && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${taskForse["Numero membri"].length > 1 ? "i" : "o"}, ma non ne conosciamo ancora nessuno.` }
+                            { !!taskForse["Numero membri"] && members.length >= taskForse["Numero membri"] && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${taskForse["Numero membri"].length > 1 ? "i" : "o"}, li trovi elencati tutti qui.` }
+                            { !!taskForse["Numero membri"] && members.length < taskForse["Numero membri"] && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${taskForse["Numero membri"].length > 1 ? "i" : "o"}, ma ne conosciamo ancora solo ${members.length}.` }
                             { !taskForse["Numero membri"] && isEmpty(members) && `Nessun membro conosciuto.` }
-                            { !taskForse["Numero membri"] && !isEmpty(members) && `Questa task force è composta da ${members.length} membr${members.length > 1 ? "i" : "e"}.` }
+                            { !taskForse["Numero membri"] && !isEmpty(members) && `Questa task force è composta da ${members.length} membr${members.length > 1 ? "i" : "o"}.` }
                             {` `}Se hai informazioni su membri della task force non presenti in questo elenco, <a target="_blank" href={getGFormUrl(GFORM_URL_MEMBER, { "Task forse": taskForse["Id"] }, GFORM_FIELDS_MEMBER)}>mandaci tutti i dettagli</a>.
                         </Typography>
 
