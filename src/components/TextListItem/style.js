@@ -8,13 +8,24 @@ export default theme => ({
         fontFamily: `"Montserrat", sans-serif`,
         fontWeight: 500,
         fontSize: `1rem`,
-        display: `flex`,
-        alignItems: `center`,
+        textAlign: `right`,
+        paddingLeft: theme.spacing(2),
     },
     topsecret: {
+        cursor: `help`,
         backgroundColor: theme.palette.grey[900],
         color: theme.palette.grey[900],
-        paddingLeft: theme.spacing(.5),
         paddingRight: theme.spacing(.5),
+        marginLeft: `auto`,
     },
+    tooltip: {
+        fontFamily: `"Montserrat", sans-serif`,
+        fontWeight: 500,
+        textAlign: `center`,
+        fontSize: `.85rem`,
+        lineHeight: `1.5`,
+        '& a, & a:hover': {
+            textDecoration: `underline !important`,
+        },
+    }
 })

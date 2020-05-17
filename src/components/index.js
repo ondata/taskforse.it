@@ -8,6 +8,7 @@ import GridItem from './GridItem'
 import GridAddItem from './GridAddItem'
 import CountBadge from './CountBadge'
 import Counter from './Counter'
+import AvatarImage from './AvatarImage'
 
 export {
     Header,
@@ -20,4 +21,5 @@ export {
     GridAddItem,
     CountBadge,
     Counter,
+    AvatarImage,
 }

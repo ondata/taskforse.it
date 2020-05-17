@@ -31,7 +31,7 @@ const GFORM_SUFFIX = "viewform"
 export const GFORM_URL_TASKFORSE = `${GFORM_PREFIX}/1FAIpQLScDhV6oWfWaBhKiyALhFNq85W8O2_BI2I9ujUsXH2H8tM6Gwg/${GFORM_SUFFIX}`
 export const GFORM_FIELDS_TASKFORSE = { "Id":"834271559", "Nome":"1362059608", "Sito web":"1088344564", "Data di istituzione":"367732443", "Data inizio lavori":"600188309", "Data fine lavori":"1026929266", "Istituzione di riferimento":"243852443", "Descrizione":"1284557778" }
 export const GFORM_URL_MEMBER = `${GFORM_PREFIX}/1FAIpQLSeZ8hkfUPPYEIHacQPjh-t0dGtp4aAkNoT7PNx1ZFcvsr1wCA/${GFORM_SUFFIX}`
-export const GFORM_FIELDS_MEMBER = { "Task forse":"1362059608", "Nome":"731821199", "Cognome":"959101228", "Genere":"1661250724", "Foto":"744634925", "Istituto di affiliazione":"572162091", "Anno di nascita":"413223009", "Luogo di nascita":"601210153", "Professione":"1971278820", "Ruolo":"2043565287" }
+export const GFORM_FIELDS_MEMBER = { "Id": "531198919", "Task forses":"1362059608", "Nome":"731821199", "Cognome":"959101228", "Genere":"1661250724", "Foto":"744634925", "Istituto di affiliazione":"572162091", "Anno di nascita":"413223009", "Luogo di nascita":"601210153", "Professione":"1971278820", "Ruolo":"2043565287" }
 export const GFORM_URL_MINUTE = `${GFORM_PREFIX}/1FAIpQLSegY4ktGyitg9VVn-K3UP-enzNxvThqz6cxjpUA6NWAqzMcLQ/${GFORM_SUFFIX}`
 export const GFROM_FIELDS_MINUTE = { "Task forse":"1362059608" }
 export const GFORM_URL_RESOURCE = `${GFORM_PREFIX}/1FAIpQLSegY4ktGyitg9VVn-K3UP-enzNxvThqz6cxjpUA6NWAqzMcLQ/${GFORM_SUFFIX}`
@@ -46,7 +46,7 @@ const api = axios.create({
     baseURL: `${GSHEET_PREFIX}/${GSHEET_ID}`,
 })
 
-export const normalizeId = id => String(id).toLowerCase()
+export const normalizeId = id => id ? String(id).toLowerCase() : ""
 
 export async function getMeta() {
     return normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_META)))
@@ -75,7 +75,10 @@ export const getTaskForseUri = taskForse => `/task-forse/${getTaskForseId(taskFo
 export const getTaskForseApiUri = taskForse => `/api${getTaskForseUri(taskForse)}`
 
 export async function getMembers() {
-    return normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_MEMBERS)))
+    return filter(
+        normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_MEMBERS))),
+        member => !!getMemberId(member)
+    )
 }
 
 export async function getMember(id) {
@@ -121,8 +124,49 @@ export function getMembersByTaskForseSync(id, members) {
     ) : []
 }
 
+export async function getTaskForsesByMember(id) {
+
+    if (!id) return []
+
+    const member = await getMember(id)
+    const taskForses = await getTaskForses()
+
+    return filter(
+        taskForses,
+        taskForse => includes(
+            map(
+                split(
+                    member["Task forses"],
+                    GSHEET_MULTIFIELDS_SEPARATOR
+                ),
+                normalizeId
+            ),
+            getTaskForseId(taskForse)
+        )
+    )
+}
+
+export function getTaskForsesByMemberSync(member, taskForses) {
+    return filter(
+        taskForses,
+        taskForse => includes(
+            map(
+                split(
+                    member["Task forses"],
+                    GSHEET_MULTIFIELDS_SEPARATOR
+                ),
+                normalizeId
+            ),
+            getTaskForseId(taskForse)
+        )
+    )
+}
+
 export async function getMinutes() {
-    return normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_MINUTES)))
+    return filter(
+        normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_MINUTES))),
+        minute => !!getMinuteId(minute)
+    )
 }
 
 export async function getMinute(id) {
@@ -132,7 +176,7 @@ export async function getMinute(id) {
     ) || {} : {}
 }
 
-export const getMinuteId = minute => normalizeId(`${minute["Task forse"]}-${minute["Id"]}`)
+export const getMinuteId = minute => minute["Id"] ? normalizeId(`${minute["Task forse"]}-${minute["Id"]}`) : ""
 export const getMinuteUri = minute => `/minute/${getMinuteId(minute)}`
 export const getMinuteApiUri = minute => `/api${getMinuteUri(minute)}`
 
@@ -151,7 +195,10 @@ export function getMinutesByTaskForseSync(id, minutes) {
 }
 
 export async function getResources() {
-    return normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_RESOURCES)))
+    return filter(
+        normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_RESOURCES))),
+        resource => getResourceId(resource)
+    )
 }
 
 export async function getResource(id) {
@@ -160,7 +207,7 @@ export async function getResource(id) {
         e => getResourceId(e) === normalizeId(id)
     ) || {} : {}
 }
-export const getResourceId = resource => normalizeId(`${resource["Task forse"]}-${resource["Id"]}`)
+export const getResourceId = resource => resource["Id"] ? normalizeId(`${resource["Task forse"]}-${resource["Id"]}`) : ""
 export const getResourceUri = resource => `/resource/${getResourceId(resource)}`
 export const getResourceApiUri = resource => `/api${getResourceUri(resource)}`
 

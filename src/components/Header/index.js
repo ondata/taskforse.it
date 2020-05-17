@@ -48,7 +48,7 @@ export default ({
                     </Grid>
                     <Grid item xs>
                         <Button color="inherit" href={getGFormUrl(GFORM_URL_ISSUE)} target="_blank">
-                            Contribuisci!
+                            Contattaci!
                         </Button>
                     </Grid>
                 </Grid>

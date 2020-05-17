@@ -114,11 +114,13 @@ export default function Index({
                         description: taskForse["Descrizione"],
                     }}
                 />
+
                 <Header
-                    title="Task force"
+                    title="Tutte le task force"
                     href="/"
                     as="/"
                 />
+                
                 <main>
                     <Container maxWidth="sm">
 
@@ -126,7 +128,7 @@ export default function Index({
                         <Typography gutterBottom align="center">{taskForse["Descrizione"]}</Typography>
 
                         <Grid container justify="center">
-                            <Grid item xs={6}>
+                            <Grid item xs={12} sm={6}>
                                 <Counter count={members.length || "-"} title={`Membr${members.length > 1 ? "i" : "o"} della task force`} />
                                 <List>
                                     <BarListItem
@@ -140,7 +142,7 @@ export default function Index({
                         </Grid>
 
                         <Typography variant="h2" gutterBottom>Mission</Typography>
-                        <Typography>{taskForse["Mission"] || <span style={{backgroundColor:"black"}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In accumsan dolor molestie mattis vulputate. Donec auctor fringilla blandit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla in tincidunt odio. Proin a luctus nulla. Vivamus tincidunt est risus, quis facilisis lacus interdum id. Donec a semper dolor, auctor consectetur quam.</span>}</Typography>
+                        <Typography>{taskForse["Mission"] || <span style={{backgroundColor:"black",opacity:0.87}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In accumsan dolor molestie mattis vulputate. Donec auctor fringilla blandit. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla in tincidunt odio. Proin a luctus nulla. Vivamus tincidunt est risus, quis facilisis lacus interdum id. Donec a semper dolor, auctor consectetur quam.</span>}</Typography>
 
                         <List>
 
@@ -214,9 +216,9 @@ export default function Index({
                             { !isEmpty(members) && <CountBadge count={members.length} color="secondary"><Group /></CountBadge> }
                         </Typography>
                         <Typography gutterBottom>
-                            { !!taskForse["Numero membri"] && isEmpty(members) && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${taskForse["Numero membri"].length > 1 ? "i" : "o"}, ma non ne conosciamo ancora nessuno.` }
-                            { !!taskForse["Numero membri"] && members.length >= taskForse["Numero membri"] && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${taskForse["Numero membri"].length > 1 ? "i" : "o"}, li trovi elencati tutti qui.` }
-                            { !!taskForse["Numero membri"] && members.length < taskForse["Numero membri"] && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${taskForse["Numero membri"].length > 1 ? "i" : "o"}, ma ne conosciamo ancora solo ${members.length}.` }
+                            { !!taskForse["Numero membri"] && isEmpty(members) && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${taskForse["Numero membri"] > 1 ? "i" : "o"}, ma non ne conosciamo ancora nessuno.` }
+                            { !!taskForse["Numero membri"] && members.length >= taskForse["Numero membri"] && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${taskForse["Numero membri"] > 1 ? "i" : "o"}, li trovi elencati tutti qui.` }
+                            { !!taskForse["Numero membri"] && members.length < taskForse["Numero membri"] && `Questa task force risulta composta da ${taskForse["Numero membri"]} membr${taskForse["Numero membri"] > 1 ? "i" : "o"}, ma ne conosciamo ancora solo ${members.length}.` }
                             { !taskForse["Numero membri"] && isEmpty(members) && `Nessun membro conosciuto.` }
                             { !taskForse["Numero membri"] && !isEmpty(members) && `Questa task force è composta da ${members.length} membr${members.length > 1 ? "i" : "o"}.` }
                             {` `}Se hai informazioni su membri della task force non presenti in questo elenco, <a target="_blank" href={getGFormUrl(GFORM_URL_MEMBER, { "Task forse": taskForse["Id"] }, GFORM_FIELDS_MEMBER)}>mandaci tutti i dettagli</a>.
@@ -239,7 +241,7 @@ export default function Index({
                                         href={
                                             getGFormUrl(
                                                 GFORM_URL_MEMBER,
-                                                { "Task forse": taskForse["Id"] },
+                                                { "Task forses": taskForse["Id"] },
                                                 GFORM_FIELDS_MEMBER
                                             )
                                         }
@@ -252,20 +254,20 @@ export default function Index({
                                     map(
                                         orderBy(
                                             members,
-                                            ["Ruolo","Cognome"],
-                                            ["desc","asc"]
+                                            ["Cognome"],
+                                            ["asc"]
                                         ),
                                         member => (
                                             <Grid item xs={12} sm={6} md={3} key={getMemberId(member)}>
-                                                {/*<Link href="/member/[Id]" as={getMemberUri(member)}>*/}
-                                                    {/*<a>*/}
+                                                <Link href="/member/[Id]" as={getMemberUri(member)}>
+                                                    <a>
                                                         <GridItem
                                                             title={<>{member["Nome"]}<br/>{member["Cognome"]}</>}
-                                                            subtitle={member["Ruolo"]}
+                                                            subtitle={member["Ruolo"] || "Membro"}
                                                             image={member["Foto"] || AVATARS[member["Genere"].toLowerCase()]}
                                                         />
-                                                    {/*</a>*/}
-                                                {/*</Link>*/}
+                                                    </a>
+                                                </Link>
                                             </Grid>
                                         )
                                     )
@@ -281,7 +283,7 @@ export default function Index({
                                                     href={
                                                         getGFormUrl(
                                                             GFORM_URL_MEMBER,
-                                                            { "Task forse": taskForse["Id"] },
+                                                            { "Task forses": taskForse["Id"] },
                                                             GFORM_FIELDS_MEMBER
                                                         )
                                                     }
@@ -293,12 +295,31 @@ export default function Index({
                                     )
                                 }
 
+                                {
+                                    members.length > 15
+                                    &&
+                                    <Grid item xs={12} sm={6} md={3}>
+                                        <a
+                                            target="_blank"
+                                            href={
+                                                getGFormUrl(
+                                                    GFORM_URL_MEMBER,
+                                                    { "Task forses": taskForse["Id"] },
+                                                    GFORM_FIELDS_MEMBER
+                                                )
+                                            }
+                                        >
+                                            <GridAddItem />
+                                        </a>
+                                    </Grid>
+                                }
+
                             </Grid>
                         }
 
                     </Container>
 
-                    <Container maxWidth="sm">
+                    <Container maxWidth="md">
 
                         <Grid container spacing={matches ? 1 : 8}>
 
@@ -345,16 +366,14 @@ export default function Index({
                                                 "desc"
                                             ),
                                             (minute, index, arr) => (
-                                                //<Link href="/minute/[Id]" as={getMinuteUri(minute)} key={getMinuteId(minute)}>
-                                                    <a key={getMinuteId(minute)} target="_blank" href={minute["URL"] || "#"}>
-                                                        <IconListItem
-                                                            primary={minute["Titolo"]}
-                                                            secondary={ddmmyyyy(minute["Data di pubblicazione"])}
-                                                            icon={<ArrowForward />}
-                                                        />
-                                                        <Divider variant="inset" />
-                                                    </a>
-                                                //</Link>
+                                                <a key={getMinuteId(minute)} target="_blank" href={minute["URL"] || "#"}>
+                                                    <IconListItem
+                                                        primary={minute["Titolo"]}
+                                                        secondary={ddmmyyyy(minute["Data di pubblicazione"])}
+                                                        icon={<ArrowForward />}
+                                                    />
+                                                    <Divider variant="inset" />
+                                                </a>
                                             )
                                         )
                                     }
@@ -383,6 +402,26 @@ export default function Index({
                                         )
                                     }
 
+                                    {
+                                        minutes.length > 5
+                                        &&
+                                        <a
+                                            target="_blank"
+                                            href={
+                                                getGFormUrl(
+                                                    GFORM_URL_MINUTE,
+                                                    { "Task forse": taskForse["Id"] },
+                                                    GFROM_FIELDS_MINUTE
+                                                )
+                                            }
+                                        >
+                                            <IconListAddItem
+                                                primary="Suggerisci un verbale"
+                                                icon={<Add />}
+                                            />
+                                        </a>
+                                    }
+
                                 </List>
 
                             </Grid>
@@ -400,7 +439,7 @@ export default function Index({
                                     {` `}Se hai informazioni su ulteriori risorse relative alla task force non presenti in questo elenco, <a target="_blank" href={getGFormUrl(GFORM_URL_RESOURCE, { "Task forse": taskForse["Id"] }, GFROM_FIELDS_RESOURCE)}>mandaci tutti i dettagli</a>.
                                 </Typography>
 
-                                <List dense disablePadding>
+                                <List>
 
                                     <a
                                         target="_blank"
@@ -435,6 +474,27 @@ export default function Index({
                                         )
                                     }
 
+                                    {
+                                        resources.length > 5
+                                        &&
+                                        <a
+                                            target="_blank"
+                                            href={
+                                                getGFormUrl(
+                                                    GFORM_URL_RESOURCE,
+                                                    { "Task forse": taskForse["Id"] },
+                                                    GFROM_FIELDS_RESOURCE
+                                                )
+                                            }
+                                        >
+                                            <IconListAddItem
+                                                primary="Suggerisci una risorsa"
+                                                icon={<Add />}
+                                            />
+                                        </a>
+
+                                    }
+
                                 </List>
 
                             </Grid>
@@ -454,9 +514,9 @@ export async function getStaticProps({ params }) {
     return {
         props: {
             taskForse: await getTaskForse(params["Id"]),
-            members: await getMembersByTaskForse(params["Id"]),
-            minutes: await getMinutesByTaskForse(params["Id"]),
-            resources: await getResourcesByTaskForse(params["Id"]),
+            staticMembers: await getMembersByTaskForse(params["Id"]),
+            staticMinutes: await getMinutesByTaskForse(params["Id"]),
+            staticResources: await getResourcesByTaskForse(params["Id"]),
         },
     }
 }
