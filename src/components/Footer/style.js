@@ -7,5 +7,8 @@ export default theme => ({
         fontFamily: `"PT Serif", serif`,
         fontWeight: 400,
         fontSize: `.77rem`,
-    }
+    },
+    logo: {
+        height: `2rem`,
+    },
 })

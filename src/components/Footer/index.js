@@ -17,8 +17,11 @@ export default () => {
     return (
         <footer className={classes.root}>
             <Container maxWidth="md">
+                <a target="_blank" href="https://ondata.it/">
+                    <img src="/ondata-logo.png" alt="Logo di Ondata" title="Logo di Ondata" className={classes.logo} />
+                </a>
                 <Typography className={classes.footer}>
-                    &copy; {(new Date()).getFullYear()} <a target="_blank" href="https://ondata.it/">Ondata - Associazione di promozione sociale</a>
+                    &copy; {(new Date()).getFullYear()} <a target="_blank" href="https://ondata.it/">onData - Associazione di promozione sociale</a>
                 </Typography>
                 <Typography className={classes.footer}>
                     All data are released under a <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/deed.it">Creative Commons Attribution License</a> on <a target="_blank" href="https://docs.google.com/spreadsheets/d/15LmCiYKg2cWzovAiqquhp_lYsaBSuGNau7suUkQddl8/edit?usp=sharing">Google Sheet</a>
