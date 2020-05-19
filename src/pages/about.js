@@ -22,6 +22,7 @@ export default function Index() {
 
     return (
         <>
+
             <NextSeo
                 title="About"
                 description="Task Forse è un progetto dell'associazione onData."
@@ -30,8 +31,9 @@ export default function Index() {
                     description: "Task Forse è un progetto dell'associazione onData.",
                 }}
             />
+
             <Header
-                title="Task force"
+                title="Home"
                 href="/"
                 as="/"
             />
@@ -39,6 +41,10 @@ export default function Index() {
             <main>
 
                 <Container maxWidth="sm">
+
+                    <Typography variant="h2" gutterBottom>
+                        Il progetto
+                    </Typography>
 
                     <Typography gutterBottom>
                         <strong>Task Forse</strong> è un progetto dell'<a target="_blank" href="https://ondata.it/">associazione onData</a> e ha l'<strong>obiettivo di raccogliere e integrare tutti i dati delle task force</strong> attivate per fronteggiare l'emergenza nazionale COVID-19, disperse in molte pagine web e documenti pdf difficilmente reperibili.
@@ -51,15 +57,19 @@ export default function Index() {
                     <Typography gutterBottom>
                         <a target="_blank" href="http://blog.ondata.it/nel-dubbio-task-forse/">Task Forse è un progetto di comunità</a> e una <strong>banca dati</strong> a supporto di azioni di monitoraggio delle attività espletate da questi gruppi, in modo da avere dei riferimenti diretti per eventuali campagne di richiesta di apertura dei dati.
                     </Typography>
+
+                    <Typography gutterBottom>
+                        <strong>Giovedì 21 maggio alle 12:00</strong> abbiamo presentato il progetto in un webinar in diretta su <a target="_blank" href="https://www.facebook.com/ondata.it/videos/565486467440217/">Facebook</a> e <a target="_blank" href="https://www.youtube.com/watch?v=YNKJxkpD1aQ">Youtube</a> con Alessio, Andrea, Alice, Jacopo e Lorenzo.
+                    </Typography>
                     
-                    <img src="/share.png" style={{width:"100%"}} alt="Card di Task Forse" />
+                    <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/YNKJxkpD1aQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
                     <Typography variant="h2" gutterBottom>
                         onData - Associazione di promozione sociale
                     </Typography>
 
                     <Typography gutterBottom>
-                        Siamo un'associazione senza scopo di lucro che promuove l'apertura dei dati pubblici per renderli accessibili a tutti. Siamo attivi sull'emergenza COVID-19 con azioni volte alla trasparenza e all'accessibilità dei dati pubblici.
+                        Siamo un'<a target="_blank" href="https://ondata.it/">associazione senza scopo di lucro</a> che promuove l'apertura dei dati pubblici per renderli accessibili a tutti. Siamo attivi sull'emergenza COVID-19 con azioni volte alla trasparenza e all'accessibilità dei dati pubblici. <a target="_blank" href="https://sostieni.ondata.it/">Sostienici anche tu!</a>
                     </Typography>
 
                     <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style={{textAlign:"center"}}>
@@ -98,6 +108,9 @@ export default function Index() {
                             </ListItem>
                             <ListItem>
                                 <ListItemText>REST API</ListItemText>
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText>Progressive Web Application</ListItemText>
                             </ListItem>
                             <ListItem button component="a" target="_blank" href={getGFormUrl(GFORM_URL_ISSUE)}>
                                 <ListItemText>+ Suggerisci...</ListItemText>

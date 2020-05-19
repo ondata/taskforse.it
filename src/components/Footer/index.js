@@ -29,6 +29,9 @@ export default () => {
                 <Typography className={classes.footer}>
                     Source code is available under a <a target="_blank" href="https://opensource.org/licenses/MIT">MIT License</a> on <a target="_blank" href="https://github.com/ondata/taskforse.it">Github</a>
                 </Typography>
+                <Typography className={classes.footer}>
+                    This website <strong>doesn't set</strong> any first- or third-party cookie for profiling or marketing pourposes.
+                </Typography>
             </Container>
         </footer>
     )
