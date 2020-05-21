@@ -14,6 +14,8 @@ import {
     split,
 } from 'lodash'
 
+export const REVALIDATE_INTERVAL = 300 // In seconds
+
 const GSHEET_PREFIX = `${process.env.PROXY_URL || "https://spreadsheets.google.com"}/feeds/cells`
 const GSHEET_SUFFIX = `public/full?alt=json`
 const GSHEET_ID = `15LmCiYKg2cWzovAiqquhp_lYsaBSuGNau7suUkQddl8`
@@ -249,7 +251,9 @@ function normalizeGSheetJSON(response) {
             range(dataKeys.length),
             col => {
                 const e = find(row, c => +c["gs$cell"].col === col + 1)
-                return e ? (+e["gs$cell"]["$t"] || e["gs$cell"]["$t"]) : null
+                if (!e || !e["gs$cell"]) return null
+                if (e["gs$cell"]["numericValue"]) return +e["gs$cell"]["$t"]
+                return e["gs$cell"]["$t"]
             }
         )
     )

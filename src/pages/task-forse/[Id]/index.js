@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { NextSeo } from 'next-seo'
 
 import axios from 'axios'
-import useSwr from 'swr'
 import extractDomain from 'url-domain-name'
 
 import {
@@ -42,7 +41,9 @@ import {
     getGFormUrl,
 
     AVATARS,
-} from '../../config'
+
+    REVALIDATE_INTERVAL,
+} from '../../../config'
 
 import {
     Container,
@@ -77,22 +78,18 @@ import {
     CountBadge,
     Counter,
     BarListItem,
-} from '../../components'
+} from '../../../components'
 
 export default function Index({
     taskForse = {},
-    staticMembers = [],
-    staticMinutes = [],
-    staticResources = [],
+    members = [],
+    minutes = [],
+    resources = [],
 }) {
 
     const router = useRouter()
     const theme = useTheme()
     const matches = useMediaQuery(theme.breakpoints.down('sm'))
-
-    const { data: { data: members = staticMembers } = {} } = useSwr(`/api/task-forse/${taskForse["Id"]}/members`, axios.get)
-    const { data: { data: minutes = staticMinutes } = {} } = useSwr(`/api/task-forse/${taskForse["Id"]}/minutes`, axios.get)
-    const { data: { data: resources = staticResources } = {} } = useSwr(`/api/task-forse/${taskForse["Id"]}/resources`, axios.get)
 
     if (router.isFallback) {
 
@@ -514,10 +511,11 @@ export async function getStaticProps({ params }) {
     return {
         props: {
             taskForse: await getTaskForse(params["Id"]),
-            staticMembers: await getMembersByTaskForse(params["Id"]),
-            staticMinutes: await getMinutesByTaskForse(params["Id"]),
-            staticResources: await getResourcesByTaskForse(params["Id"]),
+            members: await getMembersByTaskForse(params["Id"]),
+            minutes: await getMinutesByTaskForse(params["Id"]),
+            resources: await getResourcesByTaskForse(params["Id"]),
         },
+        unstable_revalidate: REVALIDATE_INTERVAL,
     }
 }
 

@@ -1,11 +1,9 @@
 import Link from 'next/link'
 
 import axios from 'axios'
-import useSwr from 'swr'
 
 import {
     map,
-    filter,
     sumBy,
 } from 'lodash'
 
@@ -16,6 +14,8 @@ import {
 
     GFORM_URL_TASKFORSE,
     getGFormUrl,
+
+    REVALIDATE_INTERVAL,
 } from '../config'
 
 import {
@@ -23,7 +23,6 @@ import {
     Typography,
     List,
     Divider,
-    Button,
     Grid,
 } from '@material-ui/core'
 
@@ -43,10 +42,8 @@ import {
 } from '../components'
 
 export default function Index({
-    staticTaskForses = [],
+    taskForses = [],
 }) {
-
-    const { data: { data: taskForses = staticTaskForses } = {} } = useSwr(`/api/task-forses`, axios.get)
 
     return (
         <>
@@ -201,7 +198,8 @@ export default function Index({
 export async function getStaticProps() {
     return {
         props: {
-            staticTaskForses: await getTaskForses(),
+            taskForses: await getTaskForses(),
         },
+        unstable_revalidate: REVALIDATE_INTERVAL,
     }
 }

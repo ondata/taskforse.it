@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { NextSeo } from 'next-seo'
 
 import axios from 'axios'
-import useSwr from 'swr'
 
 import {
     map,
@@ -23,7 +22,9 @@ import {
     getGFormUrl,
 
     AVATARS,
-} from '../../config'
+    
+    REVALIDATE_INTERVAL,
+} from '../../../config'
 
 import {
     Container,
@@ -60,16 +61,14 @@ import {
     IconListItem,
     TextListItem,
     AvatarImage,
-} from '../../components'
+} from '../../../components'
 
 export default function Index({
     member = {},
-    staticTaskForses = [],
+    taskForses = [],
 }) {
 
     const router = useRouter()
-
-    const { data: { data: taskForses = staticTaskForses } = {} } = useSwr(`/api/member/${member["Id"]}/task-forses`, axios.get)
 
     if (router.isFallback) {
 
@@ -258,8 +257,9 @@ export async function getStaticProps({ params }) {
     return {
         props: {
             member: await getMember(params["Id"]),
-            staticTaskForses: await getTaskForsesByMember(params["Id"]),
+            taskForses: await getTaskForsesByMember(params["Id"]),
         },
+        unstable_revalidate: REVALIDATE_INTERVAL,
     }
 }
 
