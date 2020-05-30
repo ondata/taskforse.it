@@ -3,6 +3,6 @@ import {
 } from '../../config'
 
 export default async (req, res) => {
-    res.writeHead(302, { Location: `/api/${API_VERSION}` })
+    res.writeHead(302, { Location: `https://www.taskforse.it/api/${API_VERSION}` })
     res.end()
 }
