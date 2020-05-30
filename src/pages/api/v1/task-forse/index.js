@@ -12,7 +12,7 @@ import {
     getMembersByTaskForseSync,
     getMinutesByTaskForseSync,
     getResourcesByTaskForseSync,
-} from '../../../config'
+} from '../../../../config'
 
 export default async (req, res) => {
     const taskForses = await getTaskForses()

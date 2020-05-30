@@ -4,7 +4,7 @@ import {
     getMinute,
     getMinuteApiUri,
     getTaskForse,
-} from '../../../config'
+} from '../../../../../config'
 
 export default async ({ query }, res) => {
     const minute = await getMinute(query["Id"])

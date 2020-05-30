@@ -1,7 +1,7 @@
 FROM swaggerapi/swagger-ui
 
 ARG OAS_NAME=taskforse
-ARG URL=/oas/api/${OAS_NAME}.json
+ARG URL=/oas/api/${OAS_NAME}.yml
 ENV URL=${URL}
 
-COPY ${OAS_NAME}.json /usr/share/nginx/html/api/
+COPY ${OAS_NAME}.yml /usr/share/nginx/html/api/

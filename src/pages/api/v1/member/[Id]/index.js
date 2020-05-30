@@ -11,7 +11,7 @@ import {
     getTaskForseSync,
 
     GSHEET_MULTIFIELDS_SEPARATOR,
-} from '../../../../config'
+} from '../../../../../config'
 
 export default async ({ query }, res) => {
 

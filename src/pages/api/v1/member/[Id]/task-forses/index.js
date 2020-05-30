@@ -6,7 +6,7 @@ import {
 import {
     getTaskForsesByMember,
     getTaskForseApiUri,
-} from '../../../../../config'
+} from '../../../../../../config'
 
 export default async ({ query }, res) => {
     if (isEmpty(query["Id"])) {

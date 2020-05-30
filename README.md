@@ -71,13 +71,15 @@ Main dependencies:
 - [NextJS](https://nextjs.org/)
 - [React](https://reactjs.org/)
 
-You can start development server with hot reloading running `npm run dev`. You can also test the production instance running `npm run start`. Then you can open `http://localhost:3000` using your favourite browser. Warning: reverse proxy and caching are unavailable outside docker containers.
+You can start development server with hot reloading running `npm run dev`. You can also test the production instance running `npm run start`. Then you can open `http://localhost:3000` using your favourite browser. Note that reverse proxy and caching are unavailable outside docker containers.
 
 ### API
 
-All data are available on a REST API (only GET verb is supported): https://www.taskforse.it/api/. There is also an interactive documentation powered by [Swagger UI](https://swagger.io/tools/swagger-ui/) and compliant to [OpenAPI Specification v3](http://spec.openapis.org/oas/v3.0.3): https://www.taskforse.it/oas/.
+All data are available on a REST API (only GET verb is supported): https://www.taskforse.it/api/v1. There is also an interactive documentation powered by [Swagger UI](https://swagger.io/tools/swagger-ui/) and compliant to [OpenAPI Specification v3](http://spec.openapis.org/oas/v3.0.3): https://www.taskforse.it/oas/.
 
-Warning: [CORS](https://developer.mozilla.org/it/docs/Web/HTTP/CORS) is disabled by default for all origins, if you need to access API from a client-side application feel free to open an issue.
+If you want to contribute to the API documentation, you can run [Swagger Editor](https://swagger.io/tools/swagger-editor/) using the docker-compose.yml file in `oas/` folder.
+
+> Warning: [CORS](https://developer.mozilla.org/it/docs/Web/HTTP/CORS) is disabled by default for all origins, if you need to access API from a client-side application feel free to open an issue.
 
 ## License
 

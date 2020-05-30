@@ -14,6 +14,7 @@ import {
     split,
 } from 'lodash'
 
+export const API_VERSION = "v1"
 export const REVALIDATE_INTERVAL = 300 // In seconds
 
 const GSHEET_PREFIX = `${process.env.PROXY_URL || "https://spreadsheets.google.com"}/feeds/cells`
@@ -74,7 +75,7 @@ export function getTaskForseSync(id, taskForses) {
 
 export const getTaskForseId = taskForse => normalizeId(taskForse["Id"])
 export const getTaskForseUri = taskForse => `/task-forse/${getTaskForseId(taskForse)}`
-export const getTaskForseApiUri = taskForse => `/api${getTaskForseUri(taskForse)}`
+export const getTaskForseApiUri = taskForse => `/api/${API_VERSION}${getTaskForseUri(taskForse)}`
 
 export async function getMembers() {
     return filter(
@@ -92,7 +93,7 @@ export async function getMember(id) {
 
 export const getMemberId = member => normalizeId(member["Id"])
 export const getMemberUri = member => `/member/${getMemberId(member)}`
-export const getMemberApiUri = member => `/api${getMemberUri(member)}`
+export const getMemberApiUri = member => `/api/${API_VERSION}${getMemberUri(member)}`
 
 export async function getMembersByTaskForse(id) {
     return id ? filter(
@@ -180,7 +181,7 @@ export async function getMinute(id) {
 
 export const getMinuteId = minute => minute["Id"] ? normalizeId(`${minute["Task forse"]}-${minute["Id"]}`) : ""
 export const getMinuteUri = minute => `/minute/${getMinuteId(minute)}`
-export const getMinuteApiUri = minute => `/api${getMinuteUri(minute)}`
+export const getMinuteApiUri = minute => `/api/${API_VERSION}${getMinuteUri(minute)}`
 
 export async function getMinutesByTaskForse(id) {
     return id ? filter(
@@ -211,7 +212,7 @@ export async function getResource(id) {
 }
 export const getResourceId = resource => resource["Id"] ? normalizeId(`${resource["Task forse"]}-${resource["Id"]}`) : ""
 export const getResourceUri = resource => `/resource/${getResourceId(resource)}`
-export const getResourceApiUri = resource => `/api${getResourceUri(resource)}`
+export const getResourceApiUri = resource => `/api/${API_VERSION}${getResourceUri(resource)}`
 
 export async function getResourcesByTaskForse(id) {
     return id ? filter(

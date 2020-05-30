@@ -8,7 +8,7 @@ import {
     getMinuteApiUri,
     getTaskForses,
     getTaskForseSync,
-} from '../../../config'
+} from '../../../../config'
 
 export default async (req, res) => {
     const minutes = await getMinutes()

@@ -107,9 +107,6 @@ export default function Index() {
                                 <ListItemText>Elenco contributori</ListItemText>
                             </ListItem>
                             <ListItem>
-                                <ListItemText>REST API</ListItemText>
-                            </ListItem>
-                            <ListItem>
                                 <ListItemText>Progressive Web Application</ListItemText>
                             </ListItem>
                             <ListItem button component="a" target="_blank" href={getGFormUrl(GFORM_URL_ISSUE)}>

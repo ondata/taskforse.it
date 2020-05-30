@@ -4,7 +4,7 @@ import {
     getResource,
     getResourceApiUri,
     getTaskForse,
-} from '../../../config'
+} from '../../../../../config'
 
 export default async ({ query }, res) => {
     const resource = await getResource(query["Id"])

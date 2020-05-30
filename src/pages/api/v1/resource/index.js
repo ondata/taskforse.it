@@ -8,7 +8,7 @@ import {
     getResourceApiUri,
     getTaskForses,
     getTaskForseSync,
-} from '../../../config'
+} from '../../../../config'
 
 export default async (req, res) => {
     const resources = await getResources()

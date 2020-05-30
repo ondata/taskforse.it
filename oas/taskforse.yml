@@ -1,0 +1,548 @@
+openapi: 3.0.3
+
+info:
+  title: Task Forse - OpenAPI 3.0
+  description: |-
+    
+    > Nel dubbio... task forse!
+    
+    Task Forse is an independent project for monitoring of public task forces' activity during COVID-19 emergency in 2020 in Italy.
+    It's a no-profit and community-driven initiative supported by [Ondata](https://ondata.it)
+    and based on a shared database hosted by [Google Sheets](https://www.google.com/intl/it/sheets/about/)
+    and [Google Form](https://www.google.it/intl/it/forms/about/)
+    and a web application built on top of [NextJS](https://nextjs.org/).
+    
+    Some useful links:
+    - [Task Forse website](https://www.taskforse.it/)
+    - [Source code](https://github.com/ondata/taskforse.it)
+    - [Ondata website](https://ondata.it)
+    - [Donate!](https://www.paypal.com/donate/?token=7oZEOsas23aewZ4L5IKobQ1pLR_3SVS1qDZIbQsXcebKAR6QwVSmwNfycIeqxGyaZoXEqG)
+    
+  termsOfService: 'https://github.com/ondata/taskforse.it#api'
+  contact:
+    email: alessio.cimarelli@ondata.it
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+  version: 1.0.0
+
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
+
+servers:
+  - url: https://www.taskforse.it/api/v1
+  
+tags:
+  - name: task-forse
+    description: All task forces
+  - name: member
+    description: All task forces' members
+  - name: minute
+    description: All minutes
+  - name: resource
+    description: All external resources
+
+paths:
+
+  '/task-forse':
+    get:
+      tags:
+        - task-forse
+      summary: All task forces
+      description: Returns all task forces
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskForse'
+        '404':
+          description: Task forces not found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example: []
+
+  '/task-forse/{taskForseId}':
+    get:
+      tags:
+        - task-forse
+      summary: Find task force by ID
+      description: Returns a single task force
+      parameters:
+        - name: taskForseId
+          in: path
+          description: ID of task force to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskForse'
+        '404':
+          description: Task force not found
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {}
+
+  '/task-forse/{taskForseId}/members':
+    get:
+      tags:
+        - task-forse
+      summary: All members of current task force
+      description: Returns All members of current task force
+      parameters:
+        - name: taskForseId
+          in: path
+          description: ID of task force to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Member'
+        '404':
+          description: Members not found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example: []
+
+  '/task-forse/{taskForseId}/minutes':
+    get:
+      tags:
+        - task-forse
+      summary: All minutes of current task force
+      description: Returns all minutes of current task force
+      parameters:
+        - name: taskForseId
+          in: path
+          description: ID of task force to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Minute'
+        '404':
+          description: Minutes not found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example: []
+
+  '/task-forse/{taskForseId}/resources':
+    get:
+      tags:
+        - task-forse
+      summary: All resources of current task force
+      description: Returns all resources of current task force
+      parameters:
+        - name: taskForseId
+          in: path
+          description: ID of task force to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resource'
+        '404':
+          description: Resources not found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example: []
+
+  '/member':
+    get:
+      tags:
+        - member
+      summary: All task forces' members
+      description: Returns all members
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Member'
+        '404':
+          description: Members not found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example: []
+
+  '/member/{memberId}':
+    get:
+      tags:
+        - member
+      summary: Find member by ID
+      description: Returns a single member
+      parameters:
+        - name: memberId
+          in: path
+          description: ID of member to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+        '404':
+          description: Member not found
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {}
+
+  '/member/{memberId}/task-forses':
+    get:
+      tags:
+        - member
+      summary: All task forces of current member
+      description: Returns all task forces of current member
+      parameters:
+        - name: memberId
+          in: path
+          description: ID of member to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskForse'
+        '404':
+          description: Task forces not found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example: []
+
+  '/minute':
+    get:
+      tags:
+        - minute
+      summary: All minutes
+      description: Returns all minutes
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Minute'
+        '404':
+          description: Minutes not found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example: []
+
+  '/minutes/{minuteId}':
+    get:
+      tags:
+        - minute
+      summary: Find minute by ID
+      description: Returns a single minute
+      parameters:
+        - name: minuteId
+          in: path
+          description: ID of minute to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Minute'
+        '404':
+          description: Minute not found
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {}
+
+  '/resource':
+    get:
+      tags:
+        - resource
+      summary: All resources
+      description: Returns all resources
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resource'
+        '404':
+          description: Resources not found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                example: []
+
+  '/resource/{resourceId}':
+    get:
+      tags:
+        - resource
+      summary: Find resource by ID
+      description: Returns a single resource
+      parameters:
+        - name: resourceId
+          in: path
+          description: ID of resource to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                example: {}
+
+components:
+  schemas:
+  
+    TaskForse:
+      required:
+        - Id
+      type: object
+      properties:
+        Id:
+          type: string
+        Nome:
+          type: string
+        Sito web:
+          type: string
+        Data di istituzione:
+          type: string
+        Data inizio lavori:
+          type: string
+        Data fine lavori:
+          type: string
+        Istituzione di riferimento:
+          type: string
+        Descrizione:
+          type: string
+        Mission:
+          type: string
+        Numero membri:
+          type: integer
+        Numero membri conosciuti:
+          type: integer
+        Numero uomini:
+          type: integer
+        Numero donne:
+          type: integer
+        Numero verbali:
+          type: integer
+        Numero verbali pubblicati:
+          type: integer
+        Numero risorse disponibili:
+          type: integer
+        Membri conosciuti:
+          type: array
+          items:
+            $ref: '#/components/schemas/Member'
+        Verbali pubblicati:
+          type: array
+          items:
+            $ref: '#/components/schemas/Minute'
+        Risorse disponibili:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+        _url:
+          type: string
+
+    Member:
+      required:
+        - Id
+      type: object
+      properties:
+        Id:
+          type: string
+        Nome:
+          type: string
+        Cognome:
+          type: string
+        Genere:
+          type: string
+          enum:
+            - F
+            - M
+        Foto:
+          type: string
+        Bio:
+          type: string
+        Istituzione di affiliazione:
+          type: string
+        Anno di nascita:
+          type: integer
+        Luogo di nascita:
+          type: string
+        Luogo di residenza:
+          type: string
+        Professione:
+          type: string
+        Curriculum Vitae:
+          type: string
+        Laurea:
+          type: string
+        Ruolo:
+          type: string
+        Task forses:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskForse'
+        Sottogruppo:
+          type: string
+        Twitter:
+          type: string
+        Linkedin:
+          type: string
+        Instagram:
+          type: string
+        Facebook:
+          type: string
+        E-mail istituzionale:
+          type: string
+        Google Scholar:
+          type: string
+        Wikipedia:
+          type: string
+        Data di ingresso:
+          type: string
+        Data di uscita:
+          type: string
+        Motivazione per l'uscita:
+          type: string
+        Note:
+          type: string
+        _url:
+          type: string
+
+    Minute:
+      required:
+        - Id
+      type: object
+      properties:
+        Id:
+          type: string
+        Titolo:
+          type: string
+        Data di pubblicazione:
+          type: string
+        URL:
+          type: string
+        Task forse:
+          $ref: '#/components/schemas/TaskForse'
+        _url:
+          type: string
+
+    Resource:
+      required:
+        - Id
+      type: object
+      properties:
+        Id:
+          type: string
+        Titolo:
+          type: string
+        Categoria:
+          type: string
+        Descrizione:
+          type: string
+        Pagina web:
+          type: string
+        URL:
+          type: string
+        Task forse:
+          $ref: '#/components/schemas/TaskForse'
+        _url:
+          type: string
