@@ -1,24 +1,41 @@
 import { NextSeo } from 'next-seo'
 
 import {
+    orderBy,
+    map,
+    keys,
+    values,
+    size,
+    sumBy,
+} from 'lodash'
+
+import {
     Container,
     Typography,
     List,
     ListItem,
     ListItemText,
+    Grid,
 } from '@material-ui/core'
 
 import {
+    REVALIDATE_INTERVAL,
     GFORM_URL_ISSUE,
     getGFormUrl,
+    getContributors,
+    getContributions,
 } from '../config'
 
 import {
     Header,
     Footer,
+    GridItem,
 } from '../components'
 
-export default function Index() {
+export default function Index({ contributionsByContributor, totalContributionsCount }) {
+
+    const contributors = keys(contributionsByContributor)
+    const authoredContributionsCount = sumBy(values(contributionsByContributor), size)
 
     return (
         <>
@@ -62,7 +79,7 @@ export default function Index() {
                         <strong>Giovedì 21 maggio alle 12:00</strong> abbiamo presentato il progetto in un webinar in diretta su <a target="_blank" href="https://www.facebook.com/ondata.it/videos/565486467440217/">Facebook</a> e <a target="_blank" href="https://www.youtube.com/watch?v=YNKJxkpD1aQ">Youtube</a> con Alessio, Andrea, Alice, Jacopo e Lorenzo.
                     </Typography>
                     
-                    <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/YNKJxkpD1aQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/YNKJxkpD1aQ" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
                     <Typography variant="h2" gutterBottom>
                         onData - Associazione di promozione sociale
@@ -86,7 +103,7 @@ export default function Index() {
                     <Typography gutterBottom>
                         Questo sito è sviluppato e mantenuto con &hearts; da <a target="_blank" href="https://github.com/jenkin">jenkin</a>, utilizzando <a target="_blank" href="https://nextjs.org/">NextJS</a> e <a target="_blank" href="https://material-ui.com/">Material-UI</a>.
                         {` `}
-                        Il nome è un'idea di <a target="_blank" href="https://www.linkedin.com/in/andreaborruso/">aborruso</a>, il graphic design di <a target="_blank" href="https://www.linkedin.com/in/jacoposolmi/">japi</a> e la progettazione del database di <a target="_blank" href="https://www.linkedin.com/in/lorenzo-perone-5aa8412/">lore</a> e <a target="_blank" href="https://www.linkedin.com/in/alicecorona/">alice</a>.
+                        Il nome è un'idea di <a target="_blank" href="https://www.linkedin.com/in/andreaborruso/">aborruso</a>, il graphic design di <a target="_blank" href="https://www.linkedin.com/in/jacoposolmi/">japi</a> la progettazione e gestione del database di <a target="_blank" href="https://www.linkedin.com/in/lorenzo-perone-5aa8412/">lore</a> e <a target="_blank" href="https://www.linkedin.com/in/alicecorona/">alice</a>.
                     </Typography>
 
                     <Typography variant="h2" gutterBottom>
@@ -94,8 +111,36 @@ export default function Index() {
                     </Typography>
 
                     <Typography gutterBottom>
-                        Coming soon...
+                        Finora hanno contribuito all'arricchimento del database {size(contributors)} persone per un totale di {authoredContributionsCount} contributi, a cui se ne aggiungono {totalContributionsCount - authoredContributionsCount} anonimi. Grazie!
                     </Typography>
+
+                </Container>
+
+                <Container maxWidth="md">
+
+                    <Grid container spacing={1}>
+                        {
+                            map(
+                                orderBy(
+                                    contributors,
+                                    contributor => size(contributionsByContributor[contributor]),
+                                    "desc"
+                                ),
+                                contributor => (
+                                    <Grid item xs={12} sm={6} md={4} key={contributor}>
+                                        <GridItem
+                                            title={contributor}
+                                            subtitle={`${size(contributionsByContributor[contributor])} contribut${size(contributionsByContributor[contributor]) > 1 ? "i" : "o"}`}
+                                        />
+                                    </Grid>
+                                )
+                            )
+                        }
+                    </Grid>
+
+                </Container>
+
+                <Container maxWidth="sm">
 
                     <Typography variant="h2" gutterBottom>
                         Roadmap
@@ -104,10 +149,10 @@ export default function Index() {
                     <Typography gutterBottom>
                         <List dense>
                             <ListItem>
-                                <ListItemText>Elenco contributori</ListItemText>
+                                <ListItemText>Progressive Web Application</ListItemText>
                             </ListItem>
                             <ListItem>
-                                <ListItemText>Progressive Web Application</ListItemText>
+                                <ListItemText>Sitemap</ListItemText>
                             </ListItem>
                             <ListItem button component="a" target="_blank" href={getGFormUrl(GFORM_URL_ISSUE)}>
                                 <ListItemText>+ Suggerisci...</ListItemText>
@@ -122,4 +167,14 @@ export default function Index() {
             <Footer />
         </>
     )
+}
+
+export async function getStaticProps() {
+    return {
+        props: {
+            contributionsByContributor: await getContributors(),
+            totalContributionsCount: size(await getContributions()),
+        },
+        unstable_revalidate: REVALIDATE_INTERVAL,
+    }
 }
