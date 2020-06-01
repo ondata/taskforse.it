@@ -20,11 +20,15 @@ export default ({
     return (
         <Box className={classes.root}>
             <Card className={classes.card} elevation={0} component="a">
-                <CardMedia
-                    className={classes.cover}
-                    image={image}
-                    title={title}
-                />
+                {
+                    !!image
+                    &&
+                    <CardMedia
+                        className={classes.cover}
+                        image={image}
+                        title={title}
+                    />
+                }
                 <span className={classes.details}>
                     <CardContent className={classes.content}>
                         <Typography component="h5" variant="h5">

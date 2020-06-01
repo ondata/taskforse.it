@@ -25,6 +25,7 @@ export const GSHEET_SHEET_TASKFORSES = 2
 export const GSHEET_SHEET_MEMBERS = 3
 export const GSHEET_SHEET_MINUTES = 4
 export const GSHEET_SHEET_RESOURCES = 5
+export const GSHEET_SHEET_CONTRIBUTIONS = 6
 export const GSHEET_MULTIFIELDS_SEPARATOR = `;`
 
 const getGSheetUrl = sheet => `/${sheet}/${GSHEET_SUFFIX}`
@@ -226,6 +227,15 @@ export function getResourcesByTaskForseSync(id, resources) {
         resources,
         resource => normalizeId(resource["Task forse"]) === normalizeId(id)
     ) : []
+}
+
+export async function getContributions() {
+    return normalizeGSheetJSON(await api.get(getGSheetUrl(GSHEET_SHEET_CONTRIBUTIONS)))
+}
+
+export async function getContributors() {
+    const contributions = filter(await getContributions(), c => !!c["Autore"])
+    return groupBy(contributions, "Autore")
 }
 
 function normalizeGSheetJSON(response) {
