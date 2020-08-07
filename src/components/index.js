@@ -11,15 +11,15 @@ import Counter from './Counter'
 import AvatarImage from './AvatarImage'
 
 export {
-    Header,
-    Footer,
-    IconListItem,
-    IconListAddItem,
-    TextListItem,
-    BarListItem,
-    GridItem,
-    GridAddItem,
-    CountBadge,
-    Counter,
-    AvatarImage,
+  Header,
+  Footer,
+  IconListItem,
+  IconListAddItem,
+  TextListItem,
+  BarListItem,
+  GridItem,
+  GridAddItem,
+  CountBadge,
+  Counter,
+  AvatarImage
 }

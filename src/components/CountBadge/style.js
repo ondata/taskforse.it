@@ -1,5 +1,5 @@
 export default theme => ({
-    root: {
-        float: "right",
-    },
+  root: {
+    float: 'right'
+  }
 })
